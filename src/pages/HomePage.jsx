@@ -120,8 +120,8 @@ export default function HomePage() {
               darkMode ? 'text-gray-300' : 'text-gray-700'
             }`}
           >
-            <p>📞 +998 (66) 233-30-30</p>
-            <p>✉️ info@samarkandmall.uz</p>
+            <p>📞 +998 (99) 689-24-80</p>
+            <p>✉️ info:roziyevnozim43@gmail.com</p>
             <p>📍 Samarkand, Uzbekistan</p>
           </div>
         </div>
