@@ -15,6 +15,19 @@ export default function HomePage() {
       {/* Hero Section */}
       <HeroSection />
 
+      {/* About Section */}
+      <section id="about" className="section-padding max-w-6xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h2 className="heading-medium mb-6">About Samarkand Mall Directory</h2>
+          <p className="text-gray-700 text-lg mb-4 leading-relaxed">
+            Welcome to Samarkand Mall Directory, your comprehensive guide to the finest shopping destinations in the historic city of Samarkand. We connect shoppers with premium malls, diverse stores, and exclusive brands across the city.
+          </p>
+          <p className="text-gray-700 text-lg leading-relaxed">
+            Whether you're looking for fashion, electronics, dining, or entertainment, our platform makes it easy to discover and explore Samarkand's vibrant retail landscape. Start your shopping journey today and experience the best that Samarkand has to offer.
+          </p>
+        </div>
+      </section>
+
       {/* Malls Section */}
       <section id="malls" className="section-padding max-w-6xl mx-auto">
         <div className="mb-12">

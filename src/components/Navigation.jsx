@@ -18,8 +18,8 @@ export default function Navigation() {
             <Link to="/" className="hover:text-gold transition-colors duration-300">
               Home
             </Link>
-            <a href="#malls" className="hover:text-gold transition-colors duration-300">
-              Malls
+            <a href="#about" className="hover:text-gold transition-colors duration-300">
+              About
             </a>
             <a href="#contact" className="hover:text-gold transition-colors duration-300">
               Contact
@@ -47,11 +47,11 @@ export default function Navigation() {
               Home
             </Link>
             <a 
-              href="#malls" 
+              href="#about" 
               className="block py-2 hover:text-gold transition-colors duration-300"
               onClick={() => setMenuOpen(false)}
             >
-              Malls
+              About
             </a>
             <a 
               href="#contact" 
