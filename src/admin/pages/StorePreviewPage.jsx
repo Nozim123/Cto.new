@@ -13,6 +13,15 @@ import {
 import AdminLayout from '../components/AdminLayout'
 import { mallAPI, storeAPI } from '../../services/api'
 
+const formatDate = (dateString) => {
+  if (!dateString) return null
+
+  const date = new Date(dateString)
+  if (Number.isNaN(date.getTime())) return null
+
+  return date.toLocaleDateString('uz-UZ')
+}
+
 export default function StorePreviewPage() {
   const { id } = useParams()
   const [store, setStore] = useState(null)
@@ -69,6 +78,8 @@ export default function StorePreviewPage() {
       </AdminLayout>
     )
   }
+
+  const openedDateLabel = formatDate(store.opened_date)
 
   return (
     <AdminLayout>
@@ -160,10 +171,10 @@ export default function StorePreviewPage() {
                       </div>
                     ) : null}
 
-                    {store.opened_date ? (
+                    {openedDateLabel ? (
                       <div className="flex items-start gap-2">
                         <Calendar className="w-4 h-4 text-gray-400 mt-0.5" />
-                        <span>Ochilgan: {new Date(store.opened_date).toLocaleDateString('uz-UZ')}</span>
+                        <span>Ochilgan: {openedDateLabel}</span>
                       </div>
                     ) : null}
 

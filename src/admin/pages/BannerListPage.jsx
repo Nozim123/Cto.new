@@ -8,14 +8,12 @@ import {
   Search,
   Edit,
   Trash2,
-  Eye,
   Image,
   Calendar,
   Link as LinkIcon,
   Filter,
   Grid,
   List,
-  Clock,
   CheckCircle,
   XCircle
 } from 'lucide-react';
@@ -74,17 +72,27 @@ const BannerListPage = () => {
     }
   };
 
-  const filteredBanners = banners.filter(banner => {
-    const matchesSearch = banner.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         banner.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterStatus === 'all' || 
-                         (filterStatus === 'active' && banner.isActive) ||
-                         (filterStatus === 'inactive' && !banner.isActive);
+  const filteredBanners = banners.filter((banner) => {
+    const term = searchTerm.toLowerCase();
+    const title = String(banner?.title || '');
+    const description = String(banner?.description || '');
+
+    const matchesSearch = title.toLowerCase().includes(term) || description.toLowerCase().includes(term);
+    const matchesFilter =
+      filterStatus === 'all' ||
+      (filterStatus === 'active' && banner.isActive) ||
+      (filterStatus === 'inactive' && !banner.isActive);
+
     return matchesSearch && matchesFilter;
   });
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('uz-UZ');
+    if (!dateString) return '—';
+
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '—';
+
+    return date.toLocaleDateString('uz-UZ');
   };
 
   const getPositionBadge = (position) => {

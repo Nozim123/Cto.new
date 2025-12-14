@@ -8,9 +8,7 @@ import {
   ArrowLeft,
   Image,
   Calendar,
-  Link as LinkIcon,
-  Eye,
-  EyeOff
+  Link as LinkIcon
 } from 'lucide-react';
 
 const BannerFormPage = () => {

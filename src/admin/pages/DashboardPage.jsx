@@ -32,7 +32,12 @@ const DashboardPage = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('uz-UZ', {
+    if (!dateString) return '—';
+
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '—';
+
+    return date.toLocaleDateString('uz-UZ', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
