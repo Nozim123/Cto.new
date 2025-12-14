@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import AdminLayout from '../../components/AdminLayout';
-import { storeAPI, mallAPI } from '../../../services/api';
+import AdminLayout from '../components/AdminLayout';
+import { storeAPI, mallAPI } from '../../services/api';
 import toast from 'react-hot-toast';
 import {
   Save,

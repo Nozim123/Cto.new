@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import AdminLayout from '../../components/AdminLayout';
-import { mallAPI } from '../../../services/api';
+import AdminLayout from '../components/AdminLayout';
+import { mallAPI } from '../../services/api';
 import toast from 'react-hot-toast';
 import {
   Plus,

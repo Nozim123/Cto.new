@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import { trackBehavior } from '../services/behavior'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import StoreCard from '../components/StoreCard'
@@ -17,6 +18,10 @@ export default function MallDetailsPage() {
   useEffect(() => {
     const mallData = mallsData.find((m) => m.id === mallId)
     setMall(mallData)
+
+    if (mallData) {
+      trackBehavior({ type: 'mall', id: mallId })
+    }
 
     if (mallData?.featured) {
       const mallStores = storesData.filter((s) => s.mallId === mallId)
