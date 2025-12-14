@@ -1,0 +1,42 @@
+[
+  {
+    "id": "family-park",
+    "name": "Family Park Mall",
+    "location": "Samarkand, Uzbekistan",
+    "image": "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=800&h=400&fit=crop",
+    "bannerImage": "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=1200&h=400&fit=crop",
+    "description": "Family Park Mall is a modern shopping destination in the heart of Samarkand, combining contemporary retail with traditional Uzbek culture. Opened in 2018, it has become a premier shopping hub featuring over 100 retailers.",
+    "openedDate": "2018",
+    "hours": "10:00 AM - 10:00 PM",
+    "address": "123 Регистан Street, Samarkand 703100, Uzbekistan",
+    "phone": "+998 (66) 233-30-30",
+    "website": "www.familyparkmal.uz",
+    "storeCount": 120,
+    "featured": true,
+    "status": "open"
+  },
+  {
+    "id": "makon-mall",
+    "name": "Makon Mall",
+    "location": "Samarkand, Uzbekistan",
+    "image": "https://images.unsplash.com/photo-1555636222-cae846585b47?w=800&h=400&fit=crop",
+    "description": "Coming Soon",
+    "status": "coming_soon"
+  },
+  {
+    "id": "festival-mall",
+    "name": "Festival Mall",
+    "location": "Samarkand, Uzbekistan",
+    "image": "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=800&h=400&fit=crop",
+    "description": "Coming Soon",
+    "status": "coming_soon"
+  },
+  {
+    "id": "next-mall",
+    "name": "Next Mall",
+    "location": "Samarkand, Uzbekistan",
+    "image": "https://images.unsplash.com/photo-1590194394438-7fa22e0a84fe?w=800&h=400&fit=crop",
+    "description": "Coming Soon",
+    "status": "coming_soon"
+  }
+]
