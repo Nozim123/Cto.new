@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply text-gray-800;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+}
+
+.heading-large {
+  @apply font-display text-4xl lg:text-6xl font-bold text-navy;
+}
+
+.heading-medium {
+  @apply font-display text-2xl lg:text-4xl font-bold text-navy;
+}
+
+.heading-small {
+  @apply font-display text-xl lg:text-2xl font-bold text-navy;
+}
+
+.button-primary {
+  @apply px-6 py-3 bg-gold text-navy font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300;
+}
+
+.button-secondary {
+  @apply px-6 py-3 border-2 border-navy text-navy font-semibold rounded-lg hover:bg-navy hover:text-cream transition-all duration-300;
+}
+
+.card-shadow {
+  @apply shadow-lg hover:shadow-2xl transition-shadow duration-300;
+}
+
+.section-padding {
+  @apply px-4 lg:px-8 py-12 lg:py-20;
+}
