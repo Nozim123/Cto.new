@@ -25,8 +25,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#malls" className="hover:text-gold transition-colors duration-300">
-                  Malls
+                <a href="#about" className="hover:text-gold transition-colors duration-300">
+                  About
                 </a>
               </li>
               <li>
