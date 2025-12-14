@@ -5,14 +5,20 @@
     "mallId": "family-park",
     "category": "Sportswear",
     "logo": "https://images.unsplash.com/photo-1606107557529-da4dd904178d?w=200&h=200&fit=crop",
+    "image": "https://images.unsplash.com/photo-1606107557529-da4dd904178d?w=800&h=600&fit=crop",
     "floor": 2,
     "status": "open",
     "hours": "10:00 AM - 10:00 PM",
     "phone": "+998 (66) 233-30-40",
     "email": "terra.pro@familypark.uz",
     "about": "Terra Pro is your ultimate destination for premium sportswear and athletic equipment. Specializing in high-performance gear for all activities, from running and cycling to gym training and outdoor adventures.",
+    "description": "Premium sportswear and athletic equipment",
     "heroImage": "https://images.unsplash.com/photo-1606107557529-da4dd904178d?w=1200&h=400&fit=crop",
-    "interiorImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop"
+    "interiorImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop",
+    "hasPromo": true,
+    "promoTitle": "New Season Sale!",
+    "promoDescription": "Get up to 40% off on all athletic wear and equipment. Limited time offer!",
+    "promoDiscount": "40% OFF"
   },
   {
     "id": "elegance-boutique",
@@ -20,14 +26,20 @@
     "mallId": "family-park",
     "category": "Fashion",
     "logo": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=200&fit=crop",
+    "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
     "floor": 1,
     "status": "open",
     "hours": "10:00 AM - 10:00 PM",
     "phone": "+998 (66) 233-30-41",
     "email": "elegance@familypark.uz",
     "about": "Elegance Boutique offers a curated selection of premium fashion from local and international designers. Discover timeless pieces and contemporary styles.",
+    "description": "Premium fashion and designer clothing",
     "heroImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=400&fit=crop",
-    "interiorImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop"
+    "interiorImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop",
+    "hasPromo": true,
+    "promoTitle": "Spring Collection",
+    "promoDescription": "Check out our latest spring collection with exclusive designer pieces!",
+    "promoDiscount": "New Arrivals"
   },
   {
     "id": "tech-world",
@@ -35,14 +47,20 @@
     "mallId": "family-park",
     "category": "Electronics",
     "logo": "https://images.unsplash.com/photo-1545127398-14699f92334b?w=200&h=200&fit=crop",
+    "image": "https://images.unsplash.com/photo-1545127398-14699f92334b?w=800&h=600&fit=crop",
     "floor": 3,
     "status": "open",
     "hours": "10:00 AM - 9:00 PM",
     "phone": "+998 (66) 233-30-42",
     "email": "support@techworld.uz",
     "about": "Tech World brings you the latest gadgets and electronics from top brands. Expert staff ready to assist with your technology needs.",
+    "description": "Latest gadgets and electronics",
     "heroImage": "https://images.unsplash.com/photo-1545127398-14699f92334b?w=1200&h=400&fit=crop",
-    "interiorImage": "https://images.unsplash.com/photo-1550355291-bbee04a92027?w=1200&h=600&fit=crop"
+    "interiorImage": "https://images.unsplash.com/photo-1550355291-bbee04a92027?w=1200&h=600&fit=crop",
+    "hasPromo": true,
+    "promoTitle": "Tech Sale",
+    "promoDescription": "Save big on smartphones, laptops, and accessories. While stocks last!",
+    "promoDiscount": "25% OFF"
   },
   {
     "id": "gourmet-kitchen",
@@ -50,14 +68,17 @@
     "mallId": "family-park",
     "category": "Home & Kitchen",
     "logo": "https://images.unsplash.com/photo-1607283714191-a84ab6c7893e?w=200&h=200&fit=crop",
+    "image": "https://images.unsplash.com/photo-1607283714191-a84ab6c7893e?w=800&h=600&fit=crop",
     "floor": 2,
     "status": "open",
     "hours": "10:00 AM - 10:00 PM",
     "phone": "+998 (66) 233-30-43",
     "email": "contact@gourmetkitchen.uz",
     "about": "Gourmet Kitchen is your one-stop shop for premium cookware, kitchen tools, and home décor. Transform your kitchen with quality products.",
+    "description": "Premium cookware and kitchen tools",
     "heroImage": "https://images.unsplash.com/photo-1607283714191-a84ab6c7893e?w=1200&h=400&fit=crop",
-    "interiorImage": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop"
+    "interiorImage": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop",
+    "hasPromo": false
   },
   {
     "id": "beauty-plus",
@@ -65,14 +86,20 @@
     "mallId": "family-park",
     "category": "Beauty & Cosmetics",
     "logo": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=200&h=200&fit=crop",
+    "image": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800&h=600&fit=crop",
     "floor": 1,
     "status": "open",
     "hours": "10:00 AM - 10:00 PM",
     "phone": "+998 (66) 233-30-44",
     "email": "beauty@familypark.uz",
     "about": "Beauty Plus offers exclusive cosmetics and beauty products from world-renowned brands. Expert consultants available for personalized recommendations.",
+    "description": "Exclusive cosmetics and beauty products",
     "heroImage": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=1200&h=400&fit=crop",
-    "interiorImage": "https://images.unsplash.com/photo-1596462502278-af242a95b13f?w=1200&h=600&fit=crop"
+    "interiorImage": "https://images.unsplash.com/photo-1596462502278-af242a95b13f?w=1200&h=600&fit=crop",
+    "hasPromo": true,
+    "promoTitle": "Beauty Week",
+    "promoDescription": "Special discounts on premium skincare and makeup brands!",
+    "promoDiscount": "30% OFF"
   },
   {
     "id": "kids-paradise",
@@ -80,13 +107,16 @@
     "mallId": "family-park",
     "category": "Kids & Toys",
     "logo": "https://images.unsplash.com/photo-1589850481060-2e4b7836330e?w=200&h=200&fit=crop",
+    "image": "https://images.unsplash.com/photo-1589850481060-2e4b7836330e?w=800&h=600&fit=crop",
     "floor": 2,
     "status": "open",
     "hours": "10:00 AM - 10:00 PM",
     "phone": "+998 (66) 233-30-45",
     "email": "kids@familypark.uz",
     "about": "Kids Paradise is packed with toys, games, and clothes for children of all ages. Safe, quality products selected with families in mind.",
+    "description": "Toys, games, and children's clothing",
     "heroImage": "https://images.unsplash.com/photo-1589850481060-2e4b7836330e?w=1200&h=400&fit=crop",
-    "interiorImage": "https://images.unsplash.com/photo-1455849318169-8849d6287d0d?w=1200&h=600&fit=crop"
+    "interiorImage": "https://images.unsplash.com/photo-1455849318169-8849d6287d0d?w=1200&h=600&fit=crop",
+    "hasPromo": false
   }
 ]

@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,jsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -22,6 +23,9 @@ export default {
         'sm': '375px',
         'md': '768px',
         'lg': '1200px',
+      },
+      backdropBlur: {
+        xs: '2px',
       }
     },
   },

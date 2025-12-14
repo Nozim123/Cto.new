@@ -1,7 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import { ThemeProvider } from './contexts/ThemeContext'
 import Navigation from './components/Navigation'
 import Footer from './components/Footer'
+import BottomNavigation from './components/BottomNavigation'
+import SeasonalBackground from './components/SeasonalBackground'
 import HomePage from './pages/HomePage'
 import MallDetailsPage from './pages/MallDetailsPage'
 import StoreDirectoryPage from './pages/StoreDirectoryPage'
@@ -23,8 +26,10 @@ import { ProtectedRoute } from './admin/hooks/useAuth'
 
 function App() {
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen bg-cream">
+    <ThemeProvider>
+      <Router>
+        <div className="flex flex-col min-h-screen bg-cream dark:bg-gray-900 transition-colors duration-300 relative">
+          <SeasonalBackground />
         {/* Public routes */}
         <Routes>
           <Route path="/admin/login" element={<LoginPage />} />
@@ -51,7 +56,7 @@ function App() {
           <Route path="/*" element={
             <>
               <Navigation />
-              <main className="flex-grow">
+              <main className="flex-grow relative z-10 pb-16 md:pb-0">
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/mall/:mallId" element={<MallDetailsPage />} />
@@ -60,6 +65,7 @@ function App() {
                 </Routes>
               </main>
               <Footer />
+              <BottomNavigation />
             </>
           } />
         </Routes>
@@ -89,8 +95,9 @@ function App() {
             },
           }}
         />
-      </div>
-    </Router>
+        </div>
+      </Router>
+    </ThemeProvider>
   )
 }
 
