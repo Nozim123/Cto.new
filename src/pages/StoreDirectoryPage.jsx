@@ -1,187 +1,210 @@
-import { useParams, Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useMemo, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { Filter, Search } from 'lucide-react'
+
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
+
 import StoreCard from '../components/StoreCard'
+import GlassCard from '../components/ui/GlassCard'
+import SectionHeader from '../components/ui/SectionHeader'
 
 export default function StoreDirectoryPage() {
   const { mallId } = useParams()
-  const [mall, setMall] = useState(null)
-  const [stores, setStores] = useState([])
-  const [filteredStores, setFilteredStores] = useState([])
+
+  const mall = useMemo(() => mallsData.find((m) => m.id === mallId) || null, [mallId])
+  const stores = useMemo(() => storesData.filter((s) => s.mallId === mallId), [mallId])
+
+  const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedFloor, setSelectedFloor] = useState('all')
   const [sortBy, setSortBy] = useState('name')
 
-  useEffect(() => {
-    const mallData = mallsData.find((m) => m.id === mallId)
-    setMall(mallData)
-
-    const mallStores = storesData.filter((s) => s.mallId === mallId)
-    setStores(mallStores)
-  }, [mallId])
-
-  useEffect(() => {
+  const filteredStores = useMemo(() => {
     let filtered = [...stores]
 
-    // Filter by category
+    const q = search.trim().toLowerCase()
+    if (q) {
+      filtered = filtered.filter(
+        (s) => s.name.toLowerCase().includes(q) || s.category.toLowerCase().includes(q) || String(s.floor).includes(q)
+      )
+    }
+
     if (selectedCategory !== 'all') {
       filtered = filtered.filter((s) => s.category === selectedCategory)
     }
 
-    // Filter by floor
     if (selectedFloor !== 'all') {
-      filtered = filtered.filter((s) => s.floor === parseInt(selectedFloor))
+      filtered = filtered.filter((s) => s.floor === Number(selectedFloor))
     }
 
-    // Sort
     if (sortBy === 'name') {
       filtered.sort((a, b) => a.name.localeCompare(b.name))
     } else if (sortBy === 'floor') {
       filtered.sort((a, b) => a.floor - b.floor)
     }
 
-    setFilteredStores(filtered)
-  }, [stores, selectedCategory, selectedFloor, sortBy])
+    return filtered
+  }, [search, selectedCategory, selectedFloor, sortBy, stores])
 
   if (!mall) {
     return (
-      <div className="section-padding text-center">
-        <h1 className="heading-large mb-4">Mall Not Found</h1>
-        <Link to="/" className="button-primary inline-block">
-          Back to Home
+      <div className="section-padding max-w-6xl mx-auto">
+        <h1 className="heading-large">Mall not found</h1>
+        <Link to="/" className="button-primary inline-block mt-6">
+          Back to home
         </Link>
       </div>
     )
   }
 
   const categories = ['all', ...new Set(stores.map((s) => s.category))]
-  const floors = ['all', ...new Set(stores.map((s) => s.floor)).sort()]
+  const floors = ['all', ...new Set(stores.map((s) => s.floor)).values()].sort((a, b) => {
+    if (a === 'all') return -1
+    if (b === 'all') return 1
+    return Number(a) - Number(b)
+  })
 
   return (
     <div className="min-h-screen">
-      {/* Breadcrumb */}
-      <div className="max-w-6xl mx-auto px-4 lg:px-8 pt-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
-          <Link to="/" className="hover:text-gold transition-colors duration-300">
+      <div className="section-padding max-w-6xl mx-auto">
+        <div className="flex items-center gap-2 text-sm text-white/50 mb-6 flex-wrap">
+          <Link to="/" className="hover:text-white transition">
             Home
           </Link>
           <span>/</span>
-          <Link to={`/mall/${mallId}`} className="hover:text-gold transition-colors duration-300">
+          <Link to={`/mall/${mallId}`} className="hover:text-white transition">
             {mall.name}
           </Link>
           <span>/</span>
-          <span className="text-navy font-semibold">Directory</span>
+          <span className="text-white font-semibold">Directory</span>
         </div>
-      </div>
 
-      {/* Header */}
-      <div className="section-padding max-w-6xl mx-auto">
-        <h1 className="heading-large mb-2">{mall.name} Directory</h1>
-        <p className="text-gray-600 text-lg">
-          {filteredStores.length} store{filteredStores.length !== 1 ? 's' : ''} available
-        </p>
-      </div>
+        <SectionHeader
+          eyebrow="Directory"
+          title={`${mall.name} stores`}
+          description={`${filteredStores.length} store${filteredStores.length !== 1 ? 's' : ''} available`}
+        />
 
-      {/* Filters */}
-      <section className="bg-navy text-cream py-8">
-        <div className="max-w-6xl mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {/* Category Filter */}
-            <div>
-              <label htmlFor="category" className="block text-sm font-semibold text-gold mb-2">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <GlassCard className="p-6 lg:col-span-1">
+            <div className="flex items-center gap-2">
+              <Filter className="w-4 h-4 text-white/60" />
+              <p className="font-semibold text-white">Filters</p>
+            </div>
+
+            <div className="mt-4">
+              <label className="block text-sm text-white/70 mb-2" htmlFor="search">
+                Search
+              </label>
+              <div className="flex items-center gap-2 rounded-2xl bg-white/5 border border-white/10 px-4 py-3">
+                <Search className="w-4 h-4 text-white/60" />
+                <input
+                  id="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Name, category, floor…"
+                  className="w-full bg-transparent text-white placeholder:text-white/40 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <label className="block text-sm text-white/70 mb-2" htmlFor="category">
                 Category
               </label>
               <select
                 id="category"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
+                className="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-neonCyan/50"
               >
                 {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat === 'all' ? 'All Categories' : cat}
+                  <option key={cat} value={cat} className="bg-midnight">
+                    {cat === 'all' ? 'All categories' : cat}
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* Floor Filter */}
-            <div>
-              <label htmlFor="floor" className="block text-sm font-semibold text-gold mb-2">
-                Floor Level
+            <div className="mt-4">
+              <label className="block text-sm text-white/70 mb-2" htmlFor="floor">
+                Floor
               </label>
               <select
                 id="floor"
                 value={selectedFloor}
                 onChange={(e) => setSelectedFloor(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
+                className="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-neonCyan/50"
               >
                 {floors.map((floor) => (
-                  <option key={floor} value={floor}>
-                    {floor === 'all' ? 'All Floors' : `Floor ${floor}`}
+                  <option key={floor} value={floor} className="bg-midnight">
+                    {floor === 'all' ? 'All floors' : `Floor ${floor}`}
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* Sort */}
-            <div>
-              <label htmlFor="sort" className="block text-sm font-semibold text-gold mb-2">
-                Sort By
+            <div className="mt-4">
+              <label className="block text-sm text-white/70 mb-2" htmlFor="sort">
+                Sort
               </label>
               <select
                 id="sort"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
+                className="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-neonCyan/50"
               >
-                <option value="name">Name (A-Z)</option>
-                <option value="floor">Floor Level</option>
+                <option value="name" className="bg-midnight">
+                  Name (A–Z)
+                </option>
+                <option value="floor" className="bg-midnight">
+                  Floor
+                </option>
               </select>
             </div>
-          </div>
 
-          {/* Reset Filters */}
-          {(selectedCategory !== 'all' || selectedFloor !== 'all') && (
-            <div className="mt-4">
-              <button
-                onClick={() => {
-                  setSelectedCategory('all')
-                  setSelectedFloor('all')
-                }}
-                className="text-cream hover:text-gold transition-colors duration-300 text-sm font-semibold underline"
-              >
-                Reset Filters
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Stores Grid */}
-      <section className="section-padding max-w-6xl mx-auto">
-        {filteredStores.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredStores.map((store) => (
-              <StoreCard key={store.id} store={store} mallId={mallId} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-600 text-lg mb-6">No stores found matching your filters.</p>
             <button
+              type="button"
               onClick={() => {
+                setSearch('')
                 setSelectedCategory('all')
                 setSelectedFloor('all')
+                setSortBy('name')
               }}
-              className="button-primary inline-block"
+              className="button-secondary w-full mt-6"
             >
-              Reset Filters
+              Reset
             </button>
+          </GlassCard>
+
+          <div className="lg:col-span-3">
+            {filteredStores.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {filteredStores.map((store) => (
+                  <StoreCard key={store.id} store={store} mallId={mallId} />
+                ))}
+              </div>
+            ) : (
+              <div className="glass rounded-3xl p-10 text-center">
+                <p className="text-white/70">No stores found matching your filters.</p>
+                <button
+                  type="button"
+                  className="button-primary mt-6"
+                  onClick={() => {
+                    setSearch('')
+                    setSelectedCategory('all')
+                    setSelectedFloor('all')
+                    setSortBy('name')
+                  }}
+                >
+                  Reset filters
+                </button>
+              </div>
+            )}
           </div>
-        )}
-      </section>
+        </div>
+      </div>
     </div>
   )
 }

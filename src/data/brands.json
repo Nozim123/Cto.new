@@ -1,0 +1,23 @@
+[
+  {
+    "id": "terra-pro",
+    "name": "Terra Pro",
+    "story": "Performance-first sportswear designed for movement.",
+    "highlight": "Editor’s spotlight",
+    "image": "https://images.unsplash.com/photo-1526401485004-2aa7f3ae3b8c?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "elegance",
+    "name": "Elegance Boutique",
+    "story": "Timeless silhouettes and curated fashion drops.",
+    "highlight": "New collection",
+    "image": "https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "tech-world",
+    "name": "Tech World",
+    "story": "Future gadgets, trusted advice, and premium service.",
+    "highlight": "Trending now",
+    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&h=700&fit=crop"
+  }
+]

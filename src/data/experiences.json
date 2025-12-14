@@ -1,0 +1,30 @@
+[
+  {
+    "id": "cinema",
+    "title": "Cinema",
+    "description": "Premium screens, immersive sound, and VIP seats.",
+    "icon": "🎬",
+    "image": "https://images.unsplash.com/photo-1517602302552-471fe67acf66?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "kids-zone",
+    "title": "Kids Zones",
+    "description": "Safe play areas, games, and family-friendly spaces.",
+    "icon": "🧸",
+    "image": "https://images.unsplash.com/photo-1541698444083-023c97d3f4b6?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "food-court",
+    "title": "Food Courts",
+    "description": "Curated dining from local favorites to global cuisine.",
+    "icon": "🍜",
+    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "events",
+    "title": "Events & Festivals",
+    "description": "Seasonal campaigns, pop-ups, and cultural moments.",
+    "icon": "🎉",
+    "image": "https://images.unsplash.com/photo-1520975693415-35a7f4f1f6b5?w=1200&h=700&fit=crop"
+  }
+]

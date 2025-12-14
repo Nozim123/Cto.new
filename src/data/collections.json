@@ -1,0 +1,30 @@
+[
+  {
+    "id": "summer-fashion",
+    "title": "Summer Fashion",
+    "description": "Lightweight looks, bold color, and elevated basics.",
+    "theme": "Fashion",
+    "image": "https://images.unsplash.com/photo-1520975682031-a0496629082e?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "back-to-school",
+    "title": "Back to School",
+    "description": "Essentials for students: bags, gadgets, and comfort.",
+    "theme": "Lifestyle",
+    "image": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "wedding-shopping",
+    "title": "Wedding Shopping",
+    "description": "Curated picks for the big day — elegant and modern.",
+    "theme": "Occasion",
+    "image": "https://images.unsplash.com/photo-1529634897861-1a3dbb32b5b2?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "tech-essentials",
+    "title": "Tech Essentials",
+    "description": "Everything you need for a smarter everyday.",
+    "theme": "Electronics",
+    "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&h=700&fit=crop"
+  }
+]

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../components/AdminLayout';
 import { dashboardAPI } from '../../services/api';
-import {
+import AnimatedCounter from '../../components/ui/AnimatedCounter';
+
+import { 
   Building2,
   Store,
   Package,
@@ -70,8 +72,18 @@ const DashboardPage = () => {
   if (loading) {
     return (
       <AdminLayout>
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy"></div>
+        <div className="space-y-6">
+          <div className="skeleton h-10 max-w-sm" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="skeleton h-28" />
+            <div className="skeleton h-28" />
+            <div className="skeleton h-28" />
+            <div className="skeleton h-28" />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="skeleton h-80" />
+            <div className="skeleton h-80" />
+          </div>
         </div>
       </AdminLayout>
     );
@@ -82,8 +94,8 @@ const DashboardPage = () => {
       <div className="space-y-6">
         {/* Page Header */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="mt-2 text-gray-600">Samarkand Mall Explorer admin paneli</p>
+          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+          <p className="mt-2 text-white/60">Samarkand Mall Explorer admin paneli</p>
         </div>
 
         {/* Statistics Cards */}
@@ -92,7 +104,9 @@ const DashboardPage = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Jami Mall</p>
-                <p className="text-3xl font-bold text-gray-900">{stats?.totalMalls || 0}</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  <AnimatedCounter value={stats?.totalMalls || 0} />
+                </p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <Building2 className="w-6 h-6 text-blue-600" />
@@ -108,7 +122,9 @@ const DashboardPage = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Jami Do'kon</p>
-                <p className="text-3xl font-bold text-gray-900">{stats?.totalStores || 0}</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  <AnimatedCounter value={stats?.totalStores || 0} />
+                </p>
               </div>
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                 <Store className="w-6 h-6 text-green-600" />
@@ -124,7 +140,9 @@ const DashboardPage = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Jami Mahsulot</p>
-                <p className="text-3xl font-bold text-gray-900">{stats?.totalProducts || 0}</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  <AnimatedCounter value={stats?.totalProducts || 0} />
+                </p>
               </div>
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                 <Package className="w-6 h-6 text-purple-600" />
@@ -140,7 +158,9 @@ const DashboardPage = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Banner</p>
-                <p className="text-3xl font-bold text-gray-900">{stats?.totalBanners || 0}</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  <AnimatedCounter value={stats?.totalBanners || 0} />
+                </p>
               </div>
               <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                 <Image className="w-6 h-6 text-orange-600" />

@@ -1,52 +1,85 @@
-import { useParams, Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Heart, MapPinned } from 'lucide-react'
+
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
+
 import StoreCard from '../components/StoreCard'
+import FeaturedCarousel from '../components/FeaturedCarousel'
+import IndoorMap from '../components/IndoorMap'
+import Reviews from '../components/Reviews'
+import ShareButtons from '../components/ShareButtons'
+import GlassCard from '../components/ui/GlassCard'
+import SectionHeader from '../components/ui/SectionHeader'
+
+import useFavorites from '../hooks/useFavorites'
+import useActivity from '../hooks/useActivity'
 
 export default function MallDetailsPage() {
   const { mallId } = useParams()
+  const navigate = useNavigate()
+  const { isFavorite, toggleFavorite } = useFavorites()
+  const { track } = useActivity()
+
   const [mall, setMall] = useState(null)
-  const [stores, setStores] = useState([])
 
   useEffect(() => {
     const mallData = mallsData.find((m) => m.id === mallId)
-    setMall(mallData)
+    setMall(mallData || null)
 
-    if (mallData?.featured) {
-      const mallStores = storesData.filter((s) => s.mallId === mallId).slice(0, 3)
-      setStores(mallStores)
+    if (mallData) {
+      track({ type: 'malls', id: mallData.id, title: `Viewed mall: ${mallData.name}` })
     }
-  }, [mallId])
+  }, [mallId, track])
+
+  const stores = useMemo(() => storesData.filter((s) => s.mallId === mallId), [mallId])
+
+  const gallery = useMemo(() => {
+    if (!mall) return []
+    const base = mall.bannerImage || mall.image
+    return [
+      base,
+      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1524777313293-86d2ab467344?w=1200&h=800&fit=crop',
+    ]
+  }, [mall])
 
   if (!mall) {
     return (
-      <div className="section-padding text-center">
-        <h1 className="heading-large mb-4">Mall Not Found</h1>
-        <p className="text-gray-600 mb-6">The mall you're looking for doesn't exist or is not available yet.</p>
-        <Link to="/" className="button-primary inline-block">
-          Back to Home
+      <div className="section-padding max-w-6xl mx-auto">
+        <h1 className="heading-large">Mall not found</h1>
+        <p className="text-subtle mt-3">The mall you’re looking for doesn’t exist or is not available yet.</p>
+        <Link to="/" className="button-primary inline-block mt-6">
+          Back to home
         </Link>
       </div>
     )
   }
 
+  const fav = isFavorite('malls', mall.id)
+
   if (mall.status === 'coming_soon') {
     return (
       <div className="section-padding max-w-6xl mx-auto">
-        <Link to="/" className="text-gold hover:text-gold/80 transition-colors duration-300 mb-6 inline-block">
-          ← Back to Home
+        <Link to="/" className="text-white/70 hover:text-white transition">
+          ← Back to home
         </Link>
 
-        <div className="text-center py-12">
-          <h1 className="heading-large mb-4">{mall.name}</h1>
-          <p className="text-2xl text-gold font-bold mb-6">Coming Soon</p>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
-            We're working hard to bring this amazing shopping destination to life. Check back soon for updates!
+        <div className="mt-8 glass rounded-3xl p-10 text-center">
+          <h1 className="heading-large">{mall.name}</h1>
+          <p className="text-neonCyan font-semibold mt-4">Coming soon</p>
+          <p className="text-white/60 mt-4 max-w-2xl mx-auto">
+            We’re building an ultra-modern, immersive experience for this mall: indoor maps, 360° tours, and community reviews.
           </p>
-          <Link to="/" className="button-primary inline-block">
-            Explore Other Malls
-          </Link>
+          <div className="mt-8 flex flex-wrap justify-center gap-2">
+            <Link to="/discover" className="button-primary">
+              Discover now
+            </Link>
+            <Link to="/" className="button-secondary">
+              Explore other malls
+            </Link>
+          </div>
         </div>
       </div>
     )
@@ -54,78 +87,104 @@ export default function MallDetailsPage() {
 
   return (
     <div className="min-h-screen">
-      {/* Back Link */}
-      <div className="max-w-6xl mx-auto px-4 lg:px-8 pt-6">
-        <Link to="/" className="text-gold hover:text-gold/80 transition-colors duration-300">
-          ← Back to Home
-        </Link>
-      </div>
+      {/* Hero */}
+      <div className="relative h-[340px] md:h-[460px] overflow-hidden">
+        <img src={mall.bannerImage} alt={mall.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/30 to-midnight" />
 
-      {/* Banner */}
-      <div className="relative h-64 md:h-96 w-full overflow-hidden bg-gray-200">
-        <img
-          src={mall.bannerImage}
-          alt={mall.name}
-          className="w-full h-full object-cover lazy"
-          loading="lazy"
-        />
-      </div>
+        <div className="relative z-10 max-w-6xl mx-auto px-4 lg:px-8 h-full flex flex-col justify-end pb-10">
+          <Link to="/" className="text-white/70 hover:text-white transition">
+            ← Back to home
+          </Link>
 
-      {/* Quick Info Bar */}
-      <div className="bg-navy text-cream">
-        <div className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="mt-6 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <p className="text-gold text-sm font-semibold mb-1">HOURS</p>
-              <p className="text-lg">{mall.hours}</p>
+              <p className="text-xs tracking-[0.25em] uppercase text-white/70">Mall</p>
+              <h1 className="heading-large mt-3">{mall.name}</h1>
+              <p className="text-white/70 mt-3 max-w-2xl">{mall.description}</p>
             </div>
-            <div>
-              <p className="text-gold text-sm font-semibold mb-1">ADDRESS</p>
-              <p className="text-lg">{mall.address}</p>
-            </div>
-            <div>
-              <p className="text-gold text-sm font-semibold mb-1">OPENED</p>
-              <p className="text-lg">{mall.openedDate}</p>
+
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => toggleFavorite('malls', mall.id)}
+                className="button-secondary inline-flex items-center gap-2"
+              >
+                <Heart className={`w-4 h-4 ${fav ? 'text-neonPink fill-neonPink' : 'text-white/70'}`} />
+                {fav ? 'Saved' : 'Save'}
+              </button>
+              <ShareButtons title={mall.name} text="Check this mall on Samarkand Mall Explorer" />
+              <Link to={`/mall/${mall.id}/stores`} className="button-primary">
+                Store directory
+              </Link>
             </div>
           </div>
         </div>
       </div>
 
-      {/* About Section */}
+      {/* Quick Info */}
       <section className="section-padding max-w-6xl mx-auto">
-        <div className="mb-12">
-          <h1 className="heading-medium mb-6">{mall.name}</h1>
-          <p className="text-gray-700 text-lg mb-8 leading-relaxed max-w-3xl">
-            {mall.description}
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {[
+            { k: 'Hours', v: mall.hours || '—' },
+            { k: 'Address', v: mall.address || '—' },
+            { k: 'Opened', v: mall.openedDate || '—' },
+            { k: 'Stores', v: mall.storeCount || stores.length || '—' },
+          ].map((x) => (
+            <GlassCard key={x.k} className="p-6">
+              <p className="text-white/60 text-sm">{x.k}</p>
+              <p className="text-white font-semibold mt-2">{x.v}</p>
+            </GlassCard>
+          ))}
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
-            {/* Text Content */}
-            <div>
-              <h3 className="heading-small mb-4">About the Mall</h3>
-              <p className="text-gray-600 mb-4 leading-relaxed">
-                With over {mall.storeCount} carefully selected retailers, {mall.name} offers a world-class shopping experience. From international brands to local boutiques, fashion to electronics, dining to entertainment, we have something for everyone.
-              </p>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                Visit us today and experience the perfect blend of modern shopping comfort and Uzbek hospitality.
-              </p>
+      {/* Gallery */}
+      <section className="section-padding max-w-6xl mx-auto">
+        <SectionHeader
+          eyebrow="Gallery"
+          title="High-quality visuals"
+          description="Premium imagery and layered layouts — ready for cinematic storytelling."
+        />
 
-              <div className="bg-cream p-6 rounded-lg">
-                <h4 className="font-semibold text-navy mb-3">Contact Information</h4>
-                <p className="text-gray-700 mb-2">
-                  <span className="font-semibold">Phone:</span> {mall.phone}
-                </p>
-                <p className="text-gray-700 mb-2">
-                  <span className="font-semibold">Email:</span> {mall.phone}
-                </p>
-                <p className="text-gray-700">
-                  <span className="font-semibold">Website:</span> {mall.website}
-                </p>
+        <FeaturedCarousel>
+          {gallery.map((src, idx) => (
+            <div key={idx} className="min-w-[340px] snap-start">
+              <div className="glass rounded-3xl overflow-hidden border border-white/10">
+                <img src={src} alt={`${mall.name} gallery ${idx + 1}`} className="h-56 w-full object-cover" loading="lazy" />
               </div>
             </div>
+          ))}
+        </FeaturedCarousel>
+      </section>
 
-            {/* Map Placeholder */}
-            <div className="bg-gray-200 rounded-lg overflow-hidden h-96 card-shadow">
+      {/* About + Map */}
+      <section className="section-padding max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <GlassCard className="p-8">
+            <p className="text-xs tracking-[0.25em] uppercase text-neonCyan/80">Story</p>
+            <h2 className="heading-medium mt-3">Mall history</h2>
+            <p className="text-white/70 mt-4 leading-relaxed">
+              {mall.name} blends modern shopping comfort with Uzbek hospitality. This section is structured for richer storytelling:
+              highlights, seasonal campaigns, and community moments.
+            </p>
+
+            <div className="mt-6 rounded-3xl bg-white/5 border border-white/10 p-6">
+              <p className="font-semibold text-white">Contact</p>
+              <p className="text-white/60 mt-2">Phone: {mall.phone || '—'}</p>
+              <p className="text-white/60 mt-1">Website: {mall.website || '—'}</p>
+            </div>
+          </GlassCard>
+
+          <GlassCard className="p-6 overflow-hidden">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-xs tracking-[0.25em] uppercase text-white/50">Map</p>
+                <p className="font-semibold text-white mt-2">Location</p>
+              </div>
+              <MapPinned className="w-5 h-5 text-neonCyan" />
+            </div>
+            <div className="rounded-3xl overflow-hidden border border-white/10 h-80 bg-white/5">
               <iframe
                 title="Mall Location Map"
                 className="w-full h-full"
@@ -135,39 +194,72 @@ export default function MallDetailsPage() {
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
-          </div>
+          </GlassCard>
         </div>
       </section>
 
-      {/* Store Directory Preview */}
+      {/* Indoor Map */}
+      <section className="section-padding max-w-6xl mx-auto">
+        <IndoorMap
+          stores={stores}
+          onSelectStore={(s) => {
+            navigate(`/mall/${mall.id}/store/${s.id}`)
+          }}
+        />
+      </section>
+
+      {/* Featured stores carousel */}
       {stores.length > 0 && (
-        <section className="section-padding max-w-6xl mx-auto bg-cream rounded-lg">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="heading-medium">Featured Stores</h2>
-            <Link
-              to={`/mall/${mallId}/stores`}
-              className="text-gold hover:text-gold/80 font-semibold transition-colors duration-300"
-            >
-              View All →
-            </Link>
-          </div>
+        <section className="section-padding max-w-6xl mx-auto">
+          <SectionHeader
+            eyebrow="Featured"
+            title="Featured stores"
+            description="A swipe-first carousel for a premium, mobile-native feel."
+            right={
+              <Link to={`/mall/${mall.id}/stores`} className="button-secondary">
+                View all
+              </Link>
+            }
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            {stores.map((store) => (
-              <StoreCard key={store.id} store={store} mallId={mallId} />
+          <FeaturedCarousel>
+            {stores.slice(0, 10).map((store) => (
+              <div key={store.id} className="min-w-[280px] snap-start">
+                <StoreCard store={store} mallId={mall.id} />
+              </div>
             ))}
-          </div>
-
-          <div className="text-center">
-            <Link
-              to={`/mall/${mallId}/stores`}
-              className="button-primary inline-block"
-            >
-              Explore All Stores
-            </Link>
-          </div>
+          </FeaturedCarousel>
         </section>
       )}
+
+      {/* Virtual Tour */}
+      <section className="section-padding max-w-6xl mx-auto">
+        <SectionHeader
+          eyebrow="Virtual Tour"
+          title="360° views & walkthroughs"
+          description="Embed-ready placeholders for immersive tours."
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <GlassCard className="p-6">
+            <p className="font-semibold text-white">360° tour</p>
+            <p className="text-white/60 text-sm mt-2">Matterport / 360 media integration placeholder.</p>
+            <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 h-56 flex items-center justify-center">
+              <p className="text-white/50">360 viewer coming soon</p>
+            </div>
+          </GlassCard>
+          <GlassCard className="p-6">
+            <p className="font-semibold text-white">Walkthrough video</p>
+            <p className="text-white/60 text-sm mt-2">High-quality video storytelling placeholder.</p>
+            <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 h-56 flex items-center justify-center">
+              <p className="text-white/50">Video embed coming soon</p>
+            </div>
+          </GlassCard>
+        </div>
+      </section>
+
+      {/* Reviews */}
+      <Reviews entityType="mall" entityId={mall.id} heading="Community & Reviews" />
     </div>
   )
 }

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "winter-lights-2025",
+    "title": "Winter Lights Festival",
+    "mallId": "family-park",
+    "type": "event",
+    "startsAt": "2025-12-20T12:00:00.000Z",
+    "endsAt": "2025-12-31T18:00:00.000Z",
+    "description": "Immersive light installations, live music, and family activities — nightly in the central atrium.",
+    "image": "https://images.unsplash.com/photo-1516455207990-7a41ce80f7ee?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "tech-week",
+    "title": "Tech Week: Future Gadgets",
+    "mallId": "family-park",
+    "type": "promotion",
+    "startsAt": "2025-12-18T09:00:00.000Z",
+    "endsAt": "2025-12-25T18:00:00.000Z",
+    "description": "Limited-time offers on top electronics brands. Demos, expert talks, and exclusive bundles.",
+    "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=700&fit=crop"
+  },
+  {
+    "id": "family-weekend",
+    "title": "Family Weekend",
+    "mallId": "family-park",
+    "type": "event",
+    "startsAt": "2025-12-21T10:00:00.000Z",
+    "endsAt": "2025-12-22T18:00:00.000Z",
+    "description": "Kids zones, face painting, cinema deals, and food-court specials.",
+    "image": "https://images.unsplash.com/photo-1515165562835-c3b8a7aa8a9f?w=1200&h=700&fit=crop"
+  }
+]

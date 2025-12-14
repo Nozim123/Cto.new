@@ -4,41 +4,112 @@
 
 html {
   scroll-behavior: smooth;
+  background: #252836;
 }
 
 body {
   font-family: 'Inter', sans-serif;
-  @apply text-gray-800;
+  @apply bg-midnight text-white/85 antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.75);
+  outline-offset: 2px;
 }
 
 .heading-large {
-  @apply font-display text-4xl lg:text-6xl font-bold text-navy;
+  @apply font-display text-4xl md:text-6xl font-semibold tracking-tight text-white;
 }
 
 .heading-medium {
-  @apply font-display text-2xl lg:text-4xl font-bold text-navy;
+  @apply font-display text-2xl md:text-4xl font-semibold tracking-tight text-white;
 }
 
 .heading-small {
-  @apply font-display text-xl lg:text-2xl font-bold text-navy;
+  @apply font-display text-xl md:text-2xl font-semibold tracking-tight text-white;
+}
+
+.text-subtle {
+  @apply text-white/70;
+}
+
+.glass {
+  @apply bg-surface backdrop-blur-xl border border-borderGlass shadow-glass;
+}
+
+.glass-strong {
+  @apply bg-surfaceStrong backdrop-blur-xl border border-borderGlass shadow-glass;
+}
+
+.neon-ring {
+  box-shadow: 0 0 0 1px rgba(124, 92, 255, 0.25), 0 18px 70px rgba(124, 92, 255, 0.18);
 }
 
 .button-primary {
-  @apply px-6 py-3 bg-gold text-navy font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300;
+  @apply px-5 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-neonCyan to-neonViolet shadow-glow hover:brightness-110 active:brightness-95 transition;
 }
 
 .button-secondary {
-  @apply px-6 py-3 border-2 border-navy text-navy font-semibold rounded-lg hover:bg-navy hover:text-cream transition-all duration-300;
+  @apply px-5 py-3 rounded-xl font-semibold text-white/90 border border-borderGlass bg-surface hover:bg-surfaceStrong transition;
+}
+
+.button-ghost {
+  @apply px-4 py-2 rounded-xl font-semibold text-white/80 hover:text-white hover:bg-surface transition;
 }
 
 .card-shadow {
-  @apply shadow-lg hover:shadow-2xl transition-shadow duration-300;
+  @apply shadow-soft hover:shadow-glass transition-shadow duration-300;
 }
 
 .section-padding {
-  @apply px-4 lg:px-8 py-12 lg:py-20;
+  @apply px-4 lg:px-8 py-10 md:py-14 lg:py-20;
+}
+
+.skeleton {
+  @apply relative overflow-hidden rounded-xl bg-white/5 border border-borderGlass;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.page-enter {
+  animation: pageEnter 420ms ease-out both;
+}
+
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
 }

@@ -66,8 +66,12 @@ export const ProtectedRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-navy"></div>
+      <div className="min-h-screen bg-midnight flex items-center justify-center p-6">
+        <div className="w-full max-w-md space-y-4">
+          <div className="skeleton h-12" />
+          <div className="skeleton h-40" />
+          <div className="skeleton h-40" />
+        </div>
       </div>
     );
   }

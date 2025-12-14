@@ -1,53 +1,70 @@
 import { Link } from 'react-router-dom'
+import { Heart } from 'lucide-react'
+import useFavorites from '../hooks/useFavorites'
 
 export default function StoreCard({ store, mallId }) {
-  const statusColor = store.status === 'open' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
   const statusText = store.status === 'open' ? 'Open' : 'Coming Soon'
+  const { isFavorite, toggleFavorite } = useFavorites()
+  const fav = isFavorite('stores', store.id)
 
   return (
-    <Link
-      to={`/mall/${mallId}/store/${store.id}`}
-      className="card-shadow rounded-lg overflow-hidden bg-white hover:no-underline group h-full"
-    >
-      {/* Logo Container */}
-      <div className="relative overflow-hidden bg-gray-100 h-48 sm:h-56 md:h-64">
-        <img
-          src={store.logo}
-          alt={store.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 lazy"
-          loading="lazy"
-        />
-      </div>
+    <Link to={`/mall/${mallId}/store/${store.id}`} className="group h-full">
+      <div className="glass rounded-2xl overflow-hidden h-full">
+        <div className="relative overflow-hidden bg-white/5 h-52">
+          <img
+            src={store.logo}
+            alt={store.name}
+            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+            loading="lazy"
+          />
 
-      {/* Content */}
-      <div className="p-5">
-        <div className="flex justify-between items-start gap-2 mb-3">
-          <div>
-            <h3 className="font-display text-lg lg:text-xl font-bold text-navy group-hover:text-gold transition-colors duration-300">
-              {store.name}
-            </h3>
-            <p className="text-sage text-sm">
-              {store.category}
-            </p>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              toggleFavorite('stores', store.id)
+            }}
+            className={`absolute top-3 right-3 w-11 h-11 rounded-2xl border flex items-center justify-center transition ${
+              fav ? 'bg-neonPink/20 border-neonPink/40' : 'bg-midnight/40 border-white/10 hover:bg-white/10'
+            }`}
+            aria-label={fav ? 'Remove from favorites' : 'Save to favorites'}
+          >
+            <Heart className={`w-5 h-5 ${fav ? 'text-neonPink fill-neonPink' : 'text-white/70'}`} />
+          </button>
+
+          <div className="absolute left-3 top-3">
+            <span
+              className={`text-xs font-semibold px-3 py-1 rounded-full border backdrop-blur ${
+                store.status === 'open'
+                  ? 'bg-emerald-500/15 text-emerald-200 border-emerald-400/30'
+                  : 'bg-amber-500/15 text-amber-200 border-amber-400/30'
+              }`}
+            >
+              {statusText}
+            </span>
           </div>
-          <span className={`text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap ${statusColor}`}>
-            {statusText}
-          </span>
         </div>
 
-        {/* Meta Info */}
-        <div className="space-y-2 text-sm text-gray-600">
-          <p>
-            <span className="font-semibold">Floor:</span> {store.floor}
-          </p>
-          <p>
-            <span className="font-semibold">Hours:</span> {store.hours}
-          </p>
-        </div>
+        <div className="p-6">
+          <h3 className="text-lg font-semibold text-white group-hover:text-neonCyan transition-colors">
+            {store.name}
+          </h3>
+          <p className="text-white/60 text-sm mt-1">{store.category}</p>
 
-        {/* CTA */}
-        <div className="mt-4 text-gold font-semibold group-hover:translate-x-1 transition-transform duration-300">
-          View Store →
+          <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+            <div className="rounded-2xl bg-white/5 border border-white/10 px-4 py-3">
+              <p className="text-white/50">Floor</p>
+              <p className="text-white font-semibold">{store.floor}</p>
+            </div>
+            <div className="rounded-2xl bg-white/5 border border-white/10 px-4 py-3">
+              <p className="text-white/50">Hours</p>
+              <p className="text-white font-semibold truncate">{store.hours}</p>
+            </div>
+          </div>
+
+          <div className="mt-5 text-white/70 font-semibold group-hover:translate-x-1 transition-transform">
+            View store →
+          </div>
         </div>
       </div>
     </Link>
