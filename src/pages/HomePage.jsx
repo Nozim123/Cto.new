@@ -73,20 +73,17 @@ export default function HomePage() {
       <NextGenDiscoverySections />
 
       {/* CTA Section */}
-      <section className={`py-12 lg:py-20 transition-colors duration-300 ${
-        darkMode ? 'bg-gray-800' : 'bg-navy'
-      }`}>
-
-          <h2 className="heading-medium text-cream mb-4">
-            Ready to Explore?
-          </h2>
+      <section
+        className={`py-12 lg:py-20 transition-colors duration-300 ${
+          darkMode ? 'bg-gray-800' : 'bg-navy'
+        }`}
+      >
+        <div className="section-padding max-w-6xl mx-auto text-center fade-in-up">
+          <h2 className="heading-medium text-cream mb-4">Ready to Explore?</h2>
           <p className="text-cream text-opacity-80 mb-8 text-lg">
             Visit Family Park Mall to discover amazing brands and exclusive offers
           </p>
-          <a
-            href="#malls"
-            className="button-primary inline-block"
-          >
+          <a href="#malls" className="button-primary inline-block">
             View All Malls
           </a>
         </div>

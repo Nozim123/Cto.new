@@ -9,7 +9,6 @@ import {
   Edit,
   Trash2,
   Eye,
-  MapPin,
   Clock,
   Phone,
   Store as StoreIcon,
@@ -63,29 +62,30 @@ const StoreListPage = () => {
     }
   };
 
-  const filteredStores = stores.filter(store => {
-    const mall = malls.find(m => m.id === store.mall_id);
-    const mallName = mall ? mall.name : '';
-    
-    const matchesSearch = store.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         mallName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         store.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesMallFilter = filterMall === 'all' || store.mall_id === filterMall;
-    const matchesCategoryFilter = filterCategory === 'all' || store.category === filterCategory;
-    
+  const filteredStores = stores.filter((store) => {
+    const term = searchTerm.toLowerCase();
+    const storeName = String(store?.name || '');
+    const category = String(store?.category || '');
+    const mall = malls.find((m) => String(m.id) === String(store.mall_id));
+    const mallName = String(mall?.name || '');
+
+    const matchesSearch =
+      storeName.toLowerCase().includes(term) ||
+      mallName.toLowerCase().includes(term) ||
+      category.toLowerCase().includes(term);
+
+    const matchesMallFilter = filterMall === 'all' || String(store.mall_id) === filterMall;
+    const matchesCategoryFilter = filterCategory === 'all' || category === filterCategory;
+
     return matchesSearch && matchesMallFilter && matchesCategoryFilter;
   });
 
   const getMallName = (mallId) => {
-    const mall = malls.find(m => m.id === mallId);
+    const mall = malls.find((m) => String(m.id) === String(mallId));
     return mall ? mall.name : 'Noma\'lum mall';
   };
 
-  const categories = [...new Set(stores.map(store => store.category))];
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('uz-UZ');
-  };
+  const categories = [...new Set(stores.map((store) => store.category).filter(Boolean))];
 
   if (loading) {
     return (

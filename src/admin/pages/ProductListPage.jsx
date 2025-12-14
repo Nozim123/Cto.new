@@ -8,15 +8,12 @@ import {
   Search,
   Edit,
   Trash2,
-  Eye,
   Package,
   Filter,
   Grid,
   List,
   Store,
-  Building2,
-  Tag,
-  DollarSign
+  Tag
 } from 'lucide-react';
 
 const ProductListPage = () => {
@@ -67,32 +64,39 @@ const ProductListPage = () => {
     }
   };
 
-  const filteredProducts = products.filter(product => {
-    const store = stores.find(s => s.id === product.store_id);
-    const mall = store ? malls.find(m => m.id === store.mall_id) : null;
-    const storeName = store ? store.name : '';
-    const mallName = mall ? mall.name : '';
-    
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         storeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         mallName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (product.category || '').toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStoreFilter = filterStore === 'all' || product.store_id === filterStore;
-    const matchesCategoryFilter = filterCategory === 'all' || product.category === filterCategory;
-    const matchesStockFilter = filterStock === 'all' || product.stock === filterStock;
-    
+  const filteredProducts = products.filter((product) => {
+    const term = searchTerm.toLowerCase();
+    const productName = String(product?.name || '');
+    const category = String(product?.category || '');
+
+    const store = stores.find((s) => String(s.id) === String(product.store_id));
+    const mall = store ? malls.find((m) => String(m.id) === String(store.mall_id)) : null;
+    const storeName = String(store?.name || '');
+    const mallName = String(mall?.name || '');
+
+    const matchesSearch =
+      productName.toLowerCase().includes(term) ||
+      storeName.toLowerCase().includes(term) ||
+      mallName.toLowerCase().includes(term) ||
+      category.toLowerCase().includes(term);
+
+    const matchesStoreFilter = filterStore === 'all' || String(product.store_id) === filterStore;
+    const matchesCategoryFilter = filterCategory === 'all' || category === filterCategory;
+    const matchesStockFilter = filterStock === 'all' || String(product.stock || '') === filterStock;
+
     return matchesSearch && matchesStoreFilter && matchesCategoryFilter && matchesStockFilter;
   });
 
   const getStoreName = (storeId) => {
-    const store = stores.find(s => s.id === storeId);
+    const store = stores.find((s) => String(s.id) === String(storeId));
     return store ? store.name : 'Noma\'lum do\'kon';
   };
 
   const getMallName = (storeId) => {
-    const store = stores.find(s => s.id === storeId);
+    const store = stores.find((s) => String(s.id) === String(storeId));
     if (!store) return 'Noma\'lum mall';
-    const mall = malls.find(m => m.id === store.mall_id);
+
+    const mall = malls.find((m) => String(m.id) === String(store.mall_id));
     return mall ? mall.name : 'Noma\'lum mall';
   };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AdminLayout from '../components/AdminLayout';
 import { mallAPI } from '../../services/api';
 import toast from 'react-hot-toast';
@@ -11,11 +11,11 @@ import {
   Eye,
   MapPin,
   Clock,
-  Phone,
   Calendar,
   Filter,
   Grid,
-  List
+  List,
+  Building2
 } from 'lucide-react';
 
 const MallListPage = () => {
@@ -24,7 +24,6 @@ const MallListPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchMalls();
@@ -57,15 +56,24 @@ const MallListPage = () => {
     }
   };
 
-  const filteredMalls = malls.filter(mall => {
-    const matchesSearch = mall.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         mall.address.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredMalls = malls.filter((mall) => {
+    const term = searchTerm.toLowerCase();
+    const name = String(mall?.name || '');
+    const address = String(mall?.address || '');
+
+    const matchesSearch = name.toLowerCase().includes(term) || address.toLowerCase().includes(term);
     const matchesFilter = filterStatus === 'all' || mall.status === filterStatus;
+
     return matchesSearch && matchesFilter;
   });
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('uz-UZ');
+    if (!dateString) return '—';
+
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '—';
+
+    return date.toLocaleDateString('uz-UZ');
   };
 
   const getStatusBadge = (status) => {
