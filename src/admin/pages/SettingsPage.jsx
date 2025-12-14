@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import AdminLayout from '../../components/AdminLayout';
-import { settingsAPI } from '../../../services/api';
+import AdminLayout from '../components/AdminLayout';
+import { settingsAPI } from '../../services/api';
 import toast from 'react-hot-toast';
 import {
   Save,

@@ -8,7 +8,6 @@ import {
   Package,
   Image,
   Settings,
-  Users,
   LogOut,
   Menu,
   X,

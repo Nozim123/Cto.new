@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
 import HeroSection from '../components/HeroSection'
 import MallCard from '../components/MallCard'
+import NextGenDiscoverySections from '../components/NextGenDiscoverySections'
 import { SkeletonMallCard } from '../components/SkeletonCard'
 import mallsData from '../data/malls.json'
 
@@ -68,11 +69,14 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Next-Gen Discovery Sections */}
+      <NextGenDiscoverySections />
+
       {/* CTA Section */}
       <section className={`py-12 lg:py-20 transition-colors duration-300 ${
         darkMode ? 'bg-gray-800' : 'bg-navy'
       }`}>
-        <div className="max-w-6xl mx-auto px-4 lg:px-8 text-center">
+
           <h2 className="heading-medium text-cream mb-4">
             Ready to Explore?
           </h2>

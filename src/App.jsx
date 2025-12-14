@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './contexts/ThemeContext'
 import Navigation from './components/Navigation'
@@ -36,20 +36,21 @@ function App() {
           <Route path="/admin/*" element={
             <ProtectedRoute>
               <Routes>
-                <Route path="dashboard" element={<DashboardPage />} />
-                <Route path="malls" element={<MallListPage />} />
-                <Route path="malls/new" element={<MallFormPage />} />
-                <Route path="malls/:id/edit" element={<MallFormPage />} />
-                <Route path="stores" element={<StoreListPage />} />
-                <Route path="stores/new" element={<StoreFormPage />} />
-                <Route path="stores/:id/edit" element={<StoreFormPage />} />
-                <Route path="products" element={<ProductListPage />} />
-                <Route path="products/new" element={<ProductFormPage />} />
-                <Route path="products/:id/edit" element={<ProductFormPage />} />
-                <Route path="banners" element={<BannerListPage />} />
-                <Route path="banners/new" element={<BannerFormPage />} />
-                <Route path="banners/:id/edit" element={<BannerFormPage />} />
-                <Route path="settings" element={<SettingsPage />} />
+                <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="/admin/dashboard" element={<DashboardPage />} />
+                <Route path="/admin/malls" element={<MallListPage />} />
+                <Route path="/admin/malls/new" element={<MallFormPage />} />
+                <Route path="/admin/malls/:id/edit" element={<MallFormPage />} />
+                <Route path="/admin/stores" element={<StoreListPage />} />
+                <Route path="/admin/stores/new" element={<StoreFormPage />} />
+                <Route path="/admin/stores/:id/edit" element={<StoreFormPage />} />
+                <Route path="/admin/products" element={<ProductListPage />} />
+                <Route path="/admin/products/new" element={<ProductFormPage />} />
+                <Route path="/admin/products/:id/edit" element={<ProductFormPage />} />
+                <Route path="/admin/banners" element={<BannerListPage />} />
+                <Route path="/admin/banners/new" element={<BannerFormPage />} />
+                <Route path="/admin/banners/:id/edit" element={<BannerFormPage />} />
+                <Route path="/admin/settings" element={<SettingsPage />} />
               </Routes>
             </ProtectedRoute>
           } />

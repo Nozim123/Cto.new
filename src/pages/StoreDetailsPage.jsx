@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { trackBehavior } from '../services/behavior'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import productsData from '../data/products.json'
@@ -20,6 +21,10 @@ export default function StoreDetailsPage() {
     const storeData = storesData.find((s) => s.id === storeId && s.mallId === mallId)
     setStore(storeData)
 
+    if (storeData) {
+      trackBehavior({ type: 'store', id: storeId, category: storeData.category })
+    }
+
     const storeProducts = productsData.filter((p) => p.storeId === storeId)
     setProducts(storeProducts)
   }, [mallId, storeId])
@@ -38,6 +43,11 @@ export default function StoreDetailsPage() {
   const getRelatedProducts = () => {
     const others = products.filter((p) => p.id !== selectedProduct?.id)
     return others.slice(0, 4)
+  }
+
+  const handleSelectProduct = (product) => {
+    trackBehavior({ type: 'product', id: product.id, category: product.category })
+    setSelectedProduct(product)
   }
 
   return (
@@ -195,7 +205,7 @@ export default function StoreDetailsPage() {
               <ProductCard
                 key={product.id}
                 product={product}
-                onSelect={setSelectedProduct}
+                onSelect={handleSelectProduct}
               />
             ))}
           </div>
