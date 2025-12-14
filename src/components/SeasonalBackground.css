@@ -1,0 +1,176 @@
+.seasonal-background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Winter - Snowflakes */
+.snowflakes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.snowflake {
+  position: absolute;
+  top: -10%;
+  color: #fff;
+  font-size: 1.5em;
+  opacity: 0.8;
+  animation: fall linear infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.snowflake:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; }
+.snowflake:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 2s; }
+.snowflake:nth-child(3) { left: 30%; animation-duration: 18s; animation-delay: 4s; }
+.snowflake:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: 1s; }
+.snowflake:nth-child(5) { left: 50%; animation-duration: 16s; animation-delay: 3s; }
+.snowflake:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: 5s; }
+.snowflake:nth-child(7) { left: 70%; animation-duration: 17s; animation-delay: 2s; }
+.snowflake:nth-child(8) { left: 80%; animation-duration: 15s; animation-delay: 4s; }
+.snowflake:nth-child(9) { left: 90%; animation-duration: 14s; animation-delay: 1s; }
+.snowflake:nth-child(10) { left: 25%; animation-duration: 16s; animation-delay: 3s; }
+.snowflake:nth-child(11) { left: 35%; animation-duration: 13s; animation-delay: 0s; }
+.snowflake:nth-child(12) { left: 45%; animation-duration: 18s; animation-delay: 2s; }
+.snowflake:nth-child(13) { left: 55%; animation-duration: 15s; animation-delay: 4s; }
+.snowflake:nth-child(14) { left: 65%; animation-duration: 12s; animation-delay: 1s; }
+.snowflake:nth-child(15) { left: 75%; animation-duration: 17s; animation-delay: 3s; }
+
+@keyframes fall {
+  0% {
+    transform: translateY(-10%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+/* Spring - Cherry Blossoms */
+.cherry-blossoms {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.blossom {
+  position: absolute;
+  top: -10%;
+  font-size: 1.2em;
+  opacity: 0.7;
+  animation: flutter linear infinite;
+}
+
+.blossom:nth-child(1) { left: 15%; animation-duration: 14s; animation-delay: 0s; }
+.blossom:nth-child(2) { left: 30%; animation-duration: 16s; animation-delay: 2s; }
+.blossom:nth-child(3) { left: 45%; animation-duration: 12s; animation-delay: 4s; }
+.blossom:nth-child(4) { left: 60%; animation-duration: 18s; animation-delay: 1s; }
+.blossom:nth-child(5) { left: 75%; animation-duration: 15s; animation-delay: 3s; }
+.blossom:nth-child(6) { left: 20%; animation-duration: 13s; animation-delay: 5s; }
+.blossom:nth-child(7) { left: 50%; animation-duration: 17s; animation-delay: 2s; }
+.blossom:nth-child(8) { left: 80%; animation-duration: 14s; animation-delay: 4s; }
+.blossom:nth-child(9) { left: 35%; animation-duration: 16s; animation-delay: 1s; }
+.blossom:nth-child(10) { left: 65%; animation-duration: 15s; animation-delay: 3s; }
+
+@keyframes flutter {
+  0% {
+    transform: translateY(-10%) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(25vh) translateX(20px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(50vh) translateX(-20px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(75vh) translateX(20px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(110vh) translateX(0) rotate(360deg);
+  }
+}
+
+/* Summer - Sun */
+.sun-rays {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+}
+
+.sun {
+  font-size: 3em;
+  animation: pulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(255, 183, 77, 0.6));
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* Autumn - Falling Leaves */
+.falling-leaves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.leaf {
+  position: absolute;
+  top: -10%;
+  font-size: 1.5em;
+  opacity: 0.7;
+  animation: swirl linear infinite;
+}
+
+.leaf:nth-child(1) { left: 12%; animation-duration: 15s; animation-delay: 0s; }
+.leaf:nth-child(2) { left: 24%; animation-duration: 13s; animation-delay: 2s; }
+.leaf:nth-child(3) { left: 36%; animation-duration: 17s; animation-delay: 4s; }
+.leaf:nth-child(4) { left: 48%; animation-duration: 14s; animation-delay: 1s; }
+.leaf:nth-child(5) { left: 60%; animation-duration: 16s; animation-delay: 3s; }
+.leaf:nth-child(6) { left: 72%; animation-duration: 12s; animation-delay: 5s; }
+.leaf:nth-child(7) { left: 84%; animation-duration: 18s; animation-delay: 2s; }
+.leaf:nth-child(8) { left: 18%; animation-duration: 15s; animation-delay: 4s; }
+.leaf:nth-child(9) { left: 42%; animation-duration: 13s; animation-delay: 1s; }
+.leaf:nth-child(10) { left: 66%; animation-duration: 17s; animation-delay: 3s; }
+.leaf:nth-child(11) { left: 30%; animation-duration: 14s; animation-delay: 0s; }
+.leaf:nth-child(12) { left: 54%; animation-duration: 16s; animation-delay: 2s; }
+
+@keyframes swirl {
+  0% {
+    transform: translateY(-10%) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(25vh) translateX(30px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(50vh) translateX(-30px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(75vh) translateX(30px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(110vh) translateX(0) rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .snowflake, .blossom, .leaf {
+    font-size: 1em;
+  }
+  
+  .sun {
+    font-size: 2em;
+  }
+}
