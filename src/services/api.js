@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
-  : 'http://localhost:5000/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api');
 
 // Create axios instance
 const api = axios.create({
@@ -50,7 +50,10 @@ export const mallAPI = {
 
 // Store API
 export const storeAPI = {
-  getAll: (mallId) => api.get('/stores', { params: { mall_id: mallId } }),
+  getAll: (mallId) =>
+    api.get('/stores', {
+      params: mallId ? { mall_id: mallId } : undefined,
+    }),
   getById: (id) => api.get(`/stores/${id}`),
   create: (data) => api.post('/stores', data),
   update: (id, data) => api.put(`/stores/${id}`, data),
@@ -59,7 +62,10 @@ export const storeAPI = {
 
 // Product API
 export const productAPI = {
-  getAll: (storeId) => api.get('/products', { params: { store_id: storeId } }),
+  getAll: (storeId) =>
+    api.get('/products', {
+      params: storeId ? { store_id: storeId } : undefined,
+    }),
   getById: (id) => api.get(`/products/${id}`),
   create: (data) => api.post('/products', data),
   update: (id, data) => api.put(`/products/${id}`, data),

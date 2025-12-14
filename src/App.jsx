@@ -22,6 +22,8 @@ import ProductFormPage from './admin/pages/ProductFormPage'
 import BannerListPage from './admin/pages/BannerListPage'
 import BannerFormPage from './admin/pages/BannerFormPage'
 import SettingsPage from './admin/pages/SettingsPage'
+import MallPreviewPage from './admin/pages/MallPreviewPage'
+import StorePreviewPage from './admin/pages/StorePreviewPage'
 import { ProtectedRoute } from './admin/hooks/useAuth'
 
 function App() {
@@ -41,9 +43,11 @@ function App() {
                 <Route path="/admin/malls" element={<MallListPage />} />
                 <Route path="/admin/malls/new" element={<MallFormPage />} />
                 <Route path="/admin/malls/:id/edit" element={<MallFormPage />} />
+                <Route path="/admin/malls/:id/preview" element={<MallPreviewPage />} />
                 <Route path="/admin/stores" element={<StoreListPage />} />
                 <Route path="/admin/stores/new" element={<StoreFormPage />} />
                 <Route path="/admin/stores/:id/edit" element={<StoreFormPage />} />
+                <Route path="/admin/stores/:id/preview" element={<StorePreviewPage />} />
                 <Route path="/admin/products" element={<ProductListPage />} />
                 <Route path="/admin/products/new" element={<ProductFormPage />} />
                 <Route path="/admin/products/:id/edit" element={<ProductFormPage />} />
