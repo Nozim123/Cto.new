@@ -300,10 +300,10 @@ export default function NextGenDiscoverySections() {
 
       <SectionShell
         id="experiences"
-        title="Experiences"
-        subtitle="Mall life beyond shopping — cinemas, kids zones, food courts, and festivals to make every visit memorable."
+        title={t('sections.experiences')}
+        subtitle={t('sections.experiencesSubtitle')}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {[
             { title: 'Cinemas', desc: 'Showtimes and trailers (future-ready)', icon: '🎬' },
             { title: 'Kids zones', desc: 'Family-friendly play areas and activities', icon: '🧸' },
@@ -323,10 +323,10 @@ export default function NextGenDiscoverySections() {
 
       <SectionShell
         id="events-promotions"
-        title="Events & Promotions"
-        subtitle="A centralized hub for seasonal discounts and limited-time offers — with real countdown timers and promo highlights."
+        title={t('sections.eventsPromotions')}
+        subtitle={t('sections.eventsPromotionsSubtitle')}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {promosWithCountdown.map((promo) => (
             <div key={promo.id} className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
               <div className="flex items-start justify-between gap-4">
@@ -350,20 +350,20 @@ export default function NextGenDiscoverySections() {
               <div className="mt-4 flex flex-wrap gap-3">
                 <button
                   type="button"
-                  className="button-primary button-3d"
+                  className="button-primary button-3d text-sm"
                   onClick={() => navigate(`/mall/${promo.mallId}/store/${promo.store.id}`)}
                 >
-                  View store →
+                  {t('buttons.viewStore')} →
                 </button>
                 <button
                   type="button"
-                  className="button-secondary button-3d"
+                  className="button-secondary button-3d text-sm"
                   onClick={() => {
                     trackBehavior({ type: 'store', id: promo.store.id, category: promo.store.category })
                     toast.success('Deal saved (demo)')
                   }}
                 >
-                  Save deal
+                  {t('buttons.saveDeal')}
                 </button>
               </div>
             </div>
@@ -373,10 +373,10 @@ export default function NextGenDiscoverySections() {
 
       <SectionShell
         id="new-openings"
-        title="New Openings"
-        subtitle="New malls and stores — with opening dates, highlights, and exclusive previews."
+        title={t('sections.newOpenings')}
+        subtitle={t('sections.newOpeningsSubtitle')}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {openingCards.map(({ mall, openingDate }) => (
             <div key={mall.id} className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
               <h3 className={`font-display text-2xl font-bold mb-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>
@@ -396,10 +396,10 @@ export default function NextGenDiscoverySections() {
 
       <SectionShell
         id="insights"
-        title="Insights"
-        subtitle="Data-driven insights like peak visiting hours, popular categories, and future-ready crowd trends."
+        title={t('sections.insights')}
+        subtitle={t('sections.insightsSubtitle')}
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {mallInsights.map((insight) => (
             <div key={insight.mall.id} className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
               <h3 className={`font-display text-2xl font-bold mb-3 ${darkMode ? 'text-cream' : 'text-navy'}`}>
@@ -428,8 +428,8 @@ export default function NextGenDiscoverySections() {
 
       <SectionShell
         id="virtual-tour"
-        title="Virtual Tour"
-        subtitle="Immersive previews: 360° tours, video walkthroughs, and AR-ready placeholders."
+        title={t('sections.virtualTour')}
+        subtitle={t('sections.virtualTourSubtitle')}
       >
         <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -449,7 +449,7 @@ export default function NextGenDiscoverySections() {
 
           <div className="mt-6">
             <button type="button" className="button-primary button-3d" onClick={() => setVirtualTourOpen(true)}>
-              Launch demo tour
+              {t('buttons.launchDemo')}
             </button>
           </div>
 
@@ -490,179 +490,9 @@ export default function NextGenDiscoverySections() {
       </SectionShell>
 
       <SectionShell
-        id="community"
-        title="Community & Reviews"
-        subtitle="User-generated ratings, reviews with photos, and community trust for long-term growth."
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
-            <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-              Ratings & reviews
-            </h3>
-
-            <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Select mall
-            </label>
-            <select
-              value={reviewMallId}
-              onChange={(e) => setReviewMallId(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-            >
-              {mallsData.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.name}
-                </option>
-              ))}
-            </select>
-
-            <div className="mt-4">
-              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                Average rating:{' '}
-                <span className="text-gold font-bold">
-                  {averageRating ? averageRating.toFixed(1) : '—'}
-                </span>
-              </p>
-            </div>
-
-            <div className="mt-6 space-y-4">
-              {reviewsForMall.length ? (
-                reviewsForMall.map((r) => (
-                  <div
-                    key={r.id}
-                    className={`rounded-xl p-4 border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>Rating: {r.rating}/5</p>
-                      <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
-                        {new Date(r.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2`}>{r.text}</p>
-                    {r.photoUrl ? (
-                      <img
-                        src={r.photoUrl}
-                        alt="Review"
-                        className="mt-3 w-full h-32 object-cover rounded-lg"
-                        loading="lazy"
-                      />
-                    ) : null}
-                  </div>
-                ))
-              ) : (
-                <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  No reviews yet — be the first!
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
-            <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-              Write a review
-            </h3>
-
-            <form className="space-y-4" onSubmit={addReview}>
-              <div>
-                <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Rating
-                </label>
-                <select
-                  value={reviewRating}
-                  onChange={(e) => setReviewRating(Number(e.target.value))}
-                  className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-                >
-                  <option value={5}>5 stars</option>
-                  <option value={4}>4 stars</option>
-                  <option value={3}>3 stars</option>
-                  <option value={2}>2 stars</option>
-                  <option value={1}>1 star</option>
-                </select>
-              </div>
-
-              <div>
-                <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Your review
-                </label>
-                <textarea
-                  value={reviewText}
-                  onChange={(e) => setReviewText(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-                  rows={4}
-                  placeholder="Share your experience…"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Photo URL (optional)
-                </label>
-                <input
-                  value={reviewPhotoUrl}
-                  onChange={(e) => setReviewPhotoUrl(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-                  placeholder="https://..."
-                />
-              </div>
-
-              <button type="submit" className="button-primary button-3d w-full">
-                Submit review
-              </button>
-            </form>
-          </div>
-        </div>
-      </SectionShell>
-
-      <SectionShell
-        id="brand-spotlight"
-        title="Brand Spotlight"
-        subtitle="Featured brands, flagship stories, and exclusive collections — built for premium perception."
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {storesData.slice(0, 3).map((store) => (
-            <div key={store.id} className={`rounded-2xl overflow-hidden card-shadow ${baseCard}`}>
-              <div className="h-44 overflow-hidden">
-                <img
-                  src={store.image}
-                  alt={store.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-6">
-                <p className="text-gold text-sm font-semibold">Brand story</p>
-                <h3 className={`font-display text-2xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                  {store.name}
-                </h3>
-                <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2 line-clamp-3`}>
-                  {store.about}
-                </p>
-                <div className="mt-4 flex gap-3">
-                  <button
-                    type="button"
-                    className="button-primary button-3d"
-                    onClick={() => navigate(`/mall/${store.mallId}/store/${store.id}`)}
-                  >
-                    View store
-                  </button>
-                  <button
-                    type="button"
-                    className="button-secondary button-3d"
-                    onClick={() => toast.success('Interview coming soon')}
-                  >
-                    Interview
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionShell>
-
-      <SectionShell
         id="deals-near-you"
-        title="Deals Near You"
-        subtitle="Location-aware promotions — a future-ready base for geo-targeted offers and personalized notifications."
+        title={t('sections.dealsNearYou')}
+        subtitle={t('sections.dealsNearYouSubtitle')}
       >
         <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -677,11 +507,11 @@ export default function NextGenDiscoverySections() {
 
             <button
               type="button"
-              className="button-primary button-3d"
+              className="button-primary button-3d w-full sm:w-auto"
               onClick={requestLocation}
               disabled={geoStatus.state === 'loading'}
             >
-              {geoStatus.state === 'loading' ? 'Locating…' : 'Enable location'}
+              {geoStatus.state === 'loading' ? t('buttons.locating') : t('buttons.enableLocation')}
             </button>
           </div>
 
@@ -720,10 +550,10 @@ export default function NextGenDiscoverySections() {
 
       <SectionShell
         id="sustainability"
-        title="Sustainability"
-        subtitle="Eco-conscious initiatives like recycling programs, green malls, and sustainable brands."
+        title={t('sections.sustainability')}
+        subtitle={t('sections.sustainabilitySubtitle')}
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {[
             { title: 'Green malls', desc: 'Energy-efficient lighting and smarter cooling systems', icon: '🌿' },
             { title: 'Sustainable brands', desc: 'Spot eco-friendly materials and ethical manufacturing', icon: '♻️' },
@@ -742,10 +572,10 @@ export default function NextGenDiscoverySections() {
 
       <SectionShell
         id="news-updates"
-        title="News & Updates"
-        subtitle="Latest announcements, mall news, and editorial-style content to keep visitors informed."
+        title={t('sections.newsUpdates')}
+        subtitle={t('sections.newsUpdatesSubtitle')}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {[
             {
               title: 'Grand Opening: Festival Mall',
@@ -788,8 +618,8 @@ export default function NextGenDiscoverySections() {
 
       <SectionShell
         id="help-center"
-        title="Help Center"
-        subtitle="Modern support: AI chat assistant, FAQs, and contact forms — built to scale with the platform."
+        title={t('sections.helpCenter')}
+        subtitle={t('sections.helpCenterSubtitle')}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
@@ -824,7 +654,7 @@ export default function NextGenDiscoverySections() {
                 placeholder="Type a question…"
               />
               <button type="submit" className="button-primary button-3d">
-                Send
+                {t('buttons.send')}
               </button>
             </form>
           </div>
@@ -860,41 +690,9 @@ export default function NextGenDiscoverySections() {
 
             <div className="mt-6">
               <button type="button" className="button-secondary button-3d" onClick={() => toast.success('Contact form coming soon')}> 
-                Contact support
+                {t('buttons.contactSupport')}
               </button>
             </div>
-          </div>
-        </div>
-      </SectionShell>
-
-      <SectionShell
-        id="future"
-        title="Future Innovations"
-        subtitle="A transparent roadmap: beta programs, upcoming tech, and future-ready experiences."
-      >
-        <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                title: 'Crowd trends (beta)',
-                desc: 'Real-time occupancy and predicted busy hours.'
-              },
-              {
-                title: 'AR navigation',
-                desc: 'Indoor directions from entry to your store.'
-              },
-              {
-                title: 'Smart notifications',
-                desc: 'Opt-in alerts for deals near you and your favorite brands.'
-              }
-            ].map((x) => (
-              <div key={x.title} className={`rounded-xl p-6 border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-                <h3 className={`font-display text-xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                  {x.title}
-                </h3>
-                <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2`}>{x.desc}</p>
-              </div>
-            ))}
           </div>
         </div>
       </SectionShell>

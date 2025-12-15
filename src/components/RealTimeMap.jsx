@@ -1,12 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useNavigate } from 'react-router-dom'
 import mallsData from '../data/malls.json'
+import storesData from '../data/stores.json'
+import productsData from '../data/products.json'
 
 export default function RealTimeMap() {
   const { darkMode, accentColor } = useTheme()
   const { t } = useLanguage()
+  const navigate = useNavigate()
   const [selectedMall, setSelectedMall] = useState(null)
+  const [selectedStore, setSelectedStore] = useState(null)
   const [mapCenter, setMapCenter] = useState([39.6542, 66.9597])
   const [userLocation, setUserLocation] = useState(null)
   const [liveEvents, setLiveEvents] = useState([])
@@ -65,12 +70,12 @@ export default function RealTimeMap() {
       <div className="text-center mb-12 animate-fade-in-up">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 text-purple-700 dark:text-purple-300 text-sm font-medium mb-6">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-          Live Map - Real-time Updates
+          {t('map.liveUpdates')}
         </div>
         
         <h2 className="text-4xl lg:text-5xl font-bold mb-6">
           <span className="bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent">
-            Interactive Mall Map
+            {t('map.title')}
           </span>
         </h2>
 
@@ -81,9 +86,9 @@ export default function RealTimeMap() {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-4 gap-8">
+      <div className="grid lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
         {/* Map Container */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 order-2 lg:order-1">
           <div className="relative">
             {/* Map */}
             <div 
@@ -178,13 +183,13 @@ export default function RealTimeMap() {
         </div>
 
         {/* Mall Info Panel */}
-        <div className="lg:col-span-1">
-          <div className="space-y-6">
-            {/* Selected Mall Info */}
-            {selectedMall && (
-              <div className="p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl border border-purple-200/30 dark:border-purple-700/30 shadow-lg animate-slide-in-right">
+        <div className="lg:col-span-1 order-1 lg:order-2">
+          <div className="space-y-4 sm:space-y-6">
+            {/* Selected Mall Info with Stores */}
+            {selectedMall && !selectedStore && (
+              <div className="p-4 sm:p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl border border-purple-200/30 dark:border-purple-700/30 shadow-lg animate-slide-in-right">
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
                     {selectedMall.name}
                   </h3>
                   <button 
@@ -230,8 +235,128 @@ export default function RealTimeMap() {
                     ))}
                   </div>
 
-                  <button className="w-full mt-4 button-3d bg-gradient-to-r from-purple-500 to-purple-700 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-600 hover:to-purple-800 transition-all">
-                    View Details
+                  {/* Stores List */}
+                  <div className="mt-4">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                      {t('map.storesInMall')}
+                    </h4>
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                      {storesData
+                        .filter(store => store.mallId === selectedMall.id)
+                        .slice(0, 10)
+                        .map(store => (
+                          <div
+                            key={store.id}
+                            onClick={() => setSelectedStore(store)}
+                            className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all"
+                          >
+                            <div className="flex items-center gap-3">
+                              <img 
+                                src={store.logo} 
+                                alt={store.name}
+                                className="w-10 h-10 rounded-lg object-cover"
+                              />
+                              <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                  {store.name}
+                                </p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                  {store.category}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => navigate(`/mall/${selectedMall.id}`)}
+                    className="w-full mt-4 button-3d bg-gradient-to-r from-purple-500 to-purple-700 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-600 hover:to-purple-800 transition-all"
+                  >
+                    {t('map.viewMallDetails')}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Selected Store Info with Products */}
+            {selectedStore && (
+              <div className="p-4 sm:p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl border border-purple-200/30 dark:border-purple-700/30 shadow-lg animate-slide-in-right">
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
+                    {selectedStore.name}
+                  </h3>
+                  <button 
+                    onClick={() => setSelectedStore(null)}
+                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${selectedStore.status === 'open' ? 'bg-green-500' : 'bg-gray-400'}`}></span>
+                    <span className="text-sm capitalize">{selectedStore.status}</span>
+                  </div>
+
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <p>{selectedStore.category}</p>
+                    <p>{t('map.floor')} {selectedStore.floor}</p>
+                    <p>{selectedStore.hours}</p>
+                  </div>
+
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {selectedStore.description}
+                  </p>
+
+                  {/* Products List */}
+                  <div className="mt-4">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                      {t('map.products')}:
+                    </h4>
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                      {productsData
+                        .filter(product => product.storeId === selectedStore.id)
+                        .slice(0, 10)
+                        .map(product => (
+                          <div
+                            key={product.id}
+                            className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all"
+                          >
+                            <div className="flex items-center gap-3">
+                              <img 
+                                src={product.image} 
+                                alt={product.name}
+                                className="w-12 h-12 rounded-lg object-cover"
+                              />
+                              <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                  {product.name}
+                                </p>
+                                <div className="flex items-center justify-between mt-1">
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    {product.category}
+                                  </p>
+                                  <p className="text-sm font-bold text-purple-600 dark:text-purple-400">
+                                    ${product.price}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => navigate(`/mall/${selectedStore.mallId}/store/${selectedStore.id}`)}
+                    className="w-full mt-4 button-3d bg-gradient-to-r from-purple-500 to-purple-700 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-600 hover:to-purple-800 transition-all"
+                  >
+                    {t('map.viewStoreDetails')}
                   </button>
                 </div>
               </div>
@@ -241,7 +366,7 @@ export default function RealTimeMap() {
             <div className="p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl border border-purple-200/30 dark:border-purple-700/30 shadow-lg">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <div className="w-2 h-2 bg-red-500 rounded-full animate-ping"></div>
-                Live Events
+                {t('map.liveEvents')}
               </h3>
               
               <div className="space-y-3 max-h-64 overflow-y-auto">
@@ -271,8 +396,8 @@ export default function RealTimeMap() {
             {/* Quick Stats */}
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: 'Open Now', value: openMalls.length, icon: '🏢', color: 'from-green-400 to-green-600' },
-                { label: 'Coming Soon', value: comingSoonMalls.length, icon: '🚧', color: 'from-orange-400 to-orange-600' }
+                { label: t('map.openNow'), value: openMalls.length, icon: '🏢', color: 'from-green-400 to-green-600' },
+                { label: t('common.comingSoon'), value: comingSoonMalls.length, icon: '🚧', color: 'from-orange-400 to-orange-600' }
               ].map((stat, index) => (
                 <div 
                   key={index}

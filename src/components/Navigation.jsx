@@ -60,7 +60,7 @@ export default function Navigation() {
               <LanguageSwitcher />
               <DarkModeToggle />
               
-              {isAuthenticated ? (
+              {isAuthenticated && (
                 <div className="relative">
                   <button 
                     onClick={() => setProfileOpen(!profileOpen)}
@@ -70,13 +70,6 @@ export default function Navigation() {
                   </button>
                   <UserProfile isOpen={profileOpen} onClose={() => setProfileOpen(false)} />
                 </div>
-              ) : (
-                <Link 
-                  to="/admin" 
-                  className="button-3d bg-gradient-to-r from-purple-500 to-purple-700 text-white text-sm px-6 py-2 rounded-xl font-medium hover:from-purple-600 hover:to-purple-800 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-purple-500/30"
-                >
-                  {t('nav.admin')}
-                </Link>
               )}
             </div>
           </div>
@@ -135,15 +128,6 @@ export default function Navigation() {
               >
                 {t('nav.profile')}
               </button>
-            )}
-            {!isAuthenticated && (
-              <Link 
-                to="/admin" 
-                className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
-                onClick={() => setMenuOpen(false)}
-              >
-                {t('nav.admin')}
-              </Link>
             )}
           </div>
         )}
