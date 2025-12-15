@@ -84,7 +84,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-padding {
-  @apply px-4 lg:px-8 py-12 lg:py-20;
+  @apply px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .heading-large {
+    @apply text-3xl;
+  }
+  
+  .heading-medium {
+    @apply text-2xl;
+  }
+  
+  .heading-small {
+    @apply text-xl;
+  }
+  
+  .button-primary,
+  .button-secondary {
+    @apply px-4 py-2 text-sm;
+  }
+  
+  .section-padding {
+    @apply px-3 py-6;
+  }
 }
 
 /* Enhanced Glassmorphism Effect */

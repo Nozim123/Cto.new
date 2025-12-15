@@ -90,6 +90,51 @@ const translations = {
       passwordPlaceholder: 'admin123',
       loginButton: 'Kirish',
       invalidCredentials: 'Noto\'g\'ri login yoki parol'
+    },
+    map: {
+      title: 'Interaktiv Xarita',
+      liveUpdates: 'Jonli Yangilanishlar',
+      selectMall: 'Mallni tanlang',
+      stores: 'Do\'konlar',
+      products: 'Mahsulotlar',
+      viewDetails: 'Tafsilotlarni ko\'rish',
+      viewMallDetails: 'Mall tafsilotlarini ko\'rish',
+      viewStoreDetails: 'Do\'kon tafsilotlarini ko\'rish',
+      liveEvents: 'Jonli tadbirlar',
+      openNow: 'Hozir ochiq',
+      floor: 'Qavat',
+      storesInMall: 'Bu malldagi do\'konlar:'
+    },
+    sections: {
+      experiences: 'Tajribalar',
+      experiencesSubtitle: 'Savdo markazida savdodan tashqari hayot - kinolar, bolalar maydonlari, oziq-ovqat maydonlari va festivallar',
+      eventsPromotions: 'Tadbirlar va Aksiyalar',
+      eventsPromotionsSubtitle: 'Mavsumiy chegirmalar va cheklangan vaqt takliflari uchun markazlashtirilgan markaz',
+      newOpenings: 'Yangi Ochilishlar',
+      newOpeningsSubtitle: 'Yangi savdo markazlari va do\'konlar - ochilish sanalari va eksklyuziv ko\'rib chiqishlar bilan',
+      insights: 'Tahlillar',
+      insightsSubtitle: 'Ma\'lumotlarga asoslangan tushunchalar - eng yuqori tashrif vaqtlari, mashhur toifalar va oqim tendentsiyalari',
+      virtualTour: 'Virtual Sayohat',
+      virtualTourSubtitle: 'Immersiv ko\'rib chiqishlar: 360° sayohatlar, video sayohatlar va AR tayyor joylar',
+      dealsNearYou: 'Yaqiningizda Chegirmalar',
+      dealsNearYouSubtitle: 'Joylashuvga bog\'liq aksiyalar - geo-maqsadli takliflar va shaxsiy bildirishnomalar uchun kelajakka tayyor baza',
+      sustainability: 'Barqarorlik',
+      sustainabilitySubtitle: 'Yashil tashabbuslar, ekologik sayohat va kelajak uchun mas\'uliyat',
+      newsUpdates: 'Yangiliklar va Yangilanishlar',
+      newsUpdatesSubtitle: 'So\'nggi yangiliklar, ochilishlar va sayohat uchun tahrirchi mazmuni',
+      helpCenter: 'Yordam Markazi',
+      helpCenterSubtitle: 'Zamonaviy qo\'llab-quvvatlash: AI chat yordamchisi, FAQ va aloqa shakllari'
+    },
+    buttons: {
+      viewStore: 'Do\'konni ko\'rish',
+      saveDeal: 'Taklifni saqlash',
+      startVirtualTour: 'Virtual sayohatni boshlash',
+      liveMallStatus: 'Jonli Mall Holati',
+      launchDemo: 'Demo\'ni ishga tushirish',
+      enableLocation: 'Joylashuvni yoqish',
+      locating: 'Joylashuv aniqlanmoqda...',
+      contactSupport: 'Qo\'llab-quvvatlash bilan bog\'lanish',
+      send: 'Yuborish'
     }
   },
   ru: {
@@ -171,6 +216,51 @@ const translations = {
       passwordPlaceholder: 'admin123',
       loginButton: 'Войти',
       invalidCredentials: 'Неверные логин или пароль'
+    },
+    map: {
+      title: 'Интерактивная Карта',
+      liveUpdates: 'Обновления в реальном времени',
+      selectMall: 'Выберите молл',
+      stores: 'Магазины',
+      products: 'Товары',
+      viewDetails: 'Посмотреть детали',
+      viewMallDetails: 'Посмотреть детали молла',
+      viewStoreDetails: 'Посмотреть детали магазина',
+      liveEvents: 'События в реальном времени',
+      openNow: 'Сейчас открыто',
+      floor: 'Этаж',
+      storesInMall: 'Магазины в этом молле:'
+    },
+    sections: {
+      experiences: 'Развлечения',
+      experiencesSubtitle: 'Жизнь в торговом центре за пределами покупок - кинотеатры, детские зоны, фуд-корты и фестивали',
+      eventsPromotions: 'События и Акции',
+      eventsPromotionsSubtitle: 'Централизованный центр для сезонных скидок и предложений с ограниченным сроком действия',
+      newOpenings: 'Новые Открытия',
+      newOpeningsSubtitle: 'Новые торговые центры и магазины - с датами открытия и эксклюзивными превью',
+      insights: 'Инсайты',
+      insightsSubtitle: 'Инсайты на основе данных - часы пик посещения, популярные категории и тенденции толпы',
+      virtualTour: 'Виртуальный Тур',
+      virtualTourSubtitle: 'Иммерсивные превью: 360° туры, видео-прогулки и AR-готовые места',
+      dealsNearYou: 'Предложения Рядом с Вами',
+      dealsNearYouSubtitle: 'Предложения с учетом местоположения - готовая база для гео-целевых предложений и персонализированных уведомлений',
+      sustainability: 'Устойчивость',
+      sustainabilitySubtitle: 'Зеленые инициативы, экологические поездки и ответственность за будущее',
+      newsUpdates: 'Новости и Обновления',
+      newsUpdatesSubtitle: 'Последние новости, открытия и редакционный контент для путешествий',
+      helpCenter: 'Центр Помощи',
+      helpCenterSubtitle: 'Современная поддержка: AI-помощник чата, FAQ и формы обратной связи'
+    },
+    buttons: {
+      viewStore: 'Посмотреть магазин',
+      saveDeal: 'Сохранить предложение',
+      startVirtualTour: 'Начать виртуальный тур',
+      liveMallStatus: 'Статус молла в реальном времени',
+      launchDemo: 'Запустить демо',
+      enableLocation: 'Включить местоположение',
+      locating: 'Определение местоположения...',
+      contactSupport: 'Связаться с поддержкой',
+      send: 'Отправить'
     }
   },
   en: {
@@ -252,6 +342,51 @@ const translations = {
       passwordPlaceholder: 'admin123',
       loginButton: 'Login',
       invalidCredentials: 'Invalid login or password'
+    },
+    map: {
+      title: 'Interactive Map',
+      liveUpdates: 'Live Updates',
+      selectMall: 'Select mall',
+      stores: 'Stores',
+      products: 'Products',
+      viewDetails: 'View Details',
+      viewMallDetails: 'View Mall Details',
+      viewStoreDetails: 'View Store Details',
+      liveEvents: 'Live Events',
+      openNow: 'Open Now',
+      floor: 'Floor',
+      storesInMall: 'Stores in this mall:'
+    },
+    sections: {
+      experiences: 'Experiences',
+      experiencesSubtitle: 'Mall life beyond shopping — cinemas, kids zones, food courts, and festivals to make every visit memorable',
+      eventsPromotions: 'Events & Promotions',
+      eventsPromotionsSubtitle: 'A centralized hub for seasonal discounts and limited-time offers — with real countdown timers and promo highlights',
+      newOpenings: 'New Openings',
+      newOpeningsSubtitle: 'New malls and stores — with opening dates, highlights, and exclusive previews',
+      insights: 'Insights',
+      insightsSubtitle: 'Data-driven insights like peak visiting hours, popular categories, and future-ready crowd trends',
+      virtualTour: 'Virtual Tour',
+      virtualTourSubtitle: 'Immersive previews: 360° tours, video walkthroughs, and AR-ready placeholders',
+      dealsNearYou: 'Deals Near You',
+      dealsNearYouSubtitle: 'Location-aware promotions — a future-ready base for geo-targeted offers and personalized notifications',
+      sustainability: 'Sustainability',
+      sustainabilitySubtitle: 'Green initiatives, eco-friendly travel, and responsibility for the future',
+      newsUpdates: 'News & Updates',
+      newsUpdatesSubtitle: 'Latest news, openings, and editorial content for travel',
+      helpCenter: 'Help Center',
+      helpCenterSubtitle: 'Modern support: AI chat assistant, FAQs, and contact forms — built to scale with the platform'
+    },
+    buttons: {
+      viewStore: 'View store',
+      saveDeal: 'Save deal',
+      startVirtualTour: 'Start Virtual Tour',
+      liveMallStatus: 'Live Mall Status',
+      launchDemo: 'Launch demo',
+      enableLocation: 'Enable location',
+      locating: 'Locating…',
+      contactSupport: 'Contact support',
+      send: 'Send'
     }
   }
 }

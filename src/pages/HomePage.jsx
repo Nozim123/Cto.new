@@ -32,7 +32,7 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="min-h-screen overflow-hidden">
+    <div className="min-h-screen overflow-hidden pb-20 md:pb-0">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-20 left-10 w-32 h-32 bg-purple-400/10 rounded-full blur-xl animate-float"></div>
@@ -54,13 +54,13 @@ export default function HomePage() {
             {t('home.subtitle')}
           </div>
           
-          <h2 className="text-4xl lg:text-6xl font-bold mb-8 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight">
             <span className="bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800 bg-clip-text text-transparent animate-gradient">
               {t('home.title')}
             </span>
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-8 text-left max-w-4xl mx-auto">
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 text-left max-w-4xl mx-auto">
             <div className="group animate-slide-in-left">
               <div className="p-6 rounded-2xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-lg border border-purple-200/20 dark:border-purple-700/20 hover:bg-white/70 dark:hover:bg-gray-900/70 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-purple-glow">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -129,24 +129,24 @@ export default function HomePage() {
         </div>
 
         {/* Real-time Stats */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
+        <div className="mt-12 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
           {[
-            { label: 'Active Malls', value: '6', icon: '🏢' },
-            { label: 'Total Stores', value: '845+', icon: '🏪' },
-            { label: 'Coming Soon', value: '4', icon: '🚧' },
-            { label: 'Happy Visitors', value: '50K+', icon: '😊' }
+            { label: t('home.activeMalls'), value: '6', icon: '🏢' },
+            { label: t('home.totalStores'), value: '845+', icon: '🏪' },
+            { label: t('home.comingSoon'), value: '4', icon: '🚧' },
+            { label: t('home.happyVisitors'), value: '50K+', icon: '😊' }
           ].map((stat, index) => (
             <div 
               key={index}
-              className="group p-6 rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg border border-purple-200/30 dark:border-purple-700/30 hover:bg-white/80 dark:hover:bg-gray-900/80 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-3d text-center"
+              className="group p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg border border-purple-200/30 dark:border-purple-700/30 hover:bg-white/80 dark:hover:bg-gray-900/80 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-3d text-center"
             >
-              <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
+              <div className="text-2xl sm:text-3xl mb-2 group-hover:scale-110 transition-transform">
                 {stat.icon}
               </div>
-              <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-1">
+              <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-1">
                 {stat.value}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                 {stat.label}
               </div>
             </div>
@@ -171,15 +171,15 @@ export default function HomePage() {
               Experience the future of shopping with virtual tours, real-time updates, and interactive features
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button className="group relative px-8 py-4 bg-white text-purple-700 font-semibold rounded-2xl hover:bg-purple-50 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-3d-xl">
-                <span className="relative z-10">Start Virtual Tour</span>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
+              <button className="group relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-purple-700 font-semibold rounded-2xl hover:bg-purple-50 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-3d-xl">
+                <span className="relative z-10">{t('buttons.startVirtualTour')}</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </button>
               
-              <button className="group px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-2xl hover:bg-white/10 backdrop-blur-sm transition-all duration-500 transform hover:-translate-y-2 hover:shadow-3d">
+              <button className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/30 text-white font-semibold rounded-2xl hover:bg-white/10 backdrop-blur-sm transition-all duration-500 transform hover:-translate-y-2 hover:shadow-3d">
                 <span className="mr-2">📍</span>
-                Live Mall Status
+                {t('buttons.liveMallStatus')}
               </button>
             </div>
           </div>
@@ -194,17 +194,17 @@ export default function HomePage() {
             Get in Touch
           </div>
           
-          <h2 className="text-4xl lg:text-5xl font-bold mb-8">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">
             <span className="bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent">
-              Questions?
+              {t('home.questions')}
             </span>
           </h2>
 
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 leading-relaxed">
-            Have questions about our shopping centers? We're here to help with real-time support and personalized recommendations!
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-12 leading-relaxed">
+            {t('home.questionsDescription')}
           </p>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {[
               { icon: '📞', title: 'Call Us', info: '+998 (99) 689-24-80', color: 'from-blue-400 to-blue-600' },
               { icon: '✉️', title: 'Email Us', info: 'info@samarkandmall.uz', color: 'from-green-400 to-green-600' },
@@ -212,16 +212,16 @@ export default function HomePage() {
             ].map((contact, index) => (
               <div 
                 key={index}
-                className="group p-8 rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg border border-purple-200/30 dark:border-purple-700/30 hover:bg-white/80 dark:hover:bg-gray-900/80 transition-all duration-500 transform hover:-translate-y-3 hover:shadow-purple-glow-lg animate-bounce-in"
+                className="group p-6 sm:p-8 rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg border border-purple-200/30 dark:border-purple-700/30 hover:bg-white/80 dark:hover:bg-gray-900/80 transition-all duration-500 transform hover:-translate-y-3 hover:shadow-purple-glow-lg animate-bounce-in"
                 style={{animationDelay: `${index * 0.2}s`}}
               >
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${contact.color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                  <span className="text-white text-2xl">{contact.icon}</span>
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-r ${contact.color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
+                  <span className="text-white text-xl sm:text-2xl">{contact.icon}</span>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2">
                   {contact.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 break-words">
                   {contact.info}
                 </p>
               </div>
