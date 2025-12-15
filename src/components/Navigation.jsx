@@ -34,6 +34,9 @@ export default function Navigation() {
             <a href="#contact" className="hover:text-gold transition-all duration-300 transform hover:scale-110">
               Contact
             </a>
+            <Link to="/admin" className="button-primary button-3d text-sm px-4 py-2">
+              Admin
+            </Link>
             <DarkModeToggle />
           </div>
 
@@ -76,6 +79,13 @@ export default function Navigation() {
             >
               Contact
             </a>
+            <Link 
+              to="/admin" 
+              className="block py-2 hover:text-gold transition-colors duration-300"
+              onClick={() => setMenuOpen(false)}
+            >
+              Admin Panel
+            </Link>
           </div>
         )}
       </div>
