@@ -59,16 +59,16 @@ export function ThemeProvider({ children }) {
       gradient: 'from-green-100 via-pink-50 to-white'
     },
     summer: {
-      primary: '#FFB74D',
-      secondary: '#FFF3E0',
-      accent: '#FFE082',
-      gradient: 'from-yellow-100 via-orange-50 to-white'
+      primary: '#5CA4D8',
+      secondary: '#E8F4F8',
+      accent: '#A8D5E2',
+      gradient: 'from-sky-100 via-cyan-50 to-white'
     },
     autumn: {
-      primary: '#FF8A65',
-      secondary: '#FBE9E7',
-      accent: '#FFCCBC',
-      gradient: 'from-orange-100 via-red-50 to-white'
+      primary: '#8FA89A',
+      secondary: '#F4EFE7',
+      accent: '#E8B4B8',
+      gradient: 'from-emerald-50 via-rose-50 to-white'
     }
   }
 

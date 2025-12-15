@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState('')
   const { darkMode, seasonalColors } = useTheme()
+  const { t } = useLanguage()
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -39,14 +41,14 @@ export default function HeroSection() {
         <div className="text-center">
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-display font-bold text-cream mb-4 md:mb-6 fade-in-up">
-            Explore Shopping Malls
+            {t('hero.title1')} {t('hero.title2')}
             <br className="hidden sm:block" />
-            <span className="text-gold">in Samarkand</span>
+            <span className="text-gold">{t('hero.titleAccent')}</span>
           </h1>
 
           {/* Subheading */}
           <p className="text-base sm:text-lg md:text-xl text-cream text-opacity-90 mb-8 md:mb-10 max-w-2xl mx-auto fade-in-up-delay-1">
-            Discover the finest shopping destinations with premium brands, entertainment, and dining experiences
+            {t('hero.subtitle')}
           </p>
 
           {/* Search Bar */}
@@ -57,7 +59,7 @@ export default function HeroSection() {
             <div className="flex-grow relative">
               <input
                 type="text"
-                placeholder="Search malls..."
+                placeholder={t('hero.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={`w-full px-4 py-3 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold transition-all duration-300 ${
@@ -73,7 +75,7 @@ export default function HeroSection() {
               className="button-primary px-6 py-3 rounded-lg"
               aria-label="Search"
             >
-              Search
+              {t('hero.search')}
             </button>
           </form>
 
@@ -87,7 +89,7 @@ export default function HeroSection() {
                   : 'border-cream text-cream hover:bg-cream hover:text-navy'
               }`}
             >
-              Browse Malls ↓
+              {t('hero.browse')}
             </a>
           </div>
         </div>

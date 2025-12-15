@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function MallCard({ mall, index = 0 }) {
   const isComingSoon = mall.status === 'coming_soon'
   const { darkMode, seasonalColors } = useTheme()
+  const { t } = useLanguage()
 
   const delayClass = `fade-in-up-delay-${Math.min(index % 3, 3)}`
 
   return (
-    <div className={`card-shadow rounded-lg overflow-hidden h-full flex flex-col transition-all duration-300 ${
+    <div className={`card-shadow card-3d rounded-lg overflow-hidden h-full flex flex-col transition-all duration-300 ${
       darkMode 
         ? 'bg-gray-800 glass-card-dark' 
         : 'bg-white glass-card'
@@ -24,7 +26,7 @@ export default function MallCard({ mall, index = 0 }) {
         {isComingSoon && (
           <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
             <div className="text-center">
-              <p className="text-white font-display text-2xl font-bold mb-2">Coming Soon</p>
+              <p className="text-white font-display text-2xl font-bold mb-2">{t('common.comingSoon')}</p>
               <div className="w-16 h-1 mx-auto rounded-full" 
                    style={{ backgroundColor: seasonalColors.primary }}></div>
             </div>
@@ -60,7 +62,7 @@ export default function MallCard({ mall, index = 0 }) {
             to={`/mall/${mall.id}`}
             className="button-primary inline-block text-center mt-4 w-full"
           >
-            View Details →
+            {t('common.viewDetails')}
           </Link>
         ) : (
           <button
@@ -71,7 +73,7 @@ export default function MallCard({ mall, index = 0 }) {
                 : 'bg-gray-300 text-gray-600'
             }`}
           >
-            Coming Soon
+            {t('common.comingSoon')}
           </button>
         )}
       </div>

@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
   const { darkMode } = useTheme()
+  const { t } = useLanguage()
 
   return (
     <footer className={`mt-20 transition-colors duration-300 ${
@@ -15,27 +17,27 @@ export default function Footer() {
           <div>
             <h3 className="font-display text-2xl font-bold text-gold mb-4">Samarkand Mall</h3>
             <p className="text-cream text-opacity-80">
-              Explore the finest shopping destinations in Samarkand
+              {t('footer.tagline')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-gold mb-4">Quick Links</h4>
+            <h4 className="font-semibold text-gold mb-4">{t('footer.quickLinks')}</h4>
             <ul className="space-y-2 text-cream text-opacity-80">
               <li>
                 <Link to="/" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
-                  Home
+                  {t('nav.home')}
                 </Link>
               </li>
               <li>
                 <a href="#about" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
-                  About
+                  {t('nav.about')}
                 </a>
               </li>
               <li>
                 <a href="#contact" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
-                  Contact
+                  {t('nav.contact')}
                 </a>
               </li>
             </ul>
@@ -43,7 +45,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold text-gold mb-4">Contact</h4>
+            <h4 className="font-semibold text-gold mb-4">{t('footer.contact')}</h4>
             <p className="text-cream text-opacity-80 mb-2">
               📞 +998 (66) 233-30-30
             </p>
@@ -56,7 +58,7 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-gold border-opacity-20 pt-8">
           <p className="text-center text-cream text-opacity-60">
-            © {currentYear} Samarkand Mall Directory. All rights reserved.
+            © {currentYear} Samarkand Mall Directory. {t('footer.rights')}
           </p>
         </div>
       </div>

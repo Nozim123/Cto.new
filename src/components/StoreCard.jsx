@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function StoreCard({ store, mallId }) {
   const { darkMode } = useTheme()
+  const { t } = useLanguage()
   const statusColor = store.status === 'open' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-  const statusText = store.status === 'open' ? 'Open' : 'Coming Soon'
+  const statusText = store.status === 'open' ? t('common.open') : t('common.comingSoon')
 
   return (
     <Link
       to={`/mall/${mallId}/store/${store.id}`}
-      className={`card-shadow rounded-lg overflow-hidden hover:no-underline group h-full transition-all duration-300 ${
+      className={`card-shadow card-3d rounded-lg overflow-hidden hover:no-underline group h-full transition-all duration-300 ${
         darkMode ? 'bg-gray-800 glass-card-dark' : 'bg-white glass-card'
       }`}
     >
@@ -50,16 +52,16 @@ export default function StoreCard({ store, mallId }) {
           darkMode ? 'text-gray-400' : 'text-gray-600'
         }`}>
           <p>
-            <span className="font-semibold">Floor:</span> {store.floor}
+            <span className="font-semibold">{t('common.floor')}:</span> {store.floor}
           </p>
           <p>
-            <span className="font-semibold">Hours:</span> {store.hours}
+            <span className="font-semibold">{t('common.hours')}:</span> {store.hours}
           </p>
         </div>
 
         {/* CTA */}
         <div className="mt-4 text-gold font-semibold group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">
-          View Store →
+          {t('common.viewStore')}
         </div>
       </div>
     </Link>
