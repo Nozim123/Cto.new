@@ -28,7 +28,7 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
-        <div className="flex flex-col min-h-screen bg-cream dark:bg-gray-900 transition-colors duration-300 relative">
+        <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
           <SeasonalBackground />
         {/* Public routes */}
         <Routes>

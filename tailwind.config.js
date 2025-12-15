@@ -13,6 +13,7 @@ export default {
         cream: '#F4EFE7',
         sage: '#8FA89A',
         accent: '#E8B4B8',
+        primary: 'rgb(37, 40, 54)',
       },
       fontFamily: {
         display: ['Playfair Display', 'serif'],

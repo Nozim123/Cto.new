@@ -5,15 +5,8 @@ import { useTheme } from '../contexts/ThemeContext'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import productsData from '../data/products.json'
-import MallCard from './MallCard'
-import StoreCard from './StoreCard'
-import ProductCard from './ProductCard'
 import ProductModal from './ProductModal'
 import {
-  clearBehavior,
-  getBehaviorState,
-  getTopBehaviorIds,
-  getTopCategories,
   trackBehavior
 } from '../services/behavior'
 
@@ -83,57 +76,6 @@ export default function NextGenDiscoverySections() {
     return () => window.clearInterval(t)
   }, [])
 
-  const behaviorState = useMemo(() => getBehaviorState(), [now])
-
-  const topMallIds = useMemo(() => getTopBehaviorIds('mall', 3), [behaviorState.lastEventAt])
-  const topStoreIds = useMemo(() => getTopBehaviorIds('store', 3), [behaviorState.lastEventAt])
-  const topProductIds = useMemo(() => getTopBehaviorIds('product', 3), [behaviorState.lastEventAt])
-  const topCategories = useMemo(() => getTopCategories(3), [behaviorState.lastEventAt])
-
-  const recommendedMalls = useMemo(() => {
-    if (topMallIds.length > 0) {
-      return topMallIds.map((id) => mallsData.find((m) => m.id === id)).filter(Boolean)
-    }
-
-    return mallsData.filter((m) => m.featured).slice(0, 3)
-  }, [topMallIds])
-
-  const trendingStores = useMemo(() => {
-    if (topStoreIds.length > 0) {
-      return topStoreIds.map((id) => storesData.find((s) => s.id === id)).filter(Boolean)
-    }
-
-    return storesData.filter((s) => s.hasPromo).slice(0, 3)
-  }, [topStoreIds])
-
-  const popularProducts = useMemo(() => {
-    if (topProductIds.length > 0) {
-      return topProductIds.map((id) => productsData.find((p) => p.id === id)).filter(Boolean)
-    }
-
-    return productsData
-      .filter((p) => String(p.tag || '').toLowerCase().includes('best'))
-      .slice(0, 3)
-  }, [topProductIds])
-
-  const personalizedSuggestions = useMemo(() => {
-    if (topCategories.length === 0) return []
-
-    const categoriesSet = new Set(topCategories)
-
-    const stores = storesData
-      .filter((s) => categoriesSet.has(s.category))
-      .slice(0, 2)
-      .map((s) => ({ type: 'store', item: s }))
-
-    const products = productsData
-      .filter((p) => categoriesSet.has(p.category))
-      .slice(0, 2)
-      .map((p) => ({ type: 'product', item: p }))
-
-    return [...stores, ...products].slice(0, 4)
-  }, [topCategories])
-
   const promosWithCountdown = useMemo(() => {
     const base = storesData
       .filter((s) => s.hasPromo)
@@ -173,59 +115,6 @@ export default function NextGenDiscoverySections() {
       }
     })
   }, [comingSoonMalls, now])
-
-  const topPicks = useMemo(() => {
-    const editorChoice = mallsData.filter((m) => m.featured).slice(0, 2)
-
-    const familyFriendlyMallIds = new Set(
-      storesData.filter((s) => s.category.toLowerCase().includes('kids')).map((s) => s.mallId)
-    )
-    const familyFriendly = mallsData.filter((m) => familyFriendlyMallIds.has(m.id)).slice(0, 2)
-
-    const fashionMallIds = new Set(
-      storesData.filter((s) => s.category.toLowerCase().includes('fashion')).map((s) => s.mallId)
-    )
-    const fashion = mallsData.filter((m) => fashionMallIds.has(m.id)).slice(0, 2)
-
-    return { editorChoice, familyFriendly, fashion }
-  }, [])
-
-  const collections = useMemo(
-    () => [
-      {
-        key: 'summer',
-        title: 'Summer fashion',
-        matcher: (p) => ['apparel', 'accessories', 'footwear'].includes(p.category.toLowerCase())
-      },
-      {
-        key: 'back-to-school',
-        title: 'Back-to-school',
-        matcher: (p) => ['bags', 'accessories'].includes(p.category.toLowerCase())
-      },
-      {
-        key: 'wedding',
-        title: 'Wedding shopping',
-        matcher: (p) => ['dresses', 'accessories'].includes(p.category.toLowerCase())
-      },
-      {
-        key: 'tech',
-        title: 'Tech essentials',
-        matcher: (p) => p.category.toLowerCase().includes('accessories')
-      }
-    ],
-    []
-  )
-
-  const [activeCollectionKey, setActiveCollectionKey] = useState('summer')
-
-  const activeCollection = useMemo(
-    () => collections.find((c) => c.key === activeCollectionKey) || collections[0],
-    [collections, activeCollectionKey]
-  )
-
-  const collectionProducts = useMemo(() => {
-    return productsData.filter(activeCollection.matcher).slice(0, 6)
-  }, [activeCollection])
 
   const mallInsights = useMemo(() => {
     const byMall = new Map()
@@ -317,19 +206,19 @@ export default function NextGenDiscoverySections() {
     const text = message.toLowerCase()
 
     if (text.includes('deal') || text.includes('discount') || text.includes('promo')) {
-      return 'Try the “Events & Promotions” section — it updates with limited-time offers and countdowns.'
+      return 'Try the "Events & Promotions" section — it updates with limited-time offers and countdowns.'
     }
     if (text.includes('family') || text.includes('kid')) {
-      return 'Looking for family-friendly spots? Check “Top Picks” → Best family-friendly malls.'
+      return 'Looking for family-friendly spots? Check our mall directory for family zones and entertainment.'
     }
     if (text.includes('fashion')) {
-      return 'For fashion, see “Top Picks” → Best fashion destinations and “Collections”.'
+      return 'For fashion, browse our store directory and filter by Fashion category.'
     }
     if (text.includes('map') || text.includes('location')) {
-      return 'Open “Explore Map” to browse malls and store pinpoints with category filters.'
+      return 'Open "Interactive Map" to browse malls and store pinpoints with category filters.'
     }
 
-    return 'I can help you discover malls, stores, categories, and deals. Try: “Show me trending stores” or “Any promos this week?”'
+    return 'I can help you discover malls, stores, categories, and deals. Try: "Show me trending stores" or "Any promos this week?"'
   }
 
   const sendChat = (e) => {
@@ -404,147 +293,9 @@ export default function NextGenDiscoverySections() {
   return (
     <div>
       <SectionShell
-        id="discover"
-        title="Discover (Smart Discovery Hub)"
-        subtitle="A living, personalized feed powered by your browsing behavior — recommended malls, trending stores, popular products, and smart suggestions."
-      >
-        <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-            <div>
-              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                Personalization events: <span className="font-semibold">{Object.keys(behaviorState.counts?.mall || {}).length + Object.keys(behaviorState.counts?.store || {}).length + Object.keys(behaviorState.counts?.product || {}).length}</span>
-              </p>
-              {topCategories.length > 0 ? (
-                <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Your interests: <span className="font-semibold text-gold">{topCategories.join(', ')}</span>
-                </p>
-              ) : (
-                <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Start exploring to unlock smarter recommendations.
-                </p>
-              )}
-            </div>
-
-            <button
-              type="button"
-              className="button-secondary"
-              onClick={() => {
-                clearBehavior()
-                toast.success('Personalization reset')
-              }}
-            >
-              Reset personalization
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div>
-              <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                Recommended malls
-              </h3>
-              <div className="grid grid-cols-1 gap-6">
-                {recommendedMalls.map((mall, index) => (
-                  <MallCard key={mall.id} mall={mall} index={index} />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                Trending stores
-              </h3>
-              <div className="grid grid-cols-1 gap-6">
-                {trendingStores.map((store) => (
-                  <StoreCard key={store.id} store={store} mallId={store.mallId} />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                Popular products
-              </h3>
-              <div className="grid grid-cols-1 gap-6">
-                {popularProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onSelect={(p) => {
-                      trackBehavior({ type: 'product', id: p.id, category: p.category })
-                      setSelectedProduct(p)
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {personalizedSuggestions.length > 0 ? (
-            <div className="mt-10">
-              <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                Personalized suggestions
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {personalizedSuggestions.map((s) => {
-                  if (s.type === 'store') {
-                    const store = s.item
-                    return (
-                      <button
-                        key={`store-${store.id}`}
-                        type="button"
-                        onClick={() => navigate(`/mall/${store.mallId}/store/${store.id}`)}
-                        className={`text-left p-5 rounded-xl border transition-all duration-300 hover:-translate-y-1 ${
-                          darkMode
-                            ? 'border-gray-700 bg-gray-900/40'
-                            : 'border-gray-100 bg-cream/70'
-                        }`}
-                      >
-                        <p className="text-gold text-sm font-semibold">Store</p>
-                        <p className={`text-lg font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                          {store.name}
-                        </p>
-                        <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                          {store.category}
-                        </p>
-                      </button>
-                    )
-                  }
-
-                  const product = s.item
-                  return (
-                    <button
-                      key={`product-${product.id}`}
-                      type="button"
-                      onClick={() => {
-                        trackBehavior({ type: 'product', id: product.id, category: product.category })
-                        setSelectedProduct(product)
-                      }}
-                      className={`text-left p-5 rounded-xl border transition-all duration-300 hover:-translate-y-1 ${
-                        darkMode
-                          ? 'border-gray-700 bg-gray-900/40'
-                          : 'border-gray-100 bg-cream/70'
-                      }`}
-                    >
-                      <p className="text-gold text-sm font-semibold">Product</p>
-                      <p className={`text-lg font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                        {product.name}
-                      </p>
-                      <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                        {product.category}
-                      </p>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          ) : null}
-        </div>
-      </SectionShell>
-
-      <SectionShell
         id="explore-map"
-        title="Explore Map (Interactive Experience Map)"
-        subtitle="Browse Samarkand like a game map: mall clusters, store pinpoints, and category filtering — ready for future geo features."
+        title="Interactive Map"
+        subtitle="Browse shopping destinations like a digital experience: mall clusters, store pinpoints, and category filtering."
       >
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className={`rounded-2xl p-6 ${baseCard}`}>
@@ -576,7 +327,7 @@ export default function NextGenDiscoverySections() {
                   key={mall.id}
                   type="button"
                   onClick={() => setSelectedMapMallId(mall.id)}
-                  className={`w-full text-left px-4 py-3 rounded-lg border transition-all duration-200 ${
+                  className={`w-full text-left px-4 py-3 rounded-lg border transition-all duration-200 button-3d ${
                     selectedMapMallId === mall.id
                       ? 'border-gold bg-gold/10'
                       : darkMode
@@ -603,7 +354,7 @@ export default function NextGenDiscoverySections() {
               </div>
               <button
                 type="button"
-                className="button-primary"
+                className="button-primary button-3d"
                 onClick={() => {
                   trackBehavior({ type: 'mall', id: selectedMapMallId })
                   navigate(`/mall/${selectedMapMallId}`)
@@ -678,8 +429,8 @@ export default function NextGenDiscoverySections() {
 
       <SectionShell
         id="experiences"
-        title="Experiences (Lifestyle & Entertainment)"
-        subtitle="Mall life beyond shopping — cinemas, kids zones, food courts, and festivals to make the platform feel alive."
+        title="Experiences"
+        subtitle="Mall life beyond shopping — cinemas, kids zones, food courts, and festivals to make every visit memorable."
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
@@ -728,14 +479,14 @@ export default function NextGenDiscoverySections() {
               <div className="mt-4 flex flex-wrap gap-3">
                 <button
                   type="button"
-                  className="button-primary"
+                  className="button-primary button-3d"
                   onClick={() => navigate(`/mall/${promo.mallId}/store/${promo.store.id}`)}
                 >
                   View store →
                 </button>
                 <button
                   type="button"
-                  className="button-secondary"
+                  className="button-secondary button-3d"
                   onClick={() => {
                     trackBehavior({ type: 'store', id: promo.store.id, category: promo.store.category })
                     toast.success('Deal saved (demo)')
@@ -773,87 +524,8 @@ export default function NextGenDiscoverySections() {
       </SectionShell>
 
       <SectionShell
-        id="top-picks"
-        title="Top Picks"
-        subtitle="Editorially curated recommendations: editor\'s choices, family-friendly malls, and fashion destinations."
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {[
-            { title: "Editor\'s Choice", malls: topPicks.editorChoice },
-            { title: 'Best Family-Friendly', malls: topPicks.familyFriendly },
-            { title: 'Best Fashion Destinations', malls: topPicks.fashion }
-          ].map((group) => (
-            <div key={group.title} className={`rounded-2xl p-6 ${baseCard}`}>
-              <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                {group.title}
-              </h3>
-              <div className="space-y-4">
-                {group.malls.length ? (
-                  group.malls.map((mall) => (
-                    <button
-                      key={mall.id}
-                      type="button"
-                      onClick={() => navigate(`/mall/${mall.id}`)}
-                      className={`w-full text-left p-4 rounded-xl border transition-all duration-200 ${
-                        darkMode ? 'border-gray-700 hover:border-gray-600' : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <p className={`font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>{mall.name}</p>
-                      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{mall.location}</p>
-                    </button>
-                  ))
-                ) : (
-                  <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>More picks coming soon.</p>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionShell>
-
-      <SectionShell
-        id="collections"
-        title="Collections"
-        subtitle="Theme-based collections of products and stores — like Summer fashion, Back-to-school, and Tech essentials."
-      >
-        <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
-          <div className="flex flex-wrap gap-3 mb-6">
-            {collections.map((c) => (
-              <button
-                key={c.key}
-                type="button"
-                onClick={() => setActiveCollectionKey(c.key)}
-                className={`px-4 py-2 rounded-full font-semibold transition-all duration-200 ${
-                  c.key === activeCollectionKey
-                    ? 'bg-gold text-navy'
-                    : darkMode
-                      ? 'bg-gray-900/40 text-gray-200 hover:bg-gray-900/60'
-                      : 'bg-cream text-navy hover:bg-cream/80'
-                }`}
-              >
-                {c.title}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {collectionProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onSelect={(p) => {
-                  trackBehavior({ type: 'product', id: p.id, category: p.category })
-                  setSelectedProduct(p)
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      </SectionShell>
-
-      <SectionShell
-        id="mall-insights"
-        title="Mall Insights"
+        id="insights"
+        title="Insights"
         subtitle="Data-driven insights like peak visiting hours, popular categories, and future-ready crowd trends."
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -905,7 +577,7 @@ export default function NextGenDiscoverySections() {
           </div>
 
           <div className="mt-6">
-            <button type="button" className="button-primary" onClick={() => setVirtualTourOpen(true)}>
+            <button type="button" className="button-primary button-3d" onClick={() => setVirtualTourOpen(true)}>
               Launch demo tour
             </button>
           </div>
@@ -949,7 +621,7 @@ export default function NextGenDiscoverySections() {
       <SectionShell
         id="community"
         title="Community & Reviews"
-        subtitle="User-generated ratings, reviews with photos, and Q&A — designed for community trust and long-term growth."
+        subtitle="User-generated ratings, reviews with photos, and community trust for long-term growth."
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
@@ -999,7 +671,7 @@ export default function NextGenDiscoverySections() {
                       <img
                         src={r.photoUrl}
                         alt="Review"
-                        className="mt-3 w-full h-40 object-cover rounded-lg"
+                        className="mt-3 w-full h-32 object-cover rounded-lg"
                         loading="lazy"
                       />
                     ) : null}
@@ -1015,9 +687,10 @@ export default function NextGenDiscoverySections() {
 
           <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
             <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-              Add a review
+              Write a review
             </h3>
-            <form onSubmit={addReview} className="space-y-4">
+
+            <form className="space-y-4" onSubmit={addReview}>
               <div>
                 <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                   Rating
@@ -1027,24 +700,25 @@ export default function NextGenDiscoverySections() {
                   onChange={(e) => setReviewRating(Number(e.target.value))}
                   className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
                 >
-                  {[5, 4, 3, 2, 1].map((x) => (
-                    <option key={x} value={x}>
-                      {x}
-                    </option>
-                  ))}
+                  <option value={5}>5 stars</option>
+                  <option value={4}>4 stars</option>
+                  <option value={3}>3 stars</option>
+                  <option value={2}>2 stars</option>
+                  <option value={1}>1 star</option>
                 </select>
               </div>
 
               <div>
                 <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Review
+                  Your review
                 </label>
                 <textarea
                   value={reviewText}
                   onChange={(e) => setReviewText(e.target.value)}
-                  rows={5}
                   className="w-full px-4 py-3 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-                  placeholder="Share your experience..."
+                  rows={4}
+                  placeholder="Share your experience…"
+                  required
                 />
               </div>
 
@@ -1060,7 +734,7 @@ export default function NextGenDiscoverySections() {
                 />
               </div>
 
-              <button type="submit" className="button-primary w-full">
+              <button type="submit" className="button-primary button-3d w-full">
                 Submit review
               </button>
             </form>
@@ -1095,14 +769,14 @@ export default function NextGenDiscoverySections() {
                 <div className="mt-4 flex gap-3">
                   <button
                     type="button"
-                    className="button-primary"
+                    className="button-primary button-3d"
                     onClick={() => navigate(`/mall/${store.mallId}/store/${store.id}`)}
                   >
                     View store
                   </button>
                   <button
                     type="button"
-                    className="button-secondary"
+                    className="button-secondary button-3d"
                     onClick={() => toast.success('Interview coming soon')}
                   >
                     Interview
@@ -1132,7 +806,7 @@ export default function NextGenDiscoverySections() {
 
             <button
               type="button"
-              className="button-primary"
+              className="button-primary button-3d"
               onClick={requestLocation}
               disabled={geoStatus.state === 'loading'}
             >
@@ -1160,7 +834,7 @@ export default function NextGenDiscoverySections() {
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="button-secondary"
+                      className="button-secondary button-3d"
                       onClick={() => navigate(`/mall/${promo.mallId}/store/${promo.store.id}`)}
                     >
                       View deal
@@ -1190,6 +864,52 @@ export default function NextGenDiscoverySections() {
                 {x.title}
               </h3>
               <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{x.desc}</p>
+            </div>
+          ))}
+        </div>
+      </SectionShell>
+
+      <SectionShell
+        id="news-updates"
+        title="News & Updates"
+        subtitle="Latest announcements, mall news, and editorial-style content to keep visitors informed."
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            {
+              title: 'Grand Opening: Festival Mall',
+              date: 'Dec 20, 2024',
+              desc: 'Join us for the grand opening celebration with exclusive deals and entertainment.'
+            },
+            {
+              title: 'Holiday Shopping Guide',
+              date: 'Dec 15, 2024',
+              desc: 'Your complete guide to finding the perfect gifts this holiday season.'
+            },
+            {
+              title: 'New Store Alert: Tech Hub',
+              date: 'Dec 10, 2024',
+              desc: 'The latest electronics and gadgets arrive at Family Park Mall.'
+            },
+            {
+              title: 'Sustainability Initiative',
+              date: 'Dec 5, 2024',
+              desc: 'All malls now feature eco-friendly recycling stations and green spaces.'
+            }
+          ].map((news) => (
+            <div key={news.title} className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
+              <p className="text-gold text-sm font-semibold">{news.date}</p>
+              <h3 className={`font-display text-xl font-bold mt-2 mb-3 ${darkMode ? 'text-cream' : 'text-navy'}`}>
+                {news.title}
+              </h3>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{news.desc}</p>
+              <button
+                type="button"
+                className="button-secondary button-3d mt-4"
+                onClick={() => toast.success('Full article coming soon')}
+              >
+                Read more →
+              </button>
             </div>
           ))}
         </div>
@@ -1232,7 +952,7 @@ export default function NextGenDiscoverySections() {
                 className="flex-1 px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
                 placeholder="Type a question…"
               />
-              <button type="submit" className="button-primary">
+              <button type="submit" className="button-primary button-3d">
                 Send
               </button>
             </form>
@@ -1245,12 +965,12 @@ export default function NextGenDiscoverySections() {
             <div className="space-y-4">
               {[
                 {
-                  q: 'How do recommendations work?',
-                  a: 'We use on-device (localStorage) browsing signals like views to personalize suggestions.'
+                  q: 'How do I find stores in a specific mall?',
+                  a: 'Visit any mall page and use the interactive map or browse the store directory.'
                 },
                 {
                   q: 'Can I submit a store or update info?',
-                  a: 'Yes — see “Partner With Us” for registration and update requests.'
+                  a: 'Yes — use our contact form or reach out via email for updates and corrections.'
                 },
                 {
                   q: 'Do you track my location?',
@@ -1268,124 +988,10 @@ export default function NextGenDiscoverySections() {
             </div>
 
             <div className="mt-6">
-              <button type="button" className="button-secondary" onClick={() => toast.success('Contact form coming soon')}> 
+              <button type="button" className="button-secondary button-3d" onClick={() => toast.success('Contact form coming soon')}> 
                 Contact support
               </button>
             </div>
-          </div>
-        </div>
-      </SectionShell>
-
-      <SectionShell
-        id="partner"
-        title="Partner With Us"
-        subtitle="Business onboarding: store owner registration, advertising opportunities, and partnership inquiries."
-      >
-        <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
-          <form
-            className="grid grid-cols-1 md:grid-cols-2 gap-4"
-            onSubmit={(e) => {
-              e.preventDefault()
-              toast.success('Request submitted (demo)')
-            }}
-          >
-            <input
-              className="px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-              placeholder="Business / Brand name"
-              required
-            />
-            <input
-              className="px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-              placeholder="Contact email"
-              type="email"
-              required
-            />
-            <input
-              className="px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-              placeholder="Phone (optional)"
-            />
-            <select className="px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold">
-              <option>Store owner registration</option>
-              <option>Advertising</option>
-              <option>Partnership inquiry</option>
-            </select>
-            <textarea
-              className="md:col-span-2 px-4 py-3 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-              rows={5}
-              placeholder="Tell us about your business…"
-            />
-            <button type="submit" className="button-primary md:col-span-2">
-              Send request
-            </button>
-          </form>
-        </div>
-      </SectionShell>
-
-      <SectionShell
-        id="analytics"
-        title="Analytics Preview (Public Stats)"
-        subtitle="Transparent public stats like most visited malls, trending stores, and popular categories."
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className={`rounded-2xl p-6 ${baseCard}`}>
-            <h3 className={`font-display text-xl font-bold mb-3 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-              Most visited malls
-            </h3>
-            <div className="space-y-3">
-              {(getTopBehaviorIds('mall', 5).length ? getTopBehaviorIds('mall', 5) : mallsData.slice(0, 3).map((m) => m.id)).map((id) => {
-                const mall = mallsData.find((m) => m.id === id)
-                if (!mall) return null
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => navigate(`/mall/${id}`)}
-                    className={`w-full text-left p-3 rounded-xl border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}
-                  >
-                    <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{mall.name}</p>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          <div className={`rounded-2xl p-6 ${baseCard}`}>
-            <h3 className={`font-display text-xl font-bold mb-3 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-              Trending stores
-            </h3>
-            <div className="space-y-3">
-              {(getTopBehaviorIds('store', 5).length ? getTopBehaviorIds('store', 5) : storesData.slice(0, 3).map((s) => s.id)).map((id) => {
-                const store = storesData.find((s) => s.id === id)
-                if (!store) return null
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => navigate(`/mall/${store.mallId}/store/${store.id}`)}
-                    className={`w-full text-left p-3 rounded-xl border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}
-                  >
-                    <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{store.name}</p>
-                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{store.category}</p>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          <div className={`rounded-2xl p-6 ${baseCard}`}>
-            <h3 className={`font-display text-xl font-bold mb-3 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-              Popular categories
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {(topCategories.length ? topCategories : ['Fashion', 'Electronics', 'Sportswear']).map((c) => (
-                <span key={c} className="px-3 py-1 rounded-full bg-gold/15 text-gold text-xs font-semibold">
-                  {c}
-                </span>
-              ))}
-            </div>
-            <p className={`text-sm mt-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              This section is powered by on-device behavior signals and will expand with real analytics later.
-            </p>
           </div>
         </div>
       </SectionShell>
