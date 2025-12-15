@@ -8,12 +8,12 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  @apply text-gray-800 transition-colors duration-300;
+  @apply text-slate-800 transition-colors duration-300;
 }
 
 body.dark {
-  background-color: rgba(37, 40, 54, 1);
-  @apply text-cream;
+  background-color: rgb(15, 23, 42);
+  @apply text-slate-200;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -33,15 +33,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .button-primary {
-  @apply px-6 py-3 bg-gold text-navy font-semibold rounded-lg transition-all duration-300;
+  @apply px-6 py-3 bg-gold text-white font-semibold rounded-lg transition-all duration-300;
   @apply hover:bg-opacity-90 hover:scale-105 active:scale-95;
-  @apply shadow-md hover:shadow-xl;
+  @apply shadow-md hover:shadow-cyan-500/50;
 }
 
 .button-secondary {
   @apply px-6 py-3 border-2 border-navy dark:border-cream text-navy dark:text-cream;
   @apply font-semibold rounded-lg transition-all duration-300;
-  @apply hover:bg-navy dark:hover:bg-cream hover:text-cream dark:hover:text-navy;
+  @apply hover:bg-navy dark:hover:bg-cream hover:text-white dark:hover:text-navy;
   @apply hover:scale-105 active:scale-95;
 }
 
@@ -58,9 +58,9 @@ h1, h2, h3, h4, h5, h6 {
 .button-3d:hover {
   transform: translateY(-2px) scale(1.02);
   box-shadow: 
-    0 10px 20px rgba(0, 0, 0, 0.15),
-    0 6px 10px rgba(0, 0, 0, 0.1),
-    0 0 20px rgba(212, 175, 55, 0.3);
+    0 10px 20px rgba(6, 182, 212, 0.2),
+    0 6px 10px rgba(6, 182, 212, 0.1),
+    0 0 20px rgba(6, 182, 212, 0.3);
 }
 
 .button-3d:active {
@@ -82,30 +82,30 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Glassmorphism Effect */
 .glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .glass-dark {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-card {
-  background: rgba(244, 239, 231, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .glass-card-dark {
-  background: rgba(44, 62, 80, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -170,10 +170,10 @@ h1, h2, h3, h4, h5, h6 {
 .animate-shimmer {
   background: linear-gradient(
     to right,
-    #f0f0f0 0%,
-    #e0e0e0 20%,
-    #f0f0f0 40%,
-    #f0f0f0 100%
+    #f1f5f9 0%,
+    #e2e8f0 20%,
+    #f1f5f9 40%,
+    #f1f5f9 100%
   );
   background-size: 1000px 100%;
   animation: shimmer 2s linear infinite;
@@ -196,31 +196,31 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Dark mode utilities */
 .dark .bg-cream {
-  @apply bg-gray-900;
+  @apply bg-slate-900;
 }
 
 .dark .text-navy {
-  @apply text-cream;
+  @apply text-slate-200;
 }
 
 .dark .bg-navy {
-  @apply bg-gray-800;
+  @apply bg-slate-800;
 }
 
 .dark .bg-white {
-  @apply bg-gray-800;
+  @apply bg-slate-800;
 }
 
 .dark .text-gray-800 {
-  @apply text-gray-200;
+  @apply text-slate-200;
 }
 
 .dark .text-gray-700 {
-  @apply text-gray-300;
+  @apply text-slate-300;
 }
 
 .dark .text-gray-600 {
-  @apply text-gray-400;
+  @apply text-slate-400;
 }
 
 /* Enhanced Parallax & Scroll Effects */
@@ -239,10 +239,10 @@ h1, h2, h3, h4, h5, h6 {
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
   }
   50% {
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
   }
 }
 
@@ -264,7 +264,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Gradient text effect */
 .gradient-text {
-  background: linear-gradient(135deg, #D4AF37 0%, #F4EFE7 50%, #D4AF37 100%);
+  background: linear-gradient(135deg, #06B6D4 0%, #F8FAFC 50%, #06B6D4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

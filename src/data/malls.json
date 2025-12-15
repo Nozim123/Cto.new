@@ -20,31 +20,59 @@
     "name": "Makon Mall",
     "location": "Samarkand, Uzbekistan",
     "image": "https://images.unsplash.com/photo-1555636222-cae846585b47?w=800&h=400&fit=crop",
-    "description": "Coming Soon",
-    "status": "coming_soon"
+    "bannerImage": "https://images.unsplash.com/photo-1555636222-cae846585b47?w=1200&h=400&fit=crop",
+    "description": "Makon Mall offers a premium shopping experience with high-end brands, a large cinema complex, and a variety of dining options. It is a favorite spot for youth and families.",
+    "openedDate": "2019",
+    "hours": "09:00 AM - 11:00 PM",
+    "address": "Shohrukh Mirzo Street, Samarkand",
+    "phone": "+998 (90) 123-45-67",
+    "website": "www.makonmall.uz",
+    "storeCount": 85,
+    "featured": true,
+    "status": "open"
   },
   {
-    "id": "festival-mall",
-    "name": "Festival Mall",
+    "id": "atlas-samarkand",
+    "name": "Atlas Samarkand",
     "location": "Samarkand, Uzbekistan",
     "image": "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=800&h=400&fit=crop",
-    "description": "Coming Soon",
-    "status": "coming_soon"
+    "bannerImage": "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=1200&h=400&fit=crop",
+    "description": "Part of the Atlas chain, this mall focuses on affordable fashion, home goods, and electronics. It features a large supermarket and a kids' playground.",
+    "openedDate": "2020",
+    "hours": "10:00 AM - 10:00 PM",
+    "address": "Buyuk Ipak Yuli, Samarkand",
+    "phone": "+998 (71) 200-00-00",
+    "website": "www.atlas.uz",
+    "storeCount": 60,
+    "status": "open"
   },
   {
-    "id": "next-mall",
-    "name": "Next Mall",
+    "id": "al-madina",
+    "name": "Al Madina",
     "location": "Samarkand, Uzbekistan",
     "image": "https://images.unsplash.com/photo-1590194394438-7fa22e0a84fe?w=800&h=400&fit=crop",
-    "description": "Coming Soon",
-    "status": "coming_soon"
+    "bannerImage": "https://images.unsplash.com/photo-1590194394438-7fa22e0a84fe?w=1200&h=400&fit=crop",
+    "description": "A boutique shopping center specializing in textiles, fabrics, and traditional clothing, mixed with modern amenities.",
+    "openedDate": "2015",
+    "hours": "08:00 AM - 08:00 PM",
+    "address": "Dagbitskaya Street, Samarkand",
+    "phone": "+998 (91) 333-22-11",
+    "website": "www.almadina.uz",
+    "storeCount": 40,
+    "status": "open"
   },
   {
-    "id": "samarkand-plaza",
-    "name": "Samarkand Plaza",
+    "id": "nurafshon",
+    "name": "Nurafshon Shopping Center",
     "location": "Samarkand, Uzbekistan",
     "image": "https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=800&h=400&fit=crop",
-    "description": "Coming Soon",
-    "status": "coming_soon"
+    "bannerImage": "https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=1200&h=400&fit=crop",
+    "description": "A community-focused shopping center with a large grocery store, pharmacy, and daily service shops.",
+    "openedDate": "2010",
+    "hours": "08:00 AM - 11:00 PM",
+    "address": "Gagarin Street, Samarkand",
+    "phone": "+998 (66) 222-11-00",
+    "storeCount": 35,
+    "status": "open"
   }
 ]
