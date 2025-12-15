@@ -24,11 +24,14 @@ import BannerFormPage from './admin/pages/BannerFormPage'
 import SettingsPage from './admin/pages/SettingsPage'
 import { ProtectedRoute } from './admin/hooks/useAuth'
 
+import { LanguageProvider } from './contexts/LanguageContext'
+
 function App() {
   return (
-    <ThemeProvider>
-      <Router>
-        <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
+    <LanguageProvider>
+      <ThemeProvider>
+        <Router>
+          <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
           <SeasonalBackground />
         {/* Public routes */}
         <Routes>
@@ -99,6 +102,7 @@ function App() {
         </div>
       </Router>
     </ThemeProvider>
+  </LanguageProvider>
   )
 }
 

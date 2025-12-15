@@ -8,12 +8,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        navy: '#2C3E50',
-        gold: '#D4AF37',
-        cream: '#F4EFE7',
-        sage: '#8FA89A',
-        accent: '#E8B4B8',
-        primary: 'rgb(37, 40, 54)',
+        navy: '#1E293B', // Slate 800 - darker, more modern navy
+        gold: '#06B6D4', // Cyan 500 - Modern replacement for gold
+        cream: '#F8FAFC', // Slate 50 - Cleaner white/cream
+        sage: '#64748B', // Slate 500 - Modern grey/sage
+        accent: '#F43F5E', // Rose 500 - Modern accent
+        primary: 'rgb(15, 23, 42)', // Slate 900 - Premium Dark
       },
       fontFamily: {
         display: ['Playfair Display', 'serif'],
