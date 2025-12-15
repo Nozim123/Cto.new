@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function BottomNavigation() {
   const location = useLocation()
   const { darkMode } = useTheme()
+  const { t } = useLanguage()
   
   const isActive = (path) => {
     if (path === '/') {
@@ -14,22 +16,22 @@ export default function BottomNavigation() {
 
   const navItems = [
     {
-      label: 'Home',
+      label: t('nav.home'),
       path: '/',
       icon: '🏠'
     },
     {
-      label: 'About',
+      label: t('nav.about'),
       path: '#about',
       icon: 'ℹ️'
     },
     {
-      label: 'Malls',
+      label: t('nav.malls'),
       path: '#malls',
       icon: '🏢'
     },
     {
-      label: 'Contact',
+      label: t('nav.contact'),
       path: '#contact',
       icon: '📞'
     }

@@ -9,7 +9,7 @@ export default {
     extend: {
       colors: {
         navy: '#2C3E50',
-        gold: '#D4AF37',
+        gold: '#5CA4D8',
         cream: '#F4EFE7',
         sage: '#8FA89A',
         accent: '#E8B4B8',

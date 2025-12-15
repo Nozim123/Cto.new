@@ -1,22 +1,16 @@
-import { useState, useEffect } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
+import { usePublicData } from '../contexts/PublicDataContext'
 import HeroSection from '../components/HeroSection'
 import MallCard from '../components/MallCard'
 import NextGenDiscoverySections from '../components/NextGenDiscoverySections'
 import { SkeletonMallCard } from '../components/SkeletonCard'
-import mallsData from '../data/malls.json'
 
 export default function HomePage() {
-  const [malls, setMalls] = useState([])
-  const [loading, setLoading] = useState(true)
+  const { malls, loading } = usePublicData()
   const { darkMode } = useTheme()
+  const { t } = useLanguage()
 
-  useEffect(() => {
-    setTimeout(() => {
-      setMalls(mallsData)
-      setLoading(false)
-    }, 800)
-  }, [])
 
   return (
     <div className="min-h-screen">
@@ -27,7 +21,7 @@ export default function HomePage() {
       <section id="about" className="section-padding max-w-6xl mx-auto fade-in-up">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="heading-medium mb-6">
-            About Samarkand Mall Directory
+            {t('home.aboutTitle')}
           </h2>
 
           <p
@@ -35,8 +29,7 @@ export default function HomePage() {
               darkMode ? 'text-gray-300' : 'text-gray-700'
             }`}
           >
-            Welcome to Samarkand Mall Directory, your comprehensive guide to the
-            finest shopping destinations in the historic city of Samarkand.
+            {t('home.aboutP1')}
           </p>
 
           <p
@@ -44,9 +37,7 @@ export default function HomePage() {
               darkMode ? 'text-gray-300' : 'text-gray-700'
             }`}
           >
-            Whether you're looking for fashion, electronics, dining, or
-            entertainment, our platform makes it easy to discover Samarkand's
-            vibrant retail landscape.
+            {t('home.aboutP2')}
           </p>
         </div>
       </section>
@@ -55,7 +46,7 @@ export default function HomePage() {
       <section id="malls" className="section-padding max-w-6xl mx-auto">
         <div className="mb-12 fade-in-up">
           <h2 className="heading-medium mb-4 text-center">
-            Featured Shopping Destinations
+            {t('home.featuredTitle')}
           </h2>
 
           <p
@@ -63,8 +54,7 @@ export default function HomePage() {
               darkMode ? 'text-gray-400' : 'text-gray-600'
             }`}
           >
-            From premium fashion to electronics, find everything you need in
-            Samarkand's premier shopping centers
+            {t('home.featuredSubtitle')}
           </p>
         </div>
 
@@ -88,16 +78,15 @@ export default function HomePage() {
       >
         <div className="max-w-6xl mx-auto text-center px-4">
           <h2 className="heading-medium text-cream mb-4">
-            Ready to Explore?
+            {t('home.ctaTitle')}
           </h2>
 
           <p className="text-cream text-opacity-80 mb-8 text-lg">
-            Visit Family Park Mall to discover amazing brands and exclusive
-            offers
+            {t('home.ctaSubtitle')}
           </p>
 
           <a href="#malls" className="button-primary inline-block">
-            View All Malls
+            {t('home.viewAll')}
           </a>
         </div>
       </section>
@@ -105,14 +94,14 @@ export default function HomePage() {
       {/* Contact Section */}
       <section id="contact" className="section-padding max-w-6xl mx-auto">
         <div className="text-center max-w-2xl mx-auto fade-in-up">
-          <h2 className="heading-medium mb-6">Get in Touch</h2>
+          <h2 className="heading-medium mb-6">{t('home.contactTitle')}</h2>
 
           <p
             className={`mb-6 ${
               darkMode ? 'text-gray-400' : 'text-gray-600'
             }`}
           >
-            Have questions about our shopping centers? We're here to help!
+            {t('home.contactSubtitle')}
           </p>
 
           <div

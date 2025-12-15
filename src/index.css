@@ -6,6 +6,17 @@ html {
   scroll-behavior: smooth;
 }
 
+html.reduce-motion {
+  scroll-behavior: auto;
+}
+
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   @apply text-gray-800 transition-colors duration-300;
@@ -60,7 +71,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 
     0 10px 20px rgba(0, 0, 0, 0.15),
     0 6px 10px rgba(0, 0, 0, 0.1),
-    0 0 20px rgba(212, 175, 55, 0.3);
+    0 0 20px rgba(92, 164, 216, 0.35);
 }
 
 .button-3d:active {
@@ -74,6 +85,17 @@ h1, h2, h3, h4, h5, h6 {
 .card-shadow {
   @apply shadow-lg hover:shadow-2xl transition-all duration-300;
   @apply hover:-translate-y-1;
+}
+
+/* 3D Card Hover */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+}
+
+.card-3d:hover {
+  transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
 }
 
 .section-padding {
@@ -239,10 +261,10 @@ h1, h2, h3, h4, h5, h6 {
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 20px rgba(92, 164, 216, 0.25);
   }
   50% {
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 40px rgba(92, 164, 216, 0.45);
   }
 }
 
@@ -264,7 +286,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Gradient text effect */
 .gradient-text {
-  background: linear-gradient(135deg, #D4AF37 0%, #F4EFE7 50%, #D4AF37 100%);
+  background: linear-gradient(135deg, #5CA4D8 0%, #F4EFE7 50%, #5CA4D8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

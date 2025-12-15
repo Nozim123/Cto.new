@@ -2,9 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTheme } from '../contexts/ThemeContext'
-import mallsData from '../data/malls.json'
-import storesData from '../data/stores.json'
-import productsData from '../data/products.json'
+import { useLanguage } from '../contexts/LanguageContext'
+import { usePublicData } from '../contexts/PublicDataContext'
 import ProductModal from './ProductModal'
 import {
   trackBehavior
@@ -53,6 +52,8 @@ const SectionShell = ({ id, title, subtitle, children }) => {
 
 export default function NextGenDiscoverySections() {
   const { darkMode } = useTheme()
+  const { t } = useLanguage()
+  const { malls, stores, products } = usePublicData()
   const navigate = useNavigate()
 
   const [now, setNow] = useState(Date.now())
@@ -72,12 +73,12 @@ export default function NextGenDiscoverySections() {
   const [geoStatus, setGeoStatus] = useState({ state: 'idle', lat: null, lng: null })
 
   useEffect(() => {
-    const t = window.setInterval(() => setNow(Date.now()), 1000)
-    return () => window.clearInterval(t)
+    const timer = window.setInterval(() => setNow(Date.now()), 1000)
+    return () => window.clearInterval(timer)
   }, [])
 
   const promosWithCountdown = useMemo(() => {
-    const base = storesData
+    const base = stores
       .filter((s) => s.hasPromo)
       .map((store) => {
         const seed = stableNumberFromString(store.id)
@@ -96,11 +97,11 @@ export default function NextGenDiscoverySections() {
       })
 
     return base.sort((a, b) => a.endsAt - b.endsAt).slice(0, 6)
-  }, [now])
+  }, [now, stores])
 
   const comingSoonMalls = useMemo(
-    () => mallsData.filter((m) => m.status === 'coming_soon'),
-    []
+    () => malls.filter((m) => m.status === 'coming_soon'),
+    [malls]
   )
 
   const openingCards = useMemo(() => {
@@ -119,13 +120,13 @@ export default function NextGenDiscoverySections() {
   const mallInsights = useMemo(() => {
     const byMall = new Map()
 
-    for (const store of storesData) {
+    for (const store of stores) {
       const current = byMall.get(store.mallId) || { categoryCounts: {} }
       current.categoryCounts[store.category] = (current.categoryCounts[store.category] || 0) + 1
       byMall.set(store.mallId, current)
     }
 
-    return mallsData
+    return malls
       .filter((m) => m.status !== 'coming_soon')
       .slice(0, 3)
       .map((mall) => {
@@ -145,7 +146,7 @@ export default function NextGenDiscoverySections() {
           crowdTrend: ['Low', 'Medium', 'High'][seed % 3]
         }
       })
-  }, [now])
+  }, [now, malls, stores])
 
   const [virtualTourOpen, setVirtualTourOpen] = useState(false)
 
@@ -270,23 +271,30 @@ export default function NextGenDiscoverySections() {
   )
 
   const storeCategories = useMemo(
-    () => ['all', ...new Set(storesData.map((s) => s.category))],
-    []
+    () => ['all', ...new Set(stores.map((s) => s.category).filter(Boolean))],
+    [stores]
   )
 
   const [mapCategory, setMapCategory] = useState('all')
   const [selectedMapMallId, setSelectedMapMallId] = useState('family-park')
 
+  useEffect(() => {
+    if (malls.length === 0) return
+    if (!malls.some((m) => m.id === selectedMapMallId)) {
+      setSelectedMapMallId(malls[0].id)
+    }
+  }, [malls, selectedMapMallId])
+
   const selectedMapMall = useMemo(
-    () => mallsData.find((m) => m.id === selectedMapMallId) || mallsData[0],
-    [selectedMapMallId]
+    () => malls.find((m) => m.id === selectedMapMallId) || malls[0],
+    [selectedMapMallId, malls]
   )
 
   const mapStores = useMemo(() => {
-    let list = storesData.filter((s) => s.mallId === selectedMapMallId)
+    let list = stores.filter((s) => s.mallId === selectedMapMallId)
     if (mapCategory !== 'all') list = list.filter((s) => s.category === mapCategory)
     return list
-  }, [selectedMapMallId, mapCategory])
+  }, [selectedMapMallId, mapCategory, stores])
 
   const baseCard = darkMode ? 'bg-gray-800 glass-card-dark' : 'bg-white glass-card'
 
@@ -294,17 +302,17 @@ export default function NextGenDiscoverySections() {
     <div>
       <SectionShell
         id="explore-map"
-        title="Interactive Map"
-        subtitle="Browse shopping destinations like a digital experience: mall clusters, store pinpoints, and category filtering."
+        title={t('map.title')}
+        subtitle={t('map.subtitle')}
       >
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className={`rounded-2xl p-6 ${baseCard}`}>
             <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-              Filters
+              {t('map.filters')}
             </h3>
 
             <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Category
+              {t('map.category')}
             </label>
             <select
               value={mapCategory}
@@ -313,16 +321,16 @@ export default function NextGenDiscoverySections() {
             >
               {storeCategories.map((c) => (
                 <option key={c} value={c}>
-                  {c === 'all' ? 'All categories' : c}
+                  {c === 'all' ? t('map.allCategories') : c}
                 </option>
               ))}
             </select>
 
             <label className={`block text-sm font-semibold mb-2 mt-5 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Mall cluster
+              {t('map.mallCluster')}
             </label>
             <div className="space-y-2">
-              {mallsData.map((mall) => (
+              {malls.map((mall) => (
                 <button
                   key={mall.id}
                   type="button"
@@ -336,7 +344,9 @@ export default function NextGenDiscoverySections() {
                   }`}
                 >
                   <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{mall.name}</p>
-                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{mall.status === 'coming_soon' ? 'Coming soon' : 'Open'}</p>
+                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {mall.status === 'coming_soon' ? t('common.comingSoon') : t('common.open')}
+                  </p>
                 </button>
               ))}
             </div>
@@ -346,10 +356,10 @@ export default function NextGenDiscoverySections() {
             <div className="flex items-start justify-between gap-6 flex-wrap mb-4">
               <div>
                 <h3 className={`font-display text-xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                  City map
+                  {t('map.cityMap')}
                 </h3>
                 <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Selected: <span className="text-gold font-semibold">{selectedMapMall?.name}</span>
+                  {t('map.selected')}: <span className="text-gold font-semibold">{selectedMapMall?.name}</span>
                 </p>
               </div>
               <button
@@ -360,7 +370,7 @@ export default function NextGenDiscoverySections() {
                   navigate(`/mall/${selectedMapMallId}`)
                 }}
               >
-                Open mall →
+                {t('map.openMall')}
               </button>
             </div>
 
@@ -371,10 +381,10 @@ export default function NextGenDiscoverySections() {
             >
               <div className="absolute inset-0 opacity-60" style={{
                 backgroundImage:
-                  'radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.25), transparent 45%), radial-gradient(circle at 80% 50%, rgba(143, 168, 154, 0.25), transparent 45%)'
+                  'radial-gradient(circle at 20% 20%, rgba(92, 164, 216, 0.22), transparent 45%), radial-gradient(circle at 80% 50%, rgba(143, 168, 154, 0.22), transparent 45%)'
               }} />
 
-              {mallsData.map((mall) => {
+              {malls.map((mall) => {
                 const pos = mapMallPositions[mall.id] || { x: 50, y: 50 }
                 const active = mall.id === selectedMapMallId
                 return (
@@ -420,7 +430,7 @@ export default function NextGenDiscoverySections() {
 
             <div className="mt-5">
               <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                Store pinpoints: <span className="font-semibold">{mapStores.length}</span>
+                {t('map.pinpoints')}: <span className="font-semibold">{mapStores.length}</span>
               </p>
             </div>
           </div>
@@ -637,7 +647,7 @@ export default function NextGenDiscoverySections() {
               onChange={(e) => setReviewMallId(e.target.value)}
               className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
             >
-              {mallsData.map((m) => (
+              {malls.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.name}
                 </option>
@@ -748,7 +758,7 @@ export default function NextGenDiscoverySections() {
         subtitle="Featured brands, flagship stories, and exclusive collections — built for premium perception."
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {storesData.slice(0, 3).map((store) => (
+          {stores.slice(0, 3).map((store) => (
             <div key={store.id} className={`rounded-2xl overflow-hidden card-shadow ${baseCard}`}>
               <div className="h-44 overflow-hidden">
                 <img
@@ -1032,7 +1042,7 @@ export default function NextGenDiscoverySections() {
         <ProductModal
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
-          relatedProducts={productsData.filter((p) => p.id !== selectedProduct.id).slice(0, 4)}
+          relatedProducts={products.filter((p) => p.id !== selectedProduct.id).slice(0, 4)}
         />
       ) : null}
     </div>
