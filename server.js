@@ -138,6 +138,15 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+const requireRole = (...roles) => (req, res, next) => {
+  if (!req.user?.role || !roles.includes(req.user.role)) {
+    return res.status(403).json({ message: 'Insufficient permissions' });
+  }
+  next();
+};
+
+const authenticateAdmin = [authenticateToken, requireRole('admin')];
+
 // Utility functions
 const generateId = () => Date.now().toString() + Math.random().toString(36).substr(2, 9);
 const saveDatabase = async () => {
@@ -145,6 +154,29 @@ const saveDatabase = async () => {
     await fs.writeFile('database.json', JSON.stringify(database, null, 2));
   } catch (error) {
     console.error('Database save error:', error);
+  }
+};
+
+const loadDatabase = async () => {
+  try {
+    const raw = await fs.readFile('database.json', 'utf8');
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') {
+      database = {
+        ...database,
+        ...parsed,
+        users: Array.isArray(parsed.users) ? parsed.users : database.users,
+        malls: Array.isArray(parsed.malls) ? parsed.malls : database.malls,
+        stores: Array.isArray(parsed.stores) ? parsed.stores : database.stores,
+        products: Array.isArray(parsed.products) ? parsed.products : database.products,
+        banners: Array.isArray(parsed.banners) ? parsed.banners : database.banners,
+        settings: parsed.settings && typeof parsed.settings === 'object' ? parsed.settings : database.settings
+      };
+    }
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      console.error('Database load error:', error);
+    }
   }
 };
 
@@ -159,6 +191,116 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    if (user.role !== 'admin') {
+      return res.status(403).json({ message: 'Admin access only' });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET || 'fallback-secret-key',
+      { expiresIn: '24h' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+app.get('/api/auth/me', ...authenticateAdmin, (req, res) => {
+  const user = database.users.find(u => u.id === req.user.id);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  res.json({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role
+  });
+});
+
+// ==================== PUBLIC USER AUTH ROUTES ====================
+app.post('/api/public/auth/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required' });
+    }
+
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const existing = database.users.find(u => u.email.toLowerCase() === normalizedEmail);
+    if (existing) {
+      return res.status(409).json({ message: 'Email is already registered' });
+    }
+
+    if (String(password).length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = {
+      id: generateId(),
+      email: normalizedEmail,
+      password: hashedPassword,
+      name: String(name).trim(),
+      role: 'user',
+      createdAt: new Date().toISOString()
+    };
+
+    database.users.push(newUser);
+    await saveDatabase();
+
+    const token = jwt.sign(
+      { id: newUser.id, email: newUser.email, role: newUser.role },
+      process.env.JWT_SECRET || 'fallback-secret-key',
+      { expiresIn: '24h' }
+    );
+
+    res.status(201).json({
+      token,
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+app.post('/api/public/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    const user = database.users.find(u => u.email.toLowerCase() === normalizedEmail);
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    if (user.role !== 'user') {
+      return res.status(403).json({ message: 'User access only' });
+    }
+
+    const isValidPassword = await bcrypt.compare(password || '', user.password);
     if (!isValidPassword) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
@@ -183,10 +325,14 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-app.get('/api/auth/me', authenticateToken, (req, res) => {
+app.get('/api/public/auth/me', authenticateToken, (req, res) => {
   const user = database.users.find(u => u.id === req.user.id);
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
+  }
+
+  if (user.role !== 'user') {
+    return res.status(403).json({ message: 'User access only' });
   }
 
   res.json({
@@ -198,11 +344,11 @@ app.get('/api/auth/me', authenticateToken, (req, res) => {
 });
 
 // ==================== MALL ROUTES ====================
-app.get('/api/malls', authenticateToken, (req, res) => {
+app.get('/api/malls', ...authenticateAdmin, (req, res) => {
   res.json(database.malls);
 });
 
-app.get('/api/malls/:id', authenticateToken, (req, res) => {
+app.get('/api/malls/:id', ...authenticateAdmin, (req, res) => {
   const mall = database.malls.find(m => m.id === req.params.id);
   if (!mall) {
     return res.status(404).json({ message: 'Mall not found' });
@@ -210,7 +356,7 @@ app.get('/api/malls/:id', authenticateToken, (req, res) => {
   res.json(mall);
 });
 
-app.post('/api/malls', authenticateToken, async (req, res) => {
+app.post('/api/malls', ...authenticateAdmin, async (req, res) => {
   try {
     const mall = {
       id: generateId(),
@@ -227,7 +373,7 @@ app.post('/api/malls', authenticateToken, async (req, res) => {
   }
 });
 
-app.put('/api/malls/:id', authenticateToken, async (req, res) => {
+app.put('/api/malls/:id', ...authenticateAdmin, async (req, res) => {
   try {
     const mallIndex = database.malls.findIndex(m => m.id === req.params.id);
     if (mallIndex === -1) {
@@ -247,7 +393,7 @@ app.put('/api/malls/:id', authenticateToken, async (req, res) => {
   }
 });
 
-app.delete('/api/malls/:id', authenticateToken, async (req, res) => {
+app.delete('/api/malls/:id', ...authenticateAdmin, async (req, res) => {
   try {
     const mallIndex = database.malls.findIndex(m => m.id === req.params.id);
     if (mallIndex === -1) {
@@ -266,7 +412,7 @@ app.delete('/api/malls/:id', authenticateToken, async (req, res) => {
 });
 
 // ==================== STORE ROUTES ====================
-app.get('/api/stores', authenticateToken, (req, res) => {
+app.get('/api/stores', ...authenticateAdmin, (req, res) => {
   const { mall_id } = req.query;
   let stores = database.stores;
   
@@ -277,7 +423,7 @@ app.get('/api/stores', authenticateToken, (req, res) => {
   res.json(stores);
 });
 
-app.get('/api/stores/:id', authenticateToken, (req, res) => {
+app.get('/api/stores/:id', ...authenticateAdmin, (req, res) => {
   const store = database.stores.find(s => s.id === req.params.id);
   if (!store) {
     return res.status(404).json({ message: 'Store not found' });
@@ -285,7 +431,7 @@ app.get('/api/stores/:id', authenticateToken, (req, res) => {
   res.json(store);
 });
 
-app.post('/api/stores', authenticateToken, async (req, res) => {
+app.post('/api/stores', ...authenticateAdmin, async (req, res) => {
   try {
     const store = {
       id: generateId(),
@@ -302,7 +448,7 @@ app.post('/api/stores', authenticateToken, async (req, res) => {
   }
 });
 
-app.put('/api/stores/:id', authenticateToken, async (req, res) => {
+app.put('/api/stores/:id', ...authenticateAdmin, async (req, res) => {
   try {
     const storeIndex = database.stores.findIndex(s => s.id === req.params.id);
     if (storeIndex === -1) {
@@ -322,7 +468,7 @@ app.put('/api/stores/:id', authenticateToken, async (req, res) => {
   }
 });
 
-app.delete('/api/stores/:id', authenticateToken, async (req, res) => {
+app.delete('/api/stores/:id', ...authenticateAdmin, async (req, res) => {
   try {
     const storeIndex = database.stores.findIndex(s => s.id === req.params.id);
     if (storeIndex === -1) {
@@ -341,7 +487,7 @@ app.delete('/api/stores/:id', authenticateToken, async (req, res) => {
 });
 
 // ==================== PRODUCT ROUTES ====================
-app.get('/api/products', authenticateToken, (req, res) => {
+app.get('/api/products', ...authenticateAdmin, (req, res) => {
   const { store_id } = req.query;
   let products = database.products;
   
@@ -352,7 +498,7 @@ app.get('/api/products', authenticateToken, (req, res) => {
   res.json(products);
 });
 
-app.get('/api/products/:id', authenticateToken, (req, res) => {
+app.get('/api/products/:id', ...authenticateAdmin, (req, res) => {
   const product = database.products.find(p => p.id === req.params.id);
   if (!product) {
     return res.status(404).json({ message: 'Product not found' });
@@ -360,7 +506,7 @@ app.get('/api/products/:id', authenticateToken, (req, res) => {
   res.json(product);
 });
 
-app.post('/api/products', authenticateToken, async (req, res) => {
+app.post('/api/products', ...authenticateAdmin, async (req, res) => {
   try {
     const product = {
       id: generateId(),
@@ -377,7 +523,7 @@ app.post('/api/products', authenticateToken, async (req, res) => {
   }
 });
 
-app.put('/api/products/:id', authenticateToken, async (req, res) => {
+app.put('/api/products/:id', ...authenticateAdmin, async (req, res) => {
   try {
     const productIndex = database.products.findIndex(p => p.id === req.params.id);
     if (productIndex === -1) {
@@ -397,7 +543,7 @@ app.put('/api/products/:id', authenticateToken, async (req, res) => {
   }
 });
 
-app.delete('/api/products/:id', authenticateToken, async (req, res) => {
+app.delete('/api/products/:id', ...authenticateAdmin, async (req, res) => {
   try {
     const productIndex = database.products.findIndex(p => p.id === req.params.id);
     if (productIndex === -1) {
@@ -413,11 +559,11 @@ app.delete('/api/products/:id', authenticateToken, async (req, res) => {
 });
 
 // ==================== BANNER ROUTES ====================
-app.get('/api/banners', authenticateToken, (req, res) => {
+app.get('/api/banners', ...authenticateAdmin, (req, res) => {
   res.json(database.banners);
 });
 
-app.post('/api/banners', authenticateToken, async (req, res) => {
+app.post('/api/banners', ...authenticateAdmin, async (req, res) => {
   try {
     const banner = {
       id: generateId(),
@@ -434,7 +580,7 @@ app.post('/api/banners', authenticateToken, async (req, res) => {
   }
 });
 
-app.put('/api/banners/:id', authenticateToken, async (req, res) => {
+app.put('/api/banners/:id', ...authenticateAdmin, async (req, res) => {
   try {
     const bannerIndex = database.banners.findIndex(b => b.id === req.params.id);
     if (bannerIndex === -1) {
@@ -454,7 +600,7 @@ app.put('/api/banners/:id', authenticateToken, async (req, res) => {
   }
 });
 
-app.delete('/api/banners/:id', authenticateToken, async (req, res) => {
+app.delete('/api/banners/:id', ...authenticateAdmin, async (req, res) => {
   try {
     const bannerIndex = database.banners.findIndex(b => b.id === req.params.id);
     if (bannerIndex === -1) {
@@ -470,11 +616,11 @@ app.delete('/api/banners/:id', authenticateToken, async (req, res) => {
 });
 
 // ==================== SETTINGS ROUTES ====================
-app.get('/api/settings', authenticateToken, (req, res) => {
+app.get('/api/settings', ...authenticateAdmin, (req, res) => {
   res.json(database.settings);
 });
 
-app.put('/api/settings', authenticateToken, async (req, res) => {
+app.put('/api/settings', ...authenticateAdmin, async (req, res) => {
   try {
     database.settings = {
       ...database.settings,
@@ -489,7 +635,7 @@ app.put('/api/settings', authenticateToken, async (req, res) => {
   }
 });
 
-app.get('/api/banners/:id', authenticateToken, (req, res) => {
+app.get('/api/banners/:id', ...authenticateAdmin, (req, res) => {
   const banner = database.banners.find(b => b.id === req.params.id);
   if (!banner) {
     return res.status(404).json({ message: 'Banner not found' });
@@ -498,7 +644,7 @@ app.get('/api/banners/:id', authenticateToken, (req, res) => {
 });
 
 // ==================== DASHBOARD STATISTICS ====================
-app.get('/api/dashboard/stats', authenticateToken, (req, res) => {
+app.get('/api/dashboard/stats', ...authenticateAdmin, (req, res) => {
   const stats = {
     totalMalls: database.malls.length,
     totalStores: database.stores.length,
@@ -531,9 +677,15 @@ app.use((error, req, res, next) => {
 });
 
 // ==================== START SERVER ====================
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Admin panel: http://localhost:${PORT}/admin`);
-});
+const startServer = async () => {
+  await loadDatabase();
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Admin panel: http://localhost:${PORT}/admin`);
+  });
+};
+
+startServer();
 
 module.exports = app;

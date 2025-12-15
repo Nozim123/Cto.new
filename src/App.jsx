@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { UserAuthProvider, UserProtectedRoute } from './contexts/UserAuthContext'
 import Navigation from './components/Navigation'
 import Footer from './components/Footer'
 import BottomNavigation from './components/BottomNavigation'
@@ -9,6 +10,10 @@ import HomePage from './pages/HomePage'
 import MallDetailsPage from './pages/MallDetailsPage'
 import StoreDirectoryPage from './pages/StoreDirectoryPage'
 import StoreDetailsPage from './pages/StoreDetailsPage'
+import UserLoginPage from './pages/UserLoginPage'
+import UserRegisterPage from './pages/UserRegisterPage'
+import OnboardingPage from './pages/OnboardingPage'
+import ProfilePage from './pages/ProfilePage'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -27,7 +32,8 @@ import { ProtectedRoute } from './admin/hooks/useAuth'
 function App() {
   return (
     <ThemeProvider>
-      <Router>
+      <UserAuthProvider>
+        <Router>
         <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
           <SeasonalBackground />
         {/* Public routes */}
@@ -60,6 +66,24 @@ function App() {
               <main className="flex-grow relative z-10 pb-16 md:pb-0">
                 <Routes>
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/login" element={<UserLoginPage />} />
+                  <Route path="/register" element={<UserRegisterPage />} />
+                  <Route
+                    path="/onboarding"
+                    element={
+                      <UserProtectedRoute>
+                        <OnboardingPage />
+                      </UserProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/profile"
+                    element={
+                      <UserProtectedRoute>
+                        <ProfilePage />
+                      </UserProtectedRoute>
+                    }
+                  />
                   <Route path="/mall/:mallId" element={<MallDetailsPage />} />
                   <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
                   <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />
@@ -97,7 +121,8 @@ function App() {
           }}
         />
         </div>
-      </Router>
+        </Router>
+      </UserAuthProvider>
     </ThemeProvider>
   )
 }

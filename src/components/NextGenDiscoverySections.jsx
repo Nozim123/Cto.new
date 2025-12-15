@@ -2,13 +2,16 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTheme } from '../contexts/ThemeContext'
+import { useUserAuth } from '../contexts/UserAuthContext'
+import useFavorites from '../hooks/useFavorites'
+import useCountUp from '../hooks/useCountUp'
+import { getUserPreferences } from '../services/preferences'
+import { pushNotification } from '../services/notifications'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import productsData from '../data/products.json'
 import ProductModal from './ProductModal'
-import {
-  trackBehavior
-} from '../services/behavior'
+import { getBehaviorState, getTopBehaviorIds, getTopCategories, trackBehavior } from '../services/behavior'
 
 const stableNumberFromString = (value) => {
   const str = String(value)
@@ -54,6 +57,9 @@ const SectionShell = ({ id, title, subtitle, children }) => {
 export default function NextGenDiscoverySections() {
   const { darkMode } = useTheme()
   const navigate = useNavigate()
+  const { user, isAuthenticated } = useUserAuth()
+  const favorites = useFavorites(user?.id)
+  const preferences = useMemo(() => getUserPreferences(user?.id), [user?.id])
 
   const [now, setNow] = useState(Date.now())
   const [selectedProduct, setSelectedProduct] = useState(null)
@@ -290,8 +296,218 @@ export default function NextGenDiscoverySections() {
 
   const baseCard = darkMode ? 'bg-gray-800 glass-card-dark' : 'bg-white glass-card'
 
+  const discoverData = useMemo(() => {
+    const interestCategories = preferences.interests?.length
+      ? preferences.interests
+      : getTopCategories(3)
+
+    const trendingMallIds = getTopBehaviorIds('mall', 4)
+    const trendingStoreIds = getTopBehaviorIds('store', 6)
+    const popularProductIds = getTopBehaviorIds('product', 6)
+
+    const recommendedStores = storesData
+      .filter((s) => interestCategories.length === 0 || interestCategories.includes(s.category))
+      .filter((s) => !favorites.stores.includes(s.id))
+      .slice(0, 6)
+
+    const trendingStores = (trendingStoreIds.length
+      ? trendingStoreIds
+          .map((id) => storesData.find((s) => s.id === id))
+          .filter(Boolean)
+      : storesData.filter((s) => s.hasPromo)
+    ).slice(0, 6)
+
+    const trendingMalls = (trendingMallIds.length
+      ? trendingMallIds
+          .map((id) => mallsData.find((m) => m.id === id))
+          .filter(Boolean)
+      : mallsData.filter((m) => m.featured)
+    ).slice(0, 4)
+
+    const popularProducts = (popularProductIds.length
+      ? popularProductIds
+          .map((id) => productsData.find((p) => p.id === id))
+          .filter(Boolean)
+      : productsData.filter((p) => String(p.tag || '').toLowerCase().includes('best'))
+    ).slice(0, 6)
+
+    return {
+      interestCategories,
+      trendingMalls,
+      trendingStores,
+      popularProducts,
+      recommendedStores
+    }
+  }, [favorites.malls, favorites.stores, favorites.products, preferences.interests])
+
+  const behaviorState = useMemo(() => getBehaviorState(), [now])
+
+  const totalInteractions = useMemo(() => {
+    const sum = (obj) => Object.values(obj || {}).reduce((acc, n) => acc + Number(n || 0), 0)
+    return sum(behaviorState.counts?.mall) + sum(behaviorState.counts?.store) + sum(behaviorState.counts?.product)
+  }, [behaviorState])
+
+  const savedTotal = favorites.malls.length + favorites.stores.length + favorites.products.length
+
+  const interactionsCount = useCountUp(totalInteractions)
+  const savedCount = useCountUp(savedTotal)
+
+  const editorChoiceMall = mallsData.find((m) => m.featured) || mallsData[0]
+  const fashionStore = storesData.find((s) => s.category === 'Fashion') || storesData[0]
+  const familyExperienceStore = storesData.find((s) => String(s.category).toLowerCase().includes('home')) || storesData[0]
+
   return (
     <div>
+      <SectionShell
+        id="discover"
+        title="Discover"
+        subtitle="A smart discovery hub powered by your behavior and preferences — recommended malls, trending stores, popular products, and personalized suggestions."
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
+            <p className="text-gold text-sm font-semibold">Recommended malls</p>
+            <div className="mt-4 space-y-3">
+              {discoverData.trendingMalls.map((mall) => (
+                <button
+                  key={mall.id}
+                  type="button"
+                  onClick={() => {
+                    trackBehavior({ type: 'mall', id: mall.id })
+                    navigate(`/mall/${mall.id}`)
+                  }}
+                  className={`w-full text-left rounded-xl p-4 border transition-colors ${
+                    darkMode
+                      ? 'border-gray-700 hover:bg-gray-900/40'
+                      : 'border-gray-200 hover:bg-cream'
+                  }`}
+                >
+                  <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{mall.name}</p>
+                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{mall.location}</p>
+                </button>
+              ))}
+              {discoverData.trendingMalls.length === 0 ? (
+                <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Browse a few malls to unlock suggestions.</p>
+              ) : null}
+            </div>
+          </div>
+
+          <div className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
+            <p className="text-gold text-sm font-semibold">Trending stores</p>
+            <div className="mt-4 space-y-3">
+              {discoverData.trendingStores.map((store) => (
+                <button
+                  key={store.id}
+                  type="button"
+                  onClick={() => {
+                    trackBehavior({ type: 'store', id: store.id, category: store.category })
+                    navigate(`/mall/${store.mallId}/store/${store.id}`)
+                  }}
+                  className={`w-full text-left rounded-xl p-4 border transition-colors ${
+                    darkMode
+                      ? 'border-gray-700 hover:bg-gray-900/40'
+                      : 'border-gray-200 hover:bg-cream'
+                  }`}
+                >
+                  <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{store.name}</p>
+                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{store.category}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
+            <p className="text-gold text-sm font-semibold">Popular products</p>
+            <div className="mt-4 space-y-3">
+              {discoverData.popularProducts.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => {
+                    trackBehavior({ type: 'product', id: p.id, category: p.category })
+                    setSelectedProduct(p)
+                  }}
+                  className={`w-full text-left rounded-xl p-4 border transition-colors ${
+                    darkMode
+                      ? 'border-gray-700 hover:bg-gray-900/40'
+                      : 'border-gray-200 hover:bg-cream'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{p.name}</p>
+                      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{p.category}</p>
+                    </div>
+                    <p className="text-gold font-bold">${Number(p.price).toFixed(0)}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className={`mt-8 rounded-2xl p-6 md:p-8 ${baseCard}`}>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <p className="text-gold text-sm font-semibold">Your dashboard</p>
+              <h3 className={`font-display text-2xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
+                Personalized discovery, favorites, and history
+              </h3>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2`}>
+                Interactions: <span className="text-gold font-bold">{interactionsCount}</span> • Saved: <span className="text-gold font-bold">{savedCount}</span>
+              </p>
+            </div>
+
+            <div className="flex gap-3 flex-wrap">
+              {isAuthenticated ? (
+                <>
+                  <button type="button" className="button-primary button-3d" onClick={() => navigate('/profile')}>
+                    Open profile →
+                  </button>
+                  <button type="button" className="button-secondary button-3d" onClick={() => navigate('/onboarding')}>
+                    Preferences
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button type="button" className="button-primary button-3d" onClick={() => navigate('/register')}>
+                    Create profile
+                  </button>
+                  <button type="button" className="button-secondary button-3d" onClick={() => navigate('/login')}>
+                    Sign in
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <p className={`text-sm font-semibold mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              Personalized store picks
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {discoverData.recommendedStores.slice(0, 3).map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => {
+                    trackBehavior({ type: 'store', id: s.id, category: s.category })
+                    navigate(`/mall/${s.mallId}/store/${s.id}`)
+                  }}
+                  className={`rounded-xl p-5 border text-left transition-colors button-3d ${
+                    darkMode
+                      ? 'border-gray-700 hover:bg-gray-900/40'
+                      : 'border-gray-200 hover:bg-cream'
+                  }`}
+                >
+                  <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{s.name}</p>
+                  <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{s.category}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </SectionShell>
+
       <SectionShell
         id="explore-map"
         title="Interactive Map"
@@ -489,7 +705,18 @@ export default function NextGenDiscoverySections() {
                   className="button-secondary button-3d"
                   onClick={() => {
                     trackBehavior({ type: 'store', id: promo.store.id, category: promo.store.category })
-                    toast.success('Deal saved (demo)')
+
+                    if (!isAuthenticated) {
+                      toast('Sign in to save deals')
+                      navigate('/login')
+                      return
+                    }
+
+                    pushNotification(user.id, {
+                      title: 'Deal saved',
+                      message: `${promo.title} • ${promo.discount}`
+                    })
+                    toast.success('Deal saved')
                   }}
                 >
                   Save deal
@@ -518,6 +745,116 @@ export default function NextGenDiscoverySections() {
               <p className={`mt-3 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 Exclusive previews, early-bird deals, and announcement alerts coming soon.
               </p>
+            </div>
+          ))}
+        </div>
+      </SectionShell>
+
+      <SectionShell
+        id="top-picks"
+        title="Top Picks"
+        subtitle="Editorially curated recommendations — premium, practical, and always evolving."
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
+            <p className="text-gold text-sm font-semibold">Editor’s choice</p>
+            <h3 className={`font-display text-2xl font-bold mt-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>
+              {editorChoiceMall?.name}
+            </h3>
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2`}>
+              The most iconic destination to start your Samarkand journey.
+            </p>
+            <button type="button" className="button-primary button-3d mt-4" onClick={() => navigate(`/mall/${editorChoiceMall.id}`)}>
+              Explore →
+            </button>
+          </div>
+
+          <div className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
+            <p className="text-gold text-sm font-semibold">Best for fashion</p>
+            <h3 className={`font-display text-2xl font-bold mt-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>
+              {fashionStore?.name}
+            </h3>
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2`}>
+              Curated pieces and seasonal drops — ideal for premium styling.
+            </p>
+            <button type="button" className="button-secondary button-3d mt-4" onClick={() => navigate(`/mall/${fashionStore.mallId}/store/${fashionStore.id}`)}>
+              View store →
+            </button>
+          </div>
+
+          <div className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
+            <p className="text-gold text-sm font-semibold">Best for home & family</p>
+            <h3 className={`font-display text-2xl font-bold mt-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>
+              {familyExperienceStore?.name}
+            </h3>
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2`}>
+              Essentials, comfort, and family-friendly picks for everyday life.
+            </p>
+            <button type="button" className="button-secondary button-3d mt-4" onClick={() => navigate(`/mall/${familyExperienceStore.mallId}/store/${familyExperienceStore.id}`)}>
+              View store →
+            </button>
+          </div>
+        </div>
+      </SectionShell>
+
+      <SectionShell
+        id="collections"
+        title="Collections"
+        subtitle="Theme-based collections that blend products, stores, and storytelling — built for seasonal campaigns."
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            {
+              title: 'Summer Fitness',
+              desc: 'Footwear, apparel, and accessories curated for active days.',
+              products: productsData.filter((p) => ['Footwear', 'Apparel', 'Accessories'].includes(p.category)).slice(0, 3)
+            },
+            {
+              title: 'Back-to-School',
+              desc: 'Comfort essentials and everyday gear for a fresh start.',
+              products: productsData.filter((p) => ['Apparel', 'Bags'].includes(p.category)).slice(0, 3)
+            },
+            {
+              title: 'Wedding Shopping',
+              desc: 'Premium gifts, accessories, and style highlights.',
+              products: productsData.filter((p) => ['Accessories', 'Apparel'].includes(p.category)).slice(3, 6)
+            },
+            {
+              title: 'Tech Essentials',
+              desc: 'Smart add-ons and modern accessories for your daily setup.',
+              products: productsData.filter((p) => ['Accessories'].includes(p.category)).slice(0, 3)
+            }
+          ].map((c) => (
+            <div key={c.title} className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
+              <h3 className={`font-display text-2xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>{c.title}</h3>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2`}>{c.desc}</p>
+
+              <div className="mt-5 grid grid-cols-3 gap-3">
+                {c.products.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => setSelectedProduct(p)}
+                    className={`rounded-xl overflow-hidden border transition-transform hover:scale-[1.02] ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}
+                    aria-label={`Open product: ${p.name}`}
+                  >
+                    <img src={p.image} alt={p.name} className="w-full h-24 object-cover" loading="lazy" />
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-5">
+                <button
+                  type="button"
+                  className="button-primary button-3d"
+                  onClick={() => {
+                    const first = c.products[0]
+                    if (first) setSelectedProduct(first)
+                  }}
+                >
+                  Explore collection →
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -991,6 +1328,148 @@ export default function NextGenDiscoverySections() {
               <button type="button" className="button-secondary button-3d" onClick={() => toast.success('Contact form coming soon')}> 
                 Contact support
               </button>
+            </div>
+          </div>
+        </div>
+      </SectionShell>
+
+      <SectionShell
+        id="partner"
+        title="Partner With Us"
+        subtitle="Business onboarding for store owners, advertising opportunities, and partnership inquiries."
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
+            <h3 className={`font-display text-2xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
+              Store owner registration
+            </h3>
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2`}>
+              Share your details — we’ll contact you with next steps (demo flow).
+            </p>
+
+            <form
+              className="mt-6 space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault()
+                toast.success('Thanks! Our team will reach out shortly (demo).')
+                e.currentTarget.reset()
+              }}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input
+                  required
+                  name="name"
+                  placeholder="Full name"
+                  className="w-full px-4 py-3 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
+                />
+                <input
+                  required
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  className="w-full px-4 py-3 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
+                />
+              </div>
+              <input
+                required
+                name="business"
+                placeholder="Brand / company"
+                className="w-full px-4 py-3 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
+              />
+              <textarea
+                name="message"
+                rows={4}
+                placeholder="Tell us what you want to launch…"
+                className="w-full px-4 py-3 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
+              />
+              <button type="submit" className="button-primary button-3d w-full">
+                Submit inquiry
+              </button>
+            </form>
+          </div>
+
+          <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
+            <h3 className={`font-display text-2xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
+              Why partner
+            </h3>
+            <div className="mt-6 space-y-4">
+              {[
+                { title: 'Premium placement', desc: 'Featured banners, spotlight stories, and curated collections.' },
+                { title: 'Real-time updates', desc: 'Fast content refresh for promos and new openings.' },
+                { title: 'Future-ready growth', desc: 'Built for e-commerce, AR previews, and multi-city expansion.' }
+              ].map((x) => (
+                <div key={x.title} className={`rounded-xl p-5 border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+                  <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{x.title}</p>
+                  <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mt-2`}>{x.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </SectionShell>
+
+      <SectionShell
+        id="analytics"
+        title="Analytics Preview"
+        subtitle="Public stats for transparency and engagement — most visited malls, trending stores, and popular categories (demo)."
+      >
+        <div className={`rounded-2xl p-6 md:p-8 ${baseCard}`}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className={`rounded-xl p-6 border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <p className={`text-sm font-semibold ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Interactions</p>
+              <p className={`font-display text-4xl font-bold mt-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>{interactionsCount}</p>
+              <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Views across malls, stores, and products</p>
+            </div>
+            <div className={`rounded-xl p-6 border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <p className={`text-sm font-semibold ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Saved items</p>
+              <p className={`font-display text-4xl font-bold mt-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>{savedCount}</p>
+              <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Favorites in user profiles</p>
+            </div>
+            <div className={`rounded-xl p-6 border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <p className={`text-sm font-semibold ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Top categories</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {discoverData.interestCategories.slice(0, 4).map((c) => (
+                  <span key={c} className="px-3 py-1 rounded-full bg-gold/15 text-gold text-xs font-semibold">
+                    {c}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className={`rounded-xl p-6 border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <h3 className={`font-display text-xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>Most visited malls</h3>
+              <div className="mt-4 space-y-3">
+                {getTopBehaviorIds('mall', 3).map((id) => mallsData.find((m) => m.id === id)).filter(Boolean).map((mall) => (
+                  <button
+                    key={mall.id}
+                    type="button"
+                    className={`w-full text-left rounded-lg p-4 transition-colors ${darkMode ? 'bg-gray-900/40 hover:bg-gray-900/60' : 'bg-cream hover:bg-cream/80'}`}
+                    onClick={() => navigate(`/mall/${mall.id}`)}
+                  >
+                    <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{mall.name}</p>
+                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{mall.location}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className={`rounded-xl p-6 border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <h3 className={`font-display text-xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>Trending stores</h3>
+              <div className="mt-4 space-y-3">
+                {getTopBehaviorIds('store', 3).map((id) => storesData.find((s) => s.id === id)).filter(Boolean).map((store) => (
+                  <button
+                    key={store.id}
+                    type="button"
+                    className={`w-full text-left rounded-lg p-4 transition-colors ${darkMode ? 'bg-gray-900/40 hover:bg-gray-900/60' : 'bg-cream hover:bg-cream/80'}`}
+                    onClick={() => navigate(`/mall/${store.mallId}/store/${store.id}`)}
+                  >
+                    <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{store.name}</p>
+                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{store.category}</p>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

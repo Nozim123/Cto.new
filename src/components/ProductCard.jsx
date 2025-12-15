@@ -1,13 +1,34 @@
-import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { useTheme } from '../contexts/ThemeContext'
+import { useUserAuth } from '../contexts/UserAuthContext'
+import useFavorites from '../hooks/useFavorites'
+import { toggleFavorite } from '../services/favorites'
+import { pushNotification } from '../services/notifications'
 
 export default function ProductCard({ product, onSelect }) {
   const { darkMode } = useTheme()
-  const [liked, setLiked] = useState(false)
+  const { user, isAuthenticated } = useUserAuth()
+  const navigate = useNavigate()
 
-  const handleLike = (e) => {
+  const favorites = useFavorites(user?.id)
+  const isSaved = favorites.products.includes(product.id)
+
+  const handleSave = (e) => {
     e.stopPropagation()
-    setLiked(!liked)
+
+    if (!isAuthenticated) {
+      toast('Create a profile to save products')
+      navigate('/register')
+      return
+    }
+
+    const nowSaved = toggleFavorite({ userId: user.id, type: 'product', id: product.id })
+    pushNotification(user.id, {
+      title: nowSaved ? 'Saved product' : 'Removed product',
+      message: nowSaved ? product.name : `Removed ${product.name} from your favorites`
+    })
+    toast.success(nowSaved ? 'Saved' : 'Removed')
   }
 
   return (
@@ -18,7 +39,7 @@ export default function ProductCard({ product, onSelect }) {
       }`}
       role="button"
       tabIndex={0}
-      onKeyPress={(e) => {
+      onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           onSelect(product)
         }
@@ -26,9 +47,7 @@ export default function ProductCard({ product, onSelect }) {
       aria-label={`${product.name}, ${product.price.toFixed(2)}`}
     >
       {/* Image */}
-      <div className={`relative overflow-hidden h-48 sm:h-56 ${
-        darkMode ? 'bg-gray-700' : 'bg-gray-100'
-      }`}>
+      <div className={`relative overflow-hidden h-48 sm:h-56 ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
         <img
           src={product.image}
           alt={product.name}
@@ -40,46 +59,38 @@ export default function ProductCard({ product, onSelect }) {
             {product.tag}
           </div>
         )}
-        
-        {/* Like Button */}
+
+        {/* Save Button */}
         <button
-          onClick={handleLike}
+          onClick={handleSave}
           className={`absolute top-3 left-3 w-10 h-10 rounded-full backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
-            liked ? 'bg-red-500 scale-110 heart-beat' : 'bg-white/70 hover:bg-white/90'
+            isSaved ? 'bg-red-500 scale-110 heart-beat' : 'bg-white/70 hover:bg-white/90'
           }`}
-          aria-label="Like product"
+          aria-label={isSaved ? 'Remove from favorites' : 'Save to favorites'}
         >
-          <span className={`text-lg ${liked ? 'text-white' : 'text-gray-600'}`}>
-            {liked ? '❤️' : '🤍'}
-          </span>
+          <span className={`text-lg ${isSaved ? 'text-white' : 'text-gray-600'}`}>{isSaved ? '❤️' : '🤍'}</span>
         </button>
       </div>
 
       {/* Content */}
       <div className="p-5 flex-grow flex flex-col justify-between">
         <div>
-          <p className={`text-sm mb-1 ${
-            darkMode ? 'text-gray-400' : 'text-sage'
-          }`}>{product.category}</p>
-          <h3 className={`font-display text-lg font-bold group-hover:text-gold transition-colors duration-300 mb-2 ${
-            darkMode ? 'text-cream' : 'text-navy'
-          }`}>
+          <p className={`text-sm mb-1 ${darkMode ? 'text-gray-400' : 'text-sage'}`}>{product.category}</p>
+          <h3
+            className={`font-display text-lg font-bold group-hover:text-gold transition-colors duration-300 mb-2 ${
+              darkMode ? 'text-cream' : 'text-navy'
+            }`}
+          >
             {product.name}
           </h3>
-          <p className={`text-sm line-clamp-2 ${
-            darkMode ? 'text-gray-400' : 'text-gray-600'
-          }`}>
+          <p className={`text-sm line-clamp-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
             {product.description}
           </p>
         </div>
 
         {/* Price */}
-        <div className={`mt-4 pt-4 border-t ${
-          darkMode ? 'border-gray-700' : 'border-gray-100'
-        }`}>
-          <p className="text-2xl font-bold text-gold">
-            ${product.price.toFixed(2)}
-          </p>
+        <div className={`mt-4 pt-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+          <p className="text-2xl font-bold text-gold">${product.price.toFixed(2)}</p>
         </div>
       </div>
     </div>

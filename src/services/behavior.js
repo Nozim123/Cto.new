@@ -16,6 +16,7 @@ const getEmptyState = () => ({
     product: {},
     category: {}
   },
+  events: [],
   lastEventAt: null
 })
 
@@ -31,7 +32,8 @@ export const getBehaviorState = () => {
     counts: {
       ...getEmptyState().counts,
       ...(stored.counts || {})
-    }
+    },
+    events: Array.isArray(stored.events) ? stored.events : []
   }
 }
 
@@ -54,6 +56,16 @@ export const trackBehavior = ({ type, id, category }) => {
         [id]: ((state.counts[type] || {})[id] || 0) + 1
       }
     },
+    events: [
+      {
+        id: `${Date.now()}_${Math.random().toString(16).slice(2)}`,
+        type,
+        targetId: id,
+        category: category || null,
+        createdAt: Date.now()
+      },
+      ...(state.events || [])
+    ].slice(0, 50),
     lastEventAt: Date.now()
   }
 
@@ -85,6 +97,12 @@ export const getTopCategories = (limit = 3) => {
     .sort((a, b) => b[1] - a[1])
     .slice(0, limit)
     .map(([category]) => category)
+}
+
+export const getRecentEvents = (limit = 10) => {
+  const state = getBehaviorState()
+  const list = Array.isArray(state.events) ? state.events : []
+  return list.slice(0, limit)
 }
 
 export const clearBehavior = () => {

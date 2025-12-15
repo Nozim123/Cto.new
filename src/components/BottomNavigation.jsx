@@ -5,11 +5,19 @@ export default function BottomNavigation() {
   const location = useLocation()
   const { darkMode } = useTheme()
   
-  const isActive = (path) => {
-    if (path === '/') {
+  const isActive = (to) => {
+    const [pathnamePart, hashPart] = to.split('#')
+    const pathname = pathnamePart || '/'
+
+    if (hashPart) {
+      return location.pathname === pathname && location.hash === `#${hashPart}`
+    }
+
+    if (pathname === '/') {
       return location.pathname === '/'
     }
-    return location.pathname.includes(path)
+
+    return location.pathname.startsWith(pathname)
   }
 
   const navItems = [
@@ -19,19 +27,19 @@ export default function BottomNavigation() {
       icon: '🏠'
     },
     {
-      label: 'About',
-      path: '#about',
-      icon: 'ℹ️'
+      label: 'Discover',
+      path: '/#discover',
+      icon: '✨'
     },
     {
-      label: 'Malls',
-      path: '#malls',
-      icon: '🏢'
+      label: 'Map',
+      path: '/#explore-map',
+      icon: '🗺️'
     },
     {
-      label: 'Contact',
-      path: '#contact',
-      icon: '📞'
+      label: 'Profile',
+      path: '/profile',
+      icon: '👤'
     }
   ]
 
@@ -42,24 +50,8 @@ export default function BottomNavigation() {
       <div className="grid grid-cols-4 h-16">
         {navItems.map((item) => {
           const active = isActive(item.path)
-          return item.path.startsWith('#') ? (
-            <a
-              key={item.path}
-              href={item.path}
-              className={`flex flex-col items-center justify-center gap-1 transition-all duration-300
-                        ${active 
-                          ? darkMode 
-                            ? 'text-gold bg-gray-800' 
-                            : 'text-gold bg-cream' 
-                          : darkMode
-                            ? 'text-gray-400 hover:text-gold'
-                            : 'text-gray-600 hover:text-gold'
-                        }`}
-            >
-              <span className="text-xl">{item.icon}</span>
-              <span className="text-xs font-medium">{item.label}</span>
-            </a>
-          ) : (
+
+          return (
             <Link
               key={item.path}
               to={item.path}

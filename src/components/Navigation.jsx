@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import { useUserAuth } from '../contexts/UserAuthContext'
 import DarkModeToggle from './DarkModeToggle'
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { darkMode, seasonalColors } = useTheme()
+  const { user, isAuthenticated } = useUserAuth()
 
   return (
     <nav className={`sticky top-0 z-50 shadow-md backdrop-blur-lg transition-colors duration-300 ${
@@ -34,10 +36,38 @@ export default function Navigation() {
             <a href="#contact" className="hover:text-gold transition-all duration-300 transform hover:scale-110">
               Contact
             </a>
-            <Link to="/admin" className="button-primary button-3d text-sm px-4 py-2">
-              Admin
-            </Link>
-            <DarkModeToggle />
+
+            <div className="flex items-center gap-3">
+              {isAuthenticated ? (
+                <Link
+                  to="/profile"
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 button-3d ${
+                    darkMode ? 'bg-gray-800 text-cream border border-gray-700' : 'bg-cream text-navy border border-gray-200'
+                  }`}
+                >
+                  {user?.name || 'Profile'}
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 ${
+                      darkMode ? 'text-gray-200 hover:text-gold' : 'text-navy hover:text-gold'
+                    }`}
+                  >
+                    Sign in
+                  </Link>
+                  <Link to="/register" className="button-primary button-3d text-sm px-4 py-2">
+                    Create profile
+                  </Link>
+                </>
+              )}
+
+              <Link to="/admin" className="button-secondary button-3d text-sm px-4 py-2">
+                Admin
+              </Link>
+              <DarkModeToggle />
+            </div>
           </div>
 
           {/* Mobile Menu Button & Dark Mode */}
@@ -79,6 +109,34 @@ export default function Navigation() {
             >
               Contact
             </a>
+
+            {isAuthenticated ? (
+              <Link
+                to="/profile"
+                className="block py-2 hover:text-gold transition-colors duration-300"
+                onClick={() => setMenuOpen(false)}
+              >
+                Profile
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="block py-2 hover:text-gold transition-colors duration-300"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Sign in
+                </Link>
+                <Link
+                  to="/register"
+                  className="block py-2 hover:text-gold transition-colors duration-300"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Create profile
+                </Link>
+              </>
+            )}
+
             <Link 
               to="/admin" 
               className="block py-2 hover:text-gold transition-colors duration-300"

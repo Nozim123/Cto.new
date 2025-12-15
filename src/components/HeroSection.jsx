@@ -1,16 +1,8 @@
-import { useState } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import SmartSearch from './SmartSearch'
 
 export default function HeroSection() {
-  const [searchQuery, setSearchQuery] = useState('')
   const { darkMode, seasonalColors } = useTheme()
-
-  const handleSearch = (e) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      window.location.hash = 'malls'
-    }
-  }
 
   return (
     <section className={`relative w-full h-96 md:h-screen md:min-h-[500px] flex items-center overflow-hidden transition-colors duration-300 ${
@@ -49,33 +41,10 @@ export default function HeroSection() {
             Discover the finest shopping destinations with premium brands, entertainment, and dining experiences
           </p>
 
-          {/* Search Bar */}
-          <form
-            onSubmit={handleSearch}
-            className="max-w-md mx-auto flex gap-2 fade-in-up-delay-2"
-          >
-            <div className="flex-grow relative">
-              <input
-                type="text"
-                placeholder="Search malls..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full px-4 py-3 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold transition-all duration-300 ${
-                  darkMode 
-                    ? 'bg-gray-800/70 text-cream backdrop-blur-sm' 
-                    : 'bg-white text-navy'
-                }`}
-                aria-label="Search malls"
-              />
-            </div>
-            <button
-              type="submit"
-              className="button-primary px-6 py-3 rounded-lg"
-              aria-label="Search"
-            >
-              Search
-            </button>
-          </form>
+          {/* Smart Search */}
+          <div className="max-w-md mx-auto fade-in-up-delay-2">
+            <SmartSearch />
+          </div>
 
           {/* CTA */}
           <div className="mt-8 md:mt-12 fade-in-up-delay-3">
