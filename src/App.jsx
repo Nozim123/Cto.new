@@ -1,6 +1,8 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { LanguageProvider } from './contexts/LanguageContext'
+import { UserProvider } from './contexts/UserContext'
 import Navigation from './components/Navigation'
 import Footer from './components/Footer'
 import BottomNavigation from './components/BottomNavigation'
@@ -24,54 +26,62 @@ import BannerFormPage from './admin/pages/BannerFormPage'
 import SettingsPage from './admin/pages/SettingsPage'
 import { ProtectedRoute } from './admin/hooks/useAuth'
 
-function App() {
+// Component to handle route-based navigation
+function AppContent() {
+  const location = useLocation()
+  const isAdminRoute = location.pathname.startsWith('/admin')
+
   return (
-    <ThemeProvider>
-      <Router>
-        <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
-          <SeasonalBackground />
-        {/* Public routes */}
-        <Routes>
-          <Route path="/admin/login" element={<LoginPage />} />
-          <Route path="/admin/*" element={
-            <ProtectedRoute>
+    <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
+      <SeasonalBackground />
+      
+      {/* Public routes */}
+      <Routes>
+        <Route path="/admin/login" element={<LoginPage />} />
+        <Route path="/admin/*" element={
+          <ProtectedRoute>
+            <Routes>
+              <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path="/admin/dashboard" element={<DashboardPage />} />
+              <Route path="/admin/malls" element={<MallListPage />} />
+              <Route path="/admin/malls/new" element={<MallFormPage />} />
+              <Route path="/admin/malls/:id/edit" element={<MallFormPage />} />
+              <Route path="/admin/stores" element={<StoreListPage />} />
+              <Route path="/admin/stores/new" element={<StoreFormPage />} />
+              <Route path="/admin/stores/:id/edit" element={<StoreFormPage />} />
+              <Route path="/admin/products" element={<ProductListPage />} />
+              <Route path="/admin/products/new" element={<ProductFormPage />} />
+              <Route path="/admin/products/:id/edit" element={<ProductFormPage />} />
+              <Route path="/admin/banners" element={<BannerListPage />} />
+              <Route path="/admin/banners/new" element={<BannerFormPage />} />
+              <Route path="/admin/banners/:id/edit" element={<BannerFormPage />} />
+              <Route path="/admin/settings" element={<SettingsPage />} />
+            </Routes>
+          </ProtectedRoute>
+        } />
+        <Route path="/*" element={
+          <>
+            {!isAdminRoute && <Navigation />}
+            <main className={`flex-grow relative z-10 ${!isAdminRoute ? 'pb-16 md:pb-0' : ''}`}>
               <Routes>
-                <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="/admin/dashboard" element={<DashboardPage />} />
-                <Route path="/admin/malls" element={<MallListPage />} />
-                <Route path="/admin/malls/new" element={<MallFormPage />} />
-                <Route path="/admin/malls/:id/edit" element={<MallFormPage />} />
-                <Route path="/admin/stores" element={<StoreListPage />} />
-                <Route path="/admin/stores/new" element={<StoreFormPage />} />
-                <Route path="/admin/stores/:id/edit" element={<StoreFormPage />} />
-                <Route path="/admin/products" element={<ProductListPage />} />
-                <Route path="/admin/products/new" element={<ProductFormPage />} />
-                <Route path="/admin/products/:id/edit" element={<ProductFormPage />} />
-                <Route path="/admin/banners" element={<BannerListPage />} />
-                <Route path="/admin/banners/new" element={<BannerFormPage />} />
-                <Route path="/admin/banners/:id/edit" element={<BannerFormPage />} />
-                <Route path="/admin/settings" element={<SettingsPage />} />
+                <Route path="/" element={<HomePage />} />
+                <Route path="/mall/:mallId" element={<MallDetailsPage />} />
+                <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
+                <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />
               </Routes>
-            </ProtectedRoute>
-          } />
-          <Route path="/*" element={
-            <>
-              <Navigation />
-              <main className="flex-grow relative z-10 pb-16 md:pb-0">
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/mall/:mallId" element={<MallDetailsPage />} />
-                  <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
-                  <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />
-                </Routes>
-              </main>
-              <Footer />
-              <BottomNavigation />
-            </>
-          } />
-        </Routes>
-        
-        {/* Toast notifications */}
+            </main>
+            {!isAdminRoute && (
+              <>
+                <Footer />
+                <BottomNavigation />
+              </>
+            )}
+          </>
+        } />
+      </Routes>
+      
+      {/* Toast notifications - only show on public routes */}
+      {!isAdminRoute && (
         <Toaster 
           position="top-right"
           toastOptions={{
@@ -79,6 +89,8 @@ function App() {
             style: {
               background: '#363636',
               color: '#fff',
+              borderRadius: '12px',
+              boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
             },
             success: {
               duration: 3000,
@@ -96,8 +108,21 @@ function App() {
             },
           }}
         />
-        </div>
-      </Router>
+      )}
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <LanguageProvider>
+        <UserProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </UserProvider>
+      </LanguageProvider>
     </ThemeProvider>
   )
 }

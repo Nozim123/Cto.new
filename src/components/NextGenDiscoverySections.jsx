@@ -2,10 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import productsData from '../data/products.json'
 import ProductModal from './ProductModal'
+import RealTimeMap from './RealTimeMap'
 import {
   trackBehavior
 } from '../services/behavior'
@@ -53,6 +55,7 @@ const SectionShell = ({ id, title, subtitle, children }) => {
 
 export default function NextGenDiscoverySections() {
   const { darkMode } = useTheme()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const [now, setNow] = useState(Date.now())
@@ -292,140 +295,8 @@ export default function NextGenDiscoverySections() {
 
   return (
     <div>
-      <SectionShell
-        id="explore-map"
-        title="Interactive Map"
-        subtitle="Browse shopping destinations like a digital experience: mall clusters, store pinpoints, and category filtering."
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className={`rounded-2xl p-6 ${baseCard}`}>
-            <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-              Filters
-            </h3>
-
-            <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Category
-            </label>
-            <select
-              value={mapCategory}
-              onChange={(e) => setMapCategory(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
-            >
-              {storeCategories.map((c) => (
-                <option key={c} value={c}>
-                  {c === 'all' ? 'All categories' : c}
-                </option>
-              ))}
-            </select>
-
-            <label className={`block text-sm font-semibold mb-2 mt-5 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Mall cluster
-            </label>
-            <div className="space-y-2">
-              {mallsData.map((mall) => (
-                <button
-                  key={mall.id}
-                  type="button"
-                  onClick={() => setSelectedMapMallId(mall.id)}
-                  className={`w-full text-left px-4 py-3 rounded-lg border transition-all duration-200 button-3d ${
-                    selectedMapMallId === mall.id
-                      ? 'border-gold bg-gold/10'
-                      : darkMode
-                        ? 'border-gray-700 hover:border-gray-600'
-                        : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <p className={`font-semibold ${darkMode ? 'text-cream' : 'text-navy'}`}>{mall.name}</p>
-                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{mall.status === 'coming_soon' ? 'Coming soon' : 'Open'}</p>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className={`lg:col-span-2 rounded-2xl p-6 ${baseCard}`}>
-            <div className="flex items-start justify-between gap-6 flex-wrap mb-4">
-              <div>
-                <h3 className={`font-display text-xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                  City map
-                </h3>
-                <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Selected: <span className="text-gold font-semibold">{selectedMapMall?.name}</span>
-                </p>
-              </div>
-              <button
-                type="button"
-                className="button-primary button-3d"
-                onClick={() => {
-                  trackBehavior({ type: 'mall', id: selectedMapMallId })
-                  navigate(`/mall/${selectedMapMallId}`)
-                }}
-              >
-                Open mall →
-              </button>
-            </div>
-
-            <div
-              className={`relative w-full h-[420px] rounded-xl overflow-hidden border ${
-                darkMode ? 'border-gray-700 bg-gray-900/40' : 'border-gray-200 bg-cream/60'
-              }`}
-            >
-              <div className="absolute inset-0 opacity-60" style={{
-                backgroundImage:
-                  'radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.25), transparent 45%), radial-gradient(circle at 80% 50%, rgba(143, 168, 154, 0.25), transparent 45%)'
-              }} />
-
-              {mallsData.map((mall) => {
-                const pos = mapMallPositions[mall.id] || { x: 50, y: 50 }
-                const active = mall.id === selectedMapMallId
-                return (
-                  <button
-                    key={mall.id}
-                    type="button"
-                    onClick={() => setSelectedMapMallId(mall.id)}
-                    className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 shadow-md transition-all duration-300 ${
-                      active ? 'border-gold bg-gold text-navy scale-110' : 'border-navy bg-white/80 text-navy hover:scale-105'
-                    }`}
-                    style={{ left: `${pos.x}%`, top: `${pos.y}%`, width: active ? 56 : 44, height: active ? 56 : 44 }}
-                    aria-label={`Map pin: ${mall.name}`}
-                  >
-                    <span className="text-xs font-bold">{mall.name.split(' ')[0]}</span>
-                  </button>
-                )
-              })}
-
-              {mapStores.map((store) => {
-                const basePos = mapMallPositions[selectedMapMallId] || { x: 50, y: 50 }
-                const seed = stableNumberFromString(store.id)
-                const radius = 7 + (seed % 10)
-                const angle = (seed % 360) * (Math.PI / 180)
-                const x = basePos.x + Math.cos(angle) * (radius / 2)
-                const y = basePos.y + Math.sin(angle) * (radius / 2)
-
-                return (
-                  <button
-                    key={store.id}
-                    type="button"
-                    onClick={() => {
-                      trackBehavior({ type: 'store', id: store.id, category: store.category })
-                      navigate(`/mall/${store.mallId}/store/${store.id}`)
-                    }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-accent border-2 border-white shadow-md hover:scale-125 transition-transform"
-                    style={{ left: `${x}%`, top: `${y}%` }}
-                    title={`${store.name} • ${store.category}`}
-                    aria-label={`Store pin: ${store.name}`}
-                  />
-                )
-              })}
-            </div>
-
-            <div className="mt-5">
-              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                Store pinpoints: <span className="font-semibold">{mapStores.length}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </SectionShell>
+      {/* Real-time Map Section */}
+      <RealTimeMap />
 
       <SectionShell
         id="experiences"
