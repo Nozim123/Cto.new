@@ -1,23 +1,35 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
+import { useUser } from '../contexts/UserContext'
 import DarkModeToggle from './DarkModeToggle'
+import LanguageSwitcher from './LanguageSwitcher'
+import UserProfile from './UserProfile'
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
   const { darkMode, seasonalColors } = useTheme()
+  const { t } = useLanguage()
+  const { isAuthenticated } = useUser()
 
   return (
-    <nav className={`sticky top-0 z-50 shadow-md backdrop-blur-lg transition-colors duration-300 ${
+    <nav className={`sticky top-0 z-50 shadow-lg backdrop-blur-xl transition-all duration-500 ${
       darkMode 
-        ? 'bg-gray-900/90 text-cream' 
-        : 'bg-white/90 text-navy'
+        ? 'bg-gray-900/95 text-cream border-b border-purple-500/20' 
+        : 'bg-white/95 text-navy border-b border-purple-200/50'
     }`}>
-      <div className="max-w-6xl mx-auto px-4 lg:px-8 py-4">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4">
         <div className="flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="font-display text-2xl lg:text-3xl font-bold text-gold">Samarkand</span>
-            <span className="font-display text-xl lg:text-2xl font-bold hidden sm:inline" 
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="relative">
+              <span className="font-display text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:via-purple-500 group-hover:to-purple-700 transition-all duration-500 transform group-hover:scale-105">
+                Samarkand
+              </span>
+              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-purple-600 group-hover:w-full transition-all duration-500"></div>
+            </div>
+            <span className="font-display text-xl lg:text-2xl font-bold hidden sm:inline transition-all duration-300 hover:scale-110" 
                   style={{ color: seasonalColors.primary }}>
               Mall
             </span>
@@ -25,30 +37,64 @@ export default function Navigation() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-8 items-center">
-            <Link to="/" className="hover:text-gold transition-all duration-300 transform hover:scale-110">
-              Home
+            <Link to="/" className="relative overflow-hidden group">
+              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
+                {t('nav.home')}
+              </span>
+              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <a href="#about" className="hover:text-gold transition-all duration-300 transform hover:scale-110">
-              About
+            <a href="#about" className="relative overflow-hidden group">
+              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
+                {t('nav.about')}
+              </span>
+              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
             </a>
-            <a href="#contact" className="hover:text-gold transition-all duration-300 transform hover:scale-110">
-              Contact
+            <a href="#contact" className="relative overflow-hidden group">
+              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
+                {t('nav.contact')}
+              </span>
+              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
             </a>
-            <Link to="/admin" className="button-primary button-3d text-sm px-4 py-2">
-              Admin
-            </Link>
-            <DarkModeToggle />
+            
+            <div className="flex items-center gap-4">
+              <LanguageSwitcher />
+              <DarkModeToggle />
+              
+              {isAuthenticated ? (
+                <div className="relative">
+                  <button 
+                    onClick={() => setProfileOpen(!profileOpen)}
+                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold text-sm hover:from-purple-300 hover:to-purple-500 transition-all duration-300 transform hover:scale-110 shadow-lg hover:shadow-purple-500/25"
+                  >
+                    U
+                  </button>
+                  <UserProfile isOpen={profileOpen} onClose={() => setProfileOpen(false)} />
+                </div>
+              ) : (
+                <Link 
+                  to="/admin" 
+                  className="button-3d bg-gradient-to-r from-purple-500 to-purple-700 text-white text-sm px-6 py-2 rounded-xl font-medium hover:from-purple-600 hover:to-purple-800 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-purple-500/30"
+                >
+                  {t('nav.admin')}
+                </Link>
+              )}
+            </div>
           </div>
 
-          {/* Mobile Menu Button & Dark Mode */}
-          <div className="md:hidden flex items-center gap-4">
+          {/* Mobile Menu Button & Controls */}
+          <div className="md:hidden flex items-center gap-3">
+            <LanguageSwitcher />
             <DarkModeToggle />
             <button 
-              className="text-gold text-2xl"
+              className="text-purple-600 text-2xl p-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all duration-300"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
-              ☰
+              <div className="w-6 h-6 flex flex-col justify-center items-center">
+                <div className={`w-5 h-0.5 bg-current transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></div>
+                <div className={`w-5 h-0.5 bg-current transition-all duration-300 mt-1 ${menuOpen ? 'opacity-0' : ''}`}></div>
+                <div className={`w-5 h-0.5 bg-current transition-all duration-300 mt-1 ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
+              </div>
             </button>
           </div>
         </div>
@@ -56,36 +102,49 @@ export default function Navigation() {
         {/* Mobile Menu */}
         {menuOpen && (
           <div className={`md:hidden mt-4 pb-4 border-t border-opacity-20 pt-4 ${
-            darkMode ? 'border-gold' : 'border-navy'
-          }`}>
+            darkMode ? 'border-purple-500/30' : 'border-purple-200/50'
+          } animate-slide-down`}>
             <Link 
               to="/" 
-              className="block py-2 hover:text-gold transition-colors duration-300"
+              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
               onClick={() => setMenuOpen(false)}
             >
-              Home
+              {t('nav.home')}
             </Link>
             <a 
               href="#about" 
-              className="block py-2 hover:text-gold transition-colors duration-300"
+              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
               onClick={() => setMenuOpen(false)}
             >
-              About
+              {t('nav.about')}
             </a>
             <a 
               href="#contact" 
-              className="block py-2 hover:text-gold transition-colors duration-300"
+              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
               onClick={() => setMenuOpen(false)}
             >
-              Contact
+              {t('nav.contact')}
             </a>
-            <Link 
-              to="/admin" 
-              className="block py-2 hover:text-gold transition-colors duration-300"
-              onClick={() => setMenuOpen(false)}
-            >
-              Admin Panel
-            </Link>
+            {isAuthenticated && (
+              <button 
+                onClick={() => {
+                  setProfileOpen(!profileOpen)
+                  setMenuOpen(false)
+                }}
+                className="block w-full text-left py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
+              >
+                {t('nav.profile')}
+              </button>
+            )}
+            {!isAuthenticated && (
+              <Link 
+                to="/admin" 
+                className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                {t('nav.admin')}
+              </Link>
+            )}
           </div>
         )}
       </div>
