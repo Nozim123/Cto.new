@@ -222,8 +222,8 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {[
               { icon: '📞', title: 'Call Us', info: '+998 (99) 689-24-80', color: 'from-blue-400 to-blue-600' },
-              { icon: '✉️', title: 'Email Us', info: 'info: roziyevnozim43@gmail.com', color: 'from-green-400 to-green-600' },
-              { icon: '📍', title: 'Visit Us', info: 'Samarkand, Uzbekistan', color: 'from-purple-400 to-purple-600' }
+              { icon: '✉️', title: 'Email Us', info: 'roziyevnozim43@gmail.com', color: 'from-green-400 to-green-600' },
+              { icon: '📍', title: 'Visit Us', info: 'Samarkand Mikrarayon bozorchasi', color: 'from-purple-400 to-purple-600' }
             ].map((contact, index) => (
               <div 
                 key={index}
