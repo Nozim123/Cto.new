@@ -13,9 +13,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <h3 className="font-display text-2xl font-bold text-gold mb-4">Samarkand Mall</h3>
+            <h3 className="font-display text-2xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent mb-4">
+              Mega Travel Center
+            </h3>
             <p className="text-cream text-opacity-80">
-              Explore the finest shopping destinations in Samarkand
+              A world-class digital platform for premium shopping and travel experiences
             </p>
           </div>
 
@@ -48,7 +50,7 @@ export default function Footer() {
               📞 +998 (66) 233-30-30
             </p>
             <p className="text-cream text-opacity-80">
-              ✉️ info@samarkandmall.uz
+              ✉️ info@megatravelcenter.com
             </p>
           </div>
         </div>
@@ -56,7 +58,7 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-gold border-opacity-20 pt-8">
           <p className="text-center text-cream text-opacity-60">
-            © {currentYear} Samarkand Mall Directory. All rights reserved.
+            © {currentYear} Mega Travel Center (MTC). All rights reserved.
           </p>
         </div>
       </div>

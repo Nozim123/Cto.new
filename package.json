@@ -1,7 +1,7 @@
 {
-  "name": "samarkand-mall-directory",
+  "name": "mega-travel-center",
   "version": "1.0.0",
-  "description": "Modern website for Samarkand Mall Directory",
+  "description": "Ultra-modern digital platform for Mega Travel Center (MTC)",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",

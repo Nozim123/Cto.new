@@ -5,6 +5,9 @@ import HeroSection from '../components/HeroSection'
 import MallCard from '../components/MallCard'
 import NextGenDiscoverySections from '../components/NextGenDiscoverySections'
 import { SkeletonMallCard } from '../components/SkeletonCard'
+import AnimatedCounter from '../components/AnimatedCounter'
+import Button3D from '../components/Button3D'
+import { useScrollReveal } from '../hooks/useScrollReveal'
 import mallsData from '../data/malls.json'
 
 export default function HomePage() {
@@ -131,10 +134,10 @@ export default function HomePage() {
         {/* Real-time Stats */}
         <div className="mt-12 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
           {[
-            { label: t('home.activeMalls'), value: '6', icon: '🏢' },
-            { label: t('home.totalStores'), value: '845+', icon: '🏪' },
-            { label: t('home.comingSoon'), value: '4', icon: '🚧' },
-            { label: t('home.happyVisitors'), value: '50K+', icon: '😊' }
+            { label: t('home.activeMalls'), value: 6, icon: '🏢' },
+            { label: t('home.totalStores'), value: 845, suffix: '+', icon: '🏪' },
+            { label: t('home.comingSoon'), value: 4, icon: '🚧' },
+            { label: t('home.happyVisitors'), value: 50, suffix: 'K+', icon: '😊' }
           ].map((stat, index) => (
             <div 
               key={index}
@@ -143,8 +146,13 @@ export default function HomePage() {
               <div className="text-2xl sm:text-3xl mb-2 group-hover:scale-110 transition-transform">
                 {stat.icon}
               </div>
-              <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-1">
-                {stat.value}
+              <div className="text-xl sm:text-2xl mb-1">
+                <AnimatedCounter 
+                  end={stat.value} 
+                  suffix={stat.suffix || ''} 
+                  duration={2000}
+                  className="bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent"
+                />
               </div>
               <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                 {stat.label}
@@ -172,15 +180,22 @@ export default function HomePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
-              <button className="group relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-purple-700 font-semibold rounded-2xl hover:bg-purple-50 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-3d-xl">
-                <span className="relative z-10">{t('buttons.startVirtualTour')}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              </button>
+              <Button3D 
+                variant="ghost" 
+                size="lg"
+                className="!bg-white !text-purple-700 hover:!bg-purple-50 w-full sm:w-auto"
+              >
+                {t('buttons.startVirtualTour')}
+              </Button3D>
               
-              <button className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/30 text-white font-semibold rounded-2xl hover:bg-white/10 backdrop-blur-sm transition-all duration-500 transform hover:-translate-y-2 hover:shadow-3d">
+              <Button3D 
+                variant="outline" 
+                size="lg"
+                className="!border-2 !border-white/30 !text-white hover:!bg-white/10 !backdrop-blur-sm w-full sm:w-auto"
+              >
                 <span className="mr-2">📍</span>
                 {t('buttons.liveMallStatus')}
-              </button>
+              </Button3D>
             </div>
           </div>
         </div>
