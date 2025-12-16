@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import Button3D from './Button3D'
 
 export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -39,14 +40,16 @@ export default function HeroSection() {
         <div className="text-center">
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-display font-bold text-cream mb-4 md:mb-6 fade-in-up">
-            Explore Shopping Malls
+            <span className="bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 bg-clip-text text-transparent animate-gradient">
+              Mega Travel Center
+            </span>
             <br className="hidden sm:block" />
-            <span className="text-gold">in Samarkand</span>
+            <span className="text-gold">Premium Digital Experience</span>
           </h1>
 
           {/* Subheading */}
           <p className="text-base sm:text-lg md:text-xl text-cream text-opacity-90 mb-8 md:mb-10 max-w-2xl mx-auto fade-in-up-delay-1">
-            Discover the finest shopping destinations with premium brands, entertainment, and dining experiences
+            A world-class digital platform combining luxury, innovation, and interactive experiences
           </p>
 
           {/* Search Bar */}
@@ -68,27 +71,22 @@ export default function HeroSection() {
                 aria-label="Search malls"
               />
             </div>
-            <button
-              type="submit"
-              className="button-primary px-6 py-3 rounded-lg"
-              aria-label="Search"
-            >
+            <Button3D type="submit" variant="primary" size="md">
               Search
-            </button>
+            </Button3D>
           </form>
 
           {/* CTA */}
           <div className="mt-8 md:mt-12 fade-in-up-delay-3">
-            <a
-              href="#malls"
-              className={`inline-block px-8 py-3 border-2 font-semibold rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 ${
-                darkMode
-                  ? 'border-cream text-cream hover:bg-cream hover:text-navy'
-                  : 'border-cream text-cream hover:bg-cream hover:text-navy'
-              }`}
+            <Button3D 
+              onClick={() => window.location.hash = 'malls'} 
+              variant="outline"
+              size="lg"
+              className="!border-2 !border-cream !text-cream hover:!bg-cream hover:!text-navy"
             >
-              Browse Malls ↓
-            </a>
+              <span>Browse Malls</span>
+              <span className="ml-2">↓</span>
+            </Button3D>
           </div>
         </div>
       </div>

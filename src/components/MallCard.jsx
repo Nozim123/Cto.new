@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
+import Button3D from './Button3D'
 
 export default function MallCard({ mall, index = 0 }) {
   const isComingSoon = mall.status === 'coming_soon'
@@ -8,10 +9,10 @@ export default function MallCard({ mall, index = 0 }) {
   const delayClass = `fade-in-up-delay-${Math.min(index % 3, 3)}`
 
   return (
-    <div className={`card-shadow rounded-lg overflow-hidden h-full flex flex-col transition-all duration-300 ${
+    <div className={`premium-card rounded-2xl overflow-hidden h-full flex flex-col ${
       darkMode 
-        ? 'bg-gray-800 glass-card-dark' 
-        : 'bg-white glass-card'
+        ? 'bg-gray-800 frosted-glass-dark' 
+        : 'bg-white frosted-glass'
     } ${delayClass}`}>
       {/* Image Container */}
       <div className="relative overflow-hidden bg-gray-200 dark:bg-gray-700 h-48 sm:h-56 md:h-64 group">
@@ -56,23 +57,15 @@ export default function MallCard({ mall, index = 0 }) {
 
         {/* Button */}
         {!isComingSoon ? (
-          <Link
-            to={`/mall/${mall.id}`}
-            className="button-primary inline-block text-center mt-4 w-full"
-          >
-            View Details →
+          <Link to={`/mall/${mall.id}`} className="mt-4 block">
+            <Button3D variant="primary" fullWidth>
+              View Details →
+            </Button3D>
           </Link>
         ) : (
-          <button
-            disabled
-            className={`w-full px-6 py-3 font-semibold rounded-lg opacity-60 cursor-not-allowed mt-4 ${
-              darkMode 
-                ? 'bg-gray-700 text-gray-500' 
-                : 'bg-gray-300 text-gray-600'
-            }`}
-          >
+          <Button3D variant="outline" fullWidth disabled className="mt-4 opacity-60">
             Coming Soon
-          </button>
+          </Button3D>
         )}
       </div>
     </div>

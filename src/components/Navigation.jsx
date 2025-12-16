@@ -24,14 +24,14 @@ export default function Navigation() {
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2 group">
             <div className="relative">
-              <span className="font-display text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:via-purple-500 group-hover:to-purple-700 transition-all duration-500 transform group-hover:scale-105">
-                Samarkand
+              <span className="font-display text-xl lg:text-2xl font-bold bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:via-purple-500 group-hover:to-purple-700 transition-all duration-500 transform group-hover:scale-105">
+                MTC
               </span>
               <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-purple-600 group-hover:w-full transition-all duration-500"></div>
             </div>
-            <span className="font-display text-xl lg:text-2xl font-bold hidden sm:inline transition-all duration-300 hover:scale-110" 
+            <span className="font-display text-sm lg:text-base font-semibold hidden sm:inline transition-all duration-300 hover:scale-110 opacity-70" 
                   style={{ color: seasonalColors.primary }}>
-              Mall
+              Mega Travel Center
             </span>
           </Link>
 
