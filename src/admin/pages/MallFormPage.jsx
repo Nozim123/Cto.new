@@ -32,6 +32,8 @@ const MallFormPage = () => {
     location: { lat: '', lng: '' },
     banner: '',
     gallery: [],
+    categories: [],
+    featured: false,
     phone: '',
     social: {
       instagram: '',
@@ -66,6 +68,8 @@ const MallFormPage = () => {
         location: mall.location || { lat: '', lng: '' },
         banner: mall.banner || '',
         gallery: mall.gallery || [],
+        categories: mall.categories || [],
+        featured: Boolean(mall.featured),
         phone: mall.phone || '',
         social: mall.social || { instagram: '', telegram: '', website: '' },
         status: mall.status || 'coming_soon'
@@ -80,21 +84,22 @@ const MallFormPage = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    
+    const { name, type, value, checked } = e.target;
+    const nextValue = type === 'checkbox' ? checked : value;
+
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
       setFormData(prev => ({
         ...prev,
         [parent]: {
           ...prev[parent],
-          [child]: value
+          [child]: nextValue
         }
       }));
     } else {
       setFormData(prev => ({
         ...prev,
-        [name]: value
+        [name]: nextValue
       }));
     }
   };
@@ -143,7 +148,9 @@ const MallFormPage = () => {
           lat: parseFloat(formData.location.lat) || 0,
           lng: parseFloat(formData.location.lng) || 0
         },
-        gallery: formData.gallery.filter(url => url.trim() !== '')
+        gallery: formData.gallery.filter(url => url.trim() !== ''),
+        categories: (formData.categories || []).map((c) => String(c).trim()).filter(Boolean),
+        featured: Boolean(formData.featured)
       };
 
       if (isEdit) {
@@ -229,6 +236,36 @@ const MallFormPage = () => {
                   <option value="open">Ochiq</option>
                   <option value="closed">Yopiq</option>
                 </select>
+              </div>
+
+              <div className="lg:col-span-2">
+                <label className="flex items-center gap-3 text-sm font-medium text-gray-700 mb-2">
+                  <input
+                    type="checkbox"
+                    name="featured"
+                    checked={formData.featured}
+                    onChange={handleChange}
+                    className="h-4 w-4 rounded border-gray-300 text-gold focus:ring-gold"
+                  />
+                  <span>Featured (asosiy mall)</span>
+                </label>
+                <p className="text-xs text-gray-500">Frontendda birinchi bo'lib ko'rsatiladi</p>
+              </div>
+
+              <div className="lg:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Kategoriyalar (vergul bilan)
+                </label>
+                <input
+                  type="text"
+                  value={(formData.categories || []).join(', ')}
+                  onChange={(e) => {
+                    const parts = e.target.value.split(',').map((x) => x.trim()).filter(Boolean)
+                    setFormData((prev) => ({ ...prev, categories: parts }))
+                  }}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                  placeholder="fashion, electronics, food, entertainment"
+                />
               </div>
 
               <div className="lg:col-span-2">

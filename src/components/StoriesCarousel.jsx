@@ -98,7 +98,7 @@ export default function StoriesCarousel({ stores }) {
             <div className="flex-1 flex items-center justify-center bg-gradient-to-b from-transparent via-black to-transparent">
               <div className="text-center p-8 max-w-md">
                 <img
-                  src={activeStory.image}
+                  src={activeStory.banner || activeStory.gallery?.[0] || activeStory.logo}
                   alt={activeStory.name}
                   className="w-full h-64 object-cover rounded-lg mb-6"
                 />

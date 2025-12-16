@@ -27,11 +27,18 @@ const StoreFormPage = () => {
     logo: '',
     banner: '',
     category: '',
+    floor: '',
+    status: 'open',
     description_short: '',
     description_full: '',
     work_time: '',
     opened_date: '',
     phone: '',
+    email: '',
+    hasPromo: false,
+    promoTitle: '',
+    promoDescription: '',
+    promoDiscount: '',
     social: {
       instagram: '',
       website: ''
@@ -86,11 +93,18 @@ const StoreFormPage = () => {
         logo: store.logo || '',
         banner: store.banner || '',
         category: store.category || '',
+        floor: store.floor ?? '',
+        status: store.status || 'open',
         description_short: store.description_short || '',
         description_full: store.description_full || '',
         work_time: store.work_time || '',
         opened_date: store.opened_date || '',
         phone: store.phone || '',
+        email: store.email || '',
+        hasPromo: Boolean(store.hasPromo),
+        promoTitle: store.promoTitle || '',
+        promoDescription: store.promoDescription || '',
+        promoDiscount: store.promoDiscount || '',
         social: store.social || { instagram: '', website: '' },
         gallery: store.gallery || []
       });
@@ -104,21 +118,22 @@ const StoreFormPage = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    
+    const { name, type, value, checked } = e.target;
+    const nextValue = type === 'checkbox' ? checked : value;
+
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
       setFormData(prev => ({
         ...prev,
         [parent]: {
           ...prev[parent],
-          [child]: value
+          [child]: nextValue
         }
       }));
     } else {
       setFormData(prev => ({
         ...prev,
-        [name]: value
+        [name]: nextValue
       }));
     }
   };
@@ -153,6 +168,8 @@ const StoreFormPage = () => {
     try {
       const payload = {
         ...formData,
+        floor: formData.floor === '' ? null : Number(formData.floor),
+        hasPromo: Boolean(formData.hasPromo),
         gallery: formData.gallery.filter(url => url.trim() !== '')
       };
 
@@ -263,6 +280,36 @@ const StoreFormPage = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Qavat (Floor)
+                </label>
+                <input
+                  type="number"
+                  name="floor"
+                  value={formData.floor}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                  placeholder="1"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Holat
+                </label>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                >
+                  <option value="open">Ochiq</option>
+                  <option value="coming_soon">Tez orada</option>
+                  <option value="closed">Yopiq</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Ish Vaqti
                 </label>
                 <input
@@ -302,6 +349,73 @@ const StoreFormPage = () => {
                   placeholder="+998 94 123 45 68"
                 />
               </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                  placeholder="store@example.com"
+                />
+              </div>
+
+              <div className="lg:col-span-2">
+                <label className="flex items-center gap-3 text-sm font-medium text-gray-700 mb-2">
+                  <input
+                    type="checkbox"
+                    name="hasPromo"
+                    checked={formData.hasPromo}
+                    onChange={handleChange}
+                    className="h-4 w-4 rounded border-gray-300 text-gold focus:ring-gold"
+                  />
+                  <span>Promo mavjud</span>
+                </label>
+              </div>
+
+              {formData.hasPromo && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Promo Sarlavha</label>
+                    <input
+                      type="text"
+                      name="promoTitle"
+                      value={formData.promoTitle}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                      placeholder="New Season Sale"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Promo Chegirma</label>
+                    <input
+                      type="text"
+                      name="promoDiscount"
+                      value={formData.promoDiscount}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                      placeholder="40% OFF"
+                    />
+                  </div>
+
+                  <div className="lg:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Promo Tavsif</label>
+                    <textarea
+                      name="promoDescription"
+                      value={formData.promoDescription}
+                      onChange={handleChange}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                      placeholder="Limited time offer..."
+                    />
+                  </div>
+                </>
+              )}
 
               <div className="lg:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">

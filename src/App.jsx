@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { UserProvider } from './contexts/UserContext'
+import { RealtimeDataProvider } from './contexts/RealtimeDataContext'
 import Navigation from './components/Navigation'
 import Footer from './components/Footer'
 import BottomNavigation from './components/BottomNavigation'
@@ -14,6 +15,7 @@ import HomePage from './pages/HomePage'
 import MallDetailsPage from './pages/MallDetailsPage'
 import StoreDirectoryPage from './pages/StoreDirectoryPage'
 import StoreDetailsPage from './pages/StoreDetailsPage'
+import ProductDetailsPage from './pages/ProductDetailsPage'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -73,6 +75,7 @@ function AppContent() {
                 <Route path="/mall/:mallId" element={<MallDetailsPage />} />
                 <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
                 <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />
+                <Route path="/mall/:mallId/store/:storeId/product/:productId" element={<ProductDetailsPage />} />
               </Routes>
             </main>
             {!isAdminRoute && (
@@ -124,9 +127,11 @@ function App() {
     <ThemeProvider>
       <LanguageProvider>
         <UserProvider>
-          <Router>
-            <AppContent />
-          </Router>
+          <RealtimeDataProvider>
+            <Router>
+              <AppContent />
+            </Router>
+          </RealtimeDataProvider>
         </UserProvider>
       </LanguageProvider>
     </ThemeProvider>

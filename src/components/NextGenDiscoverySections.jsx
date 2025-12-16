@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Baby, Film, PartyPopper, UtensilsCrossed } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
-import mallsData from '../data/malls.json'
-import storesData from '../data/stores.json'
-import productsData from '../data/products.json'
+import { useRealtimeData } from '../contexts/RealtimeDataContext'
 import ProductModal from './ProductModal'
 import RealTimeMap from './RealTimeMap'
+import RealisticIcon from './RealisticIcon'
 import {
   trackBehavior
 } from '../services/behavior'
@@ -57,6 +57,7 @@ export default function NextGenDiscoverySections() {
   const { darkMode } = useTheme()
   const { t } = useLanguage()
   const navigate = useNavigate()
+  const { malls, stores, products } = useRealtimeData()
 
   const [now, setNow] = useState(Date.now())
   const [selectedProduct, setSelectedProduct] = useState(null)
@@ -79,8 +80,14 @@ export default function NextGenDiscoverySections() {
     return () => window.clearInterval(t)
   }, [])
 
+  useEffect(() => {
+    if (!malls.length) return
+    if (malls.some((m) => m.id === reviewMallId)) return
+    setReviewMallId(malls[0].id)
+  }, [malls, reviewMallId])
+
   const promosWithCountdown = useMemo(() => {
-    const base = storesData
+    const base = stores
       .filter((s) => s.hasPromo)
       .map((store) => {
         const seed = stableNumberFromString(store.id)
@@ -93,18 +100,15 @@ export default function NextGenDiscoverySections() {
           description: store.promoDescription,
           discount: store.promoDiscount,
           store,
-          mallId: store.mallId,
+          mallId: store.mall_id,
           endsAt
         }
       })
 
     return base.sort((a, b) => a.endsAt - b.endsAt).slice(0, 6)
-  }, [now])
+  }, [now, stores])
 
-  const comingSoonMalls = useMemo(
-    () => mallsData.filter((m) => m.status === 'coming_soon'),
-    []
-  )
+  const comingSoonMalls = useMemo(() => malls.filter((m) => m.status === 'coming_soon'), [malls])
 
   const openingCards = useMemo(() => {
     return comingSoonMalls.map((mall) => {
@@ -122,13 +126,13 @@ export default function NextGenDiscoverySections() {
   const mallInsights = useMemo(() => {
     const byMall = new Map()
 
-    for (const store of storesData) {
-      const current = byMall.get(store.mallId) || { categoryCounts: {} }
+    for (const store of stores) {
+      const current = byMall.get(store.mall_id) || { categoryCounts: {} }
       current.categoryCounts[store.category] = (current.categoryCounts[store.category] || 0) + 1
-      byMall.set(store.mallId, current)
+      byMall.set(store.mall_id, current)
     }
 
-    return mallsData
+    return malls
       .filter((m) => m.status !== 'coming_soon')
       .slice(0, 3)
       .map((mall) => {
@@ -148,7 +152,7 @@ export default function NextGenDiscoverySections() {
           crowdTrend: ['Low', 'Medium', 'High'][seed % 3]
         }
       })
-  }, [now])
+  }, [malls, now, stores])
 
   const [virtualTourOpen, setVirtualTourOpen] = useState(false)
 
@@ -273,23 +277,26 @@ export default function NextGenDiscoverySections() {
   )
 
   const storeCategories = useMemo(
-    () => ['all', ...new Set(storesData.map((s) => s.category))],
-    []
+    () => ['all', ...new Set(stores.map((s) => s.category).filter(Boolean))],
+    [stores]
   )
 
   const [mapCategory, setMapCategory] = useState('all')
   const [selectedMapMallId, setSelectedMapMallId] = useState('family-park')
 
-  const selectedMapMall = useMemo(
-    () => mallsData.find((m) => m.id === selectedMapMallId) || mallsData[0],
-    [selectedMapMallId]
-  )
+  useEffect(() => {
+    if (!malls.length) return
+    if (malls.some((m) => m.id === selectedMapMallId)) return
+    setSelectedMapMallId(malls[0].id)
+  }, [malls, selectedMapMallId])
+
+  const selectedMapMall = useMemo(() => malls.find((m) => m.id === selectedMapMallId) || malls[0], [malls, selectedMapMallId])
 
   const mapStores = useMemo(() => {
-    let list = storesData.filter((s) => s.mallId === selectedMapMallId)
+    let list = stores.filter((s) => s.mall_id === selectedMapMallId)
     if (mapCategory !== 'all') list = list.filter((s) => s.category === mapCategory)
     return list
-  }, [selectedMapMallId, mapCategory])
+  }, [selectedMapMallId, mapCategory, stores])
 
   const baseCard = darkMode ? 'bg-gray-800 glass-card-dark' : 'bg-white glass-card'
 
@@ -304,20 +311,22 @@ export default function NextGenDiscoverySections() {
         subtitle={t('sections.experiencesSubtitle')}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {[
-            { title: 'Cinemas', desc: 'Showtimes and trailers (future-ready)', icon: '🎬' },
-            { title: 'Kids zones', desc: 'Family-friendly play areas and activities', icon: '🧸' },
-            { title: 'Food courts', desc: 'Trending dishes and places to eat', icon: '🍜' },
-            { title: 'Events', desc: 'Festivals, pop-ups, and live performances', icon: '🎉' }
-          ].map((x) => (
-            <div key={x.title} className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
-              <div className="text-3xl mb-3">{x.icon}</div>
-              <h3 className={`font-display text-xl font-bold mb-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                {x.title}
-              </h3>
-              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{x.desc}</p>
+        {[
+          { title: 'Cinemas', desc: 'Showtimes and trailers (future-ready)', Icon: Film },
+          { title: 'Kids zones', desc: 'Family-friendly play areas and activities', Icon: Baby },
+          { title: 'Food courts', desc: 'Trending dishes and places to eat', Icon: UtensilsCrossed },
+          { title: 'Events', desc: 'Festivals, pop-ups, and live performances', Icon: PartyPopper }
+        ].map((x) => (
+          <div key={x.title} className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
+            <div className="mb-3">
+              <RealisticIcon Icon={x.Icon} size={20} padding={10} />
             </div>
-          ))}
+            <h3 className={`font-display text-xl font-bold mb-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>
+              {x.title}
+            </h3>
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{x.desc}</p>
+          </div>
+        ))}
         </div>
       </SectionShell>
 
@@ -701,7 +710,7 @@ export default function NextGenDiscoverySections() {
         <ProductModal
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
-          relatedProducts={productsData.filter((p) => p.id !== selectedProduct.id).slice(0, 4)}
+          relatedProducts={products.filter((p) => p.id !== selectedProduct.id).slice(0, 4)}
         />
       ) : null}
     </div>
