@@ -52,6 +52,49 @@ h1, h2, h3, h4, h5, h6 {
   @apply hover:scale-105 active:scale-95;
 }
 
+/* Realistic Icon Shell (subtle 3D) */
+.realistic-icon-shell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  padding: 10px;
+  transform: translateZ(0);
+}
+
+.realistic-icon-shell--light {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(244, 239, 231, 0.55));
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  box-shadow:
+    0 12px 25px rgba(17, 24, 39, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(17, 24, 39, 0.12);
+}
+
+.realistic-icon-shell--dark {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.15));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 12px 25px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.45);
+}
+
+.realistic-icon-shell::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 15px;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.55), transparent 45%);
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.realistic-icon {
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.22));
+}
+
 /* Enhanced 3D Button Effects */
 .button-3d {
   position: relative;

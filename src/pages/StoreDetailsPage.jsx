@@ -1,33 +1,32 @@
-import { useParams, Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { useEffect, useMemo } from 'react'
+import { Clock, Mail, MapPin, Phone, Store as StoreIcon } from 'lucide-react'
+
 import { trackBehavior } from '../services/behavior'
-import mallsData from '../data/malls.json'
-import storesData from '../data/stores.json'
-import productsData from '../data/products.json'
+import { useRealtimeData } from '../contexts/RealtimeDataContext'
+import { useTheme } from '../contexts/ThemeContext'
+
+import Button3D from '../components/Button3D'
 import ProductCard from '../components/ProductCard'
-import ProductModal from '../components/ProductModal'
+import RealisticIcon from '../components/RealisticIcon'
 
 export default function StoreDetailsPage() {
   const { mallId, storeId } = useParams()
-  const [mall, setMall] = useState(null)
-  const [store, setStore] = useState(null)
-  const [products, setProducts] = useState([])
-  const [selectedProduct, setSelectedProduct] = useState(null)
+  const { darkMode } = useTheme()
+  const { malls, stores, products } = useRealtimeData()
+
+  const mall = useMemo(() => malls.find((m) => m.id === mallId) || null, [malls, mallId])
+  const store = useMemo(
+    () => stores.find((s) => s.id === storeId && s.mall_id === mallId) || null,
+    [stores, storeId, mallId]
+  )
+  const storeProducts = useMemo(() => products.filter((p) => p.store_id === storeId), [products, storeId])
 
   useEffect(() => {
-    const mallData = mallsData.find((m) => m.id === mallId)
-    setMall(mallData)
-
-    const storeData = storesData.find((s) => s.id === storeId && s.mallId === mallId)
-    setStore(storeData)
-
-    if (storeData) {
-      trackBehavior({ type: 'store', id: storeId, category: storeData.category })
+    if (store) {
+      trackBehavior({ type: 'store', id: storeId, category: store.category })
     }
-
-    const storeProducts = productsData.filter((p) => p.storeId === storeId)
-    setProducts(storeProducts)
-  }, [mallId, storeId])
+  }, [store, storeId])
 
   if (!mall || !store) {
     return (
@@ -40,15 +39,7 @@ export default function StoreDetailsPage() {
     )
   }
 
-  const getRelatedProducts = () => {
-    const others = products.filter((p) => p.id !== selectedProduct?.id)
-    return others.slice(0, 4)
-  }
-
-  const handleSelectProduct = (product) => {
-    trackBehavior({ type: 'product', id: product.id, category: product.category })
-    setSelectedProduct(product)
-  }
+  const banner = store.banner || store.logo || 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200'
 
   return (
     <div className="min-h-screen">
@@ -64,162 +55,142 @@ export default function StoreDetailsPage() {
           </Link>
           <span>/</span>
           <Link to={`/mall/${mallId}/stores`} className="hover:text-gold transition-colors duration-300">
-            Directory
+            Stores
           </Link>
           <span>/</span>
           <span className="text-navy font-semibold">{store.name}</span>
         </div>
       </div>
 
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-navy to-navy/90 text-cream">
-        <div className="max-w-6xl mx-auto px-4 lg:px-8 py-12 md:py-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            {/* Logo */}
-            <div className="flex items-center justify-center">
-              <div className="bg-white bg-opacity-10 rounded-lg p-8 w-full h-64 md:h-80 flex items-center justify-center overflow-hidden">
-                <img
-                  src={store.logo}
-                  alt={store.name}
-                  className="w-full h-full object-cover rounded"
-                  loading="lazy"
-                />
-              </div>
-            </div>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div className="relative h-72 md:h-[480px]">
+          <img src={banner} alt={store.name} className="w-full h-full object-cover" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-            {/* Details */}
-            <div>
-              <p className="text-gold text-sm font-semibold mb-2">{store.category}</p>
-              <h1 className="text-4xl md:text-5xl font-display font-bold text-cream mb-6">
-                {store.name}
-              </h1>
+          <div className="absolute bottom-0 left-0 right-0">
+            <div className="max-w-6xl mx-auto px-4 lg:px-8 pb-10">
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+                <div className="max-w-3xl">
+                  <p className="text-gold text-sm font-semibold mb-2">{store.category}</p>
+                  <h1 className="font-display text-4xl md:text-6xl font-bold text-white">{store.name}</h1>
+                  {store.description_short ? (
+                    <p className="text-white/90 text-lg mt-4 leading-relaxed">{store.description_short}</p>
+                  ) : null}
+                </div>
 
-              <div className="space-y-3 mb-8 text-cream text-opacity-90">
-                <p className="flex items-center gap-2">
-                  <span className="text-gold font-semibold">📍 Floor:</span> {store.floor}
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-gold font-semibold">🕒 Hours:</span> {store.hours}
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-gold font-semibold">📞 Phone:</span> {store.phone}
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-gold font-semibold">✉️ Email:</span> {store.email}
-                </p>
-              </div>
-
-              <div className="space-x-4">
-                <button className="button-primary inline-block">
-                  Visit Store
-                </button>
-                <Link to={`/mall/${mallId}/stores`} className="button-secondary inline-block">
-                  Back to Directory
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a href="#products" className="inline-block">
+                    <Button3D variant="primary" size="lg">
+                      <span className="inline-flex items-center gap-2">
+                        <StoreIcon className="w-5 h-5" />
+                        View Products
+                      </span>
+                    </Button3D>
+                  </a>
+                  <Link to={`/mall/${mallId}/stores`}>
+                    <Button3D variant="outline" size="lg">
+                      Back to Stores
+                    </Button3D>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Interior Image */}
-      <div className="relative w-full h-64 md:h-96 overflow-hidden bg-gray-200">
-        <img
-          src={store.interiorImage}
-          alt={`${store.name} interior`}
-          className="w-full h-full object-cover lazy"
-          loading="lazy"
-        />
-      </div>
-
-      {/* About Section */}
-      <section className="section-padding max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div>
-            <h2 className="heading-medium mb-6">About {store.name}</h2>
-            <p className="text-gray-700 mb-6 leading-relaxed text-lg">
-              {store.about}
-            </p>
-
-            <div className="bg-cream p-6 rounded-lg">
-              <h3 className="font-semibold text-navy mb-4">Store Information</h3>
-              <div className="space-y-3 text-gray-700">
-                <p>
-                  <span className="font-semibold">Category:</span> {store.category}
-                </p>
-                <p>
-                  <span className="font-semibold">Location:</span> Floor {store.floor}, {mall.name}
-                </p>
-                <p>
-                  <span className="font-semibold">Status:</span>{' '}
-                  <span className={store.status === 'open' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'}>
-                    {store.status === 'open' ? '● Open' : '● Coming Soon'}
-                  </span>
-                </p>
-                <p>
-                  <span className="font-semibold">Hours:</span> {store.hours}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Card */}
-          <div className="bg-navy text-cream rounded-lg p-8 card-shadow">
-            <h3 className="font-display text-2xl font-bold mb-6">Get in Touch</h3>
-
-            <div className="space-y-6">
-              <div>
-                <p className="text-gold font-semibold mb-2">Phone</p>
-                <p className="text-cream">{store.phone}</p>
+        {/* Info strip */}
+        <div className={`${darkMode ? 'bg-gray-900' : 'bg-cream'} transition-colors duration-300`}
+        >
+          <div className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className={`p-5 rounded-2xl ${darkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg border border-purple-200/20 dark:border-purple-700/20`}>
+                <div className="flex items-center gap-3 mb-2">
+                  <RealisticIcon Icon={MapPin} size={18} padding={8} />
+                  <p className="text-gold text-sm font-semibold">FLOOR</p>
+                </div>
+                <p className={`${darkMode ? 'text-cream' : 'text-navy'} font-semibold`}>{store.floor ?? '—'}</p>
               </div>
 
-              <div>
-                <p className="text-gold font-semibold mb-2">Email</p>
-                <p className="text-cream">{store.email}</p>
+              <div className={`p-5 rounded-2xl ${darkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg border border-purple-200/20 dark:border-purple-700/20`}>
+                <div className="flex items-center gap-3 mb-2">
+                  <RealisticIcon Icon={Clock} size={18} padding={8} />
+                  <p className="text-gold text-sm font-semibold">HOURS</p>
+                </div>
+                <p className={`${darkMode ? 'text-cream' : 'text-navy'} font-semibold`}>{store.work_time || '—'}</p>
               </div>
 
-              <div>
-                <p className="text-gold font-semibold mb-2">Visit Us</p>
-                <p className="text-cream text-opacity-80">
-                  Floor {store.floor}, {mall.name}
-                  <br />
-                  {mall.address}
-                </p>
+              <div className={`p-5 rounded-2xl ${darkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg border border-purple-200/20 dark:border-purple-700/20`}>
+                <div className="flex items-center gap-3 mb-2">
+                  <RealisticIcon Icon={Phone} size={18} padding={8} />
+                  <p className="text-gold text-sm font-semibold">PHONE</p>
+                </div>
+                <p className={`${darkMode ? 'text-cream' : 'text-navy'} font-semibold`}>{store.phone || '—'}</p>
               </div>
 
-              <button className="button-primary w-full text-center block">
-                Send Inquiry
-              </button>
+              <div className={`p-5 rounded-2xl ${darkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg border border-purple-200/20 dark:border-purple-700/20`}>
+                <div className="flex items-center gap-3 mb-2">
+                  <RealisticIcon Icon={Mail} size={18} padding={8} />
+                  <p className="text-gold text-sm font-semibold">EMAIL</p>
+                </div>
+                <p className={`${darkMode ? 'text-cream' : 'text-navy'} font-semibold break-words`}>{store.email || '—'}</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Products Section */}
-      {products.length > 0 && (
-        <section className="section-padding max-w-6xl mx-auto bg-cream rounded-lg">
-          <h2 className="heading-medium mb-10 text-center">Featured Products</h2>
+      {/* About */}
+      <section className="section-padding max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div>
+            <h2 className="heading-medium mb-6">About {store.name}</h2>
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} text-lg leading-relaxed`}>{store.description_full || store.description_short}</p>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {products.map((product) => (
+          <div className={`rounded-2xl p-8 ${darkMode ? 'bg-gray-800 glass-card-dark' : 'bg-white glass-card'} card-shadow`}>
+            <h3 className={`font-display text-2xl font-bold mb-6 ${darkMode ? 'text-cream' : 'text-navy'}`}>Store Information</h3>
+            <div className={`space-y-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <p>
+                <span className="font-semibold">Mall:</span> {mall.name}
+              </p>
+              <p>
+                <span className="font-semibold">Category:</span> {store.category || '—'}
+              </p>
+              <p>
+                <span className="font-semibold">Status:</span> <span className="capitalize">{store.status || 'open'}</span>
+              </p>
+              <p>
+                <span className="font-semibold">Hours:</span> {store.work_time || '—'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Products */}
+      <section id="products" className="section-padding max-w-6xl mx-auto">
+        <div className="flex items-center justify-between gap-6 mb-10">
+          <h2 className="heading-medium">Products</h2>
+          <span className="text-sm text-gray-600">{storeProducts.length} items</span>
+        </div>
+
+        {storeProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {storeProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                onSelect={handleSelectProduct}
+                to={`/mall/${mallId}/store/${storeId}/product/${product.id}`}
               />
             ))}
           </div>
-        </section>
-      )}
-
-      {/* Product Modal */}
-      {selectedProduct && (
-        <ProductModal
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-          relatedProducts={getRelatedProducts()}
-        />
-      )}
+        ) : (
+          <div className="text-center py-12">
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} text-lg`}>No products available yet.</p>
+          </div>
+        )}
+      </section>
     </div>
   )
 }

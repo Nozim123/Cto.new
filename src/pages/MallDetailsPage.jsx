@@ -1,40 +1,37 @@
-import { useParams, Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { useEffect, useMemo } from 'react'
+import { Calendar, Clock, MapPin, Store } from 'lucide-react'
+
 import { useTheme } from '../contexts/ThemeContext'
+import { useRealtimeData } from '../contexts/RealtimeDataContext'
 import { trackBehavior } from '../services/behavior'
-import mallsData from '../data/malls.json'
-import storesData from '../data/stores.json'
+
+import Button3D from '../components/Button3D'
+import RealisticIcon from '../components/RealisticIcon'
 import StoreCard from '../components/StoreCard'
 import StoriesCarousel from '../components/StoriesCarousel'
 import InteractiveFloorPlan from '../components/InteractiveFloorPlan'
 
 export default function MallDetailsPage() {
   const { mallId } = useParams()
-  const [mall, setMall] = useState(null)
-  const [stores, setStores] = useState([])
-  const [allStores, setAllStores] = useState([])
   const { darkMode } = useTheme()
+  const { malls, stores } = useRealtimeData()
+
+  const mall = useMemo(() => malls.find((m) => m.id === mallId) || null, [malls, mallId])
+  const mallStores = useMemo(() => stores.filter((s) => s.mall_id === mallId), [stores, mallId])
+  const featuredStores = useMemo(() => mallStores.slice(0, 3), [mallStores])
 
   useEffect(() => {
-    const mallData = mallsData.find((m) => m.id === mallId)
-    setMall(mallData)
-
-    if (mallData) {
+    if (mall) {
       trackBehavior({ type: 'mall', id: mallId })
     }
-
-    if (mallData?.featured) {
-      const mallStores = storesData.filter((s) => s.mallId === mallId)
-      setAllStores(mallStores)
-      setStores(mallStores.slice(0, 3))
-    }
-  }, [mallId])
+  }, [mall, mallId])
 
   if (!mall) {
     return (
       <div className="section-padding text-center">
         <h1 className="heading-large mb-4">Mall Not Found</h1>
-        <p className="text-gray-600 mb-6">The mall you're looking for doesn't exist or is not available yet.</p>
+        <p className="text-gray-600 mb-6">The mall you're looking for doesn't exist.</p>
         <Link to="/" className="button-primary inline-block">
           Back to Home
         </Link>
@@ -42,172 +39,175 @@ export default function MallDetailsPage() {
     )
   }
 
-  if (mall.status === 'coming_soon') {
-    return (
-      <div className="section-padding max-w-6xl mx-auto">
-        <Link to="/" className="text-gold hover:text-gold/80 transition-colors duration-300 mb-6 inline-block">
-          ← Back to Home
-        </Link>
-
-        <div className="text-center py-12">
-          <h1 className="heading-large mb-4">{mall.name}</h1>
-          <p className="text-2xl text-gold font-bold mb-6">Coming Soon</p>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
-            We're working hard to bring this amazing shopping destination to life. Check back soon for updates!
-          </p>
-          <Link to="/" className="button-primary inline-block">
-            Explore Other Malls
-          </Link>
-        </div>
-      </div>
-    )
-  }
+  const isComingSoon = mall.status === 'coming_soon'
+  const banner = mall.banner || mall.gallery?.[0] || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200'
 
   return (
     <div className="min-h-screen">
-      {/* Back Link */}
+      {/* Breadcrumb */}
       <div className="max-w-6xl mx-auto px-4 lg:px-8 pt-6">
-        <Link to="/" className="text-gold hover:text-gold/80 transition-colors duration-300 inline-flex items-center gap-1 hover:scale-105 transform duration-300">
-          ← Back to Home
-        </Link>
-      </div>
-
-      {/* Banner */}
-      <div className="relative h-64 md:h-96 w-full overflow-hidden bg-gray-200 dark:bg-gray-700">
-        <img
-          src={mall.bannerImage}
-          alt={mall.name}
-          className="w-full h-full object-cover lazy"
-          loading="lazy"
-        />
-      </div>
-
-      {/* Quick Info Bar */}
-      <div className={`transition-colors duration-300 ${
-        darkMode ? 'bg-gray-800 text-cream' : 'bg-navy text-cream'
-      }`}>
-        <div className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <p className="text-gold text-sm font-semibold mb-1">HOURS</p>
-              <p className="text-lg">{mall.hours}</p>
-            </div>
-            <div>
-              <p className="text-gold text-sm font-semibold mb-1">ADDRESS</p>
-              <p className="text-lg">{mall.address}</p>
-            </div>
-            <div>
-              <p className="text-gold text-sm font-semibold mb-1">OPENED</p>
-              <p className="text-lg">{mall.openedDate}</p>
-            </div>
-          </div>
+        <div className="flex items-center gap-2 text-sm text-gray-600 mb-6 flex-wrap">
+          <Link to="/" className="hover:text-gold transition-colors duration-300">
+            Home
+          </Link>
+          <span>/</span>
+          <span className="text-navy font-semibold">{mall.name}</span>
         </div>
       </div>
 
-      {/* Stories Section */}
-      {allStores.length > 0 && (
-        <div className={`py-6 border-b ${
-          darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
-        }`}>
-          <div className="max-w-6xl mx-auto">
-            <h3 className={`px-4 lg:px-8 mb-4 font-display text-xl font-bold ${
-              darkMode ? 'text-cream' : 'text-navy'
-            }`}>
-              Store Highlights ✨
-            </h3>
-            <StoriesCarousel stores={allStores} />
+      {/* Hero Banner */}
+      <section className="relative w-full overflow-hidden">
+        <div className="relative h-72 md:h-[520px] bg-gray-200 dark:bg-gray-800">
+          <img src={banner} alt={mall.name} className="w-full h-full object-cover" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+          <div className="absolute bottom-0 left-0 right-0">
+            <div className="max-w-6xl mx-auto px-4 lg:px-8 pb-10">
+              <div className="max-w-3xl">
+                <h1 className="font-display text-4xl md:text-6xl font-bold text-white mb-4">{mall.name}</h1>
+                <p className="text-white/90 text-lg md:text-xl leading-relaxed">
+                  {mall.description_short || mall.description_full}
+                </p>
+
+                {!isComingSoon ? (
+                  <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                    <Link to={`/mall/${mallId}/stores`}>
+                      <Button3D variant="primary" size="lg">
+                        <span className="inline-flex items-center gap-2">
+                          <Store className="w-5 h-5" />
+                          Explore Stores
+                        </span>
+                      </Button3D>
+                    </Link>
+
+                    <Link to={`/mall/${mallId}/stores`}>
+                      <Button3D variant="outline" size="lg">
+                        View Directory →
+                      </Button3D>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="mt-8">
+                    <Button3D variant="outline" size="lg" disabled>
+                      Coming Soon
+                    </Button3D>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-      )}
 
-      {/* About Section */}
-      <section className="section-padding max-w-6xl mx-auto">
-        <div className="mb-12 fade-in-up">
-          <h1 className="heading-medium mb-6">{mall.name}</h1>
-          <p className={`text-lg mb-8 leading-relaxed max-w-3xl ${
-            darkMode ? 'text-gray-300' : 'text-gray-700'
-          }`}>
-            {mall.description}
-          </p>
+        {/* Glass info panels */}
+        <div className={`${darkMode ? 'bg-gray-900' : 'bg-cream'} transition-colors duration-300`}
+        >
+          <div className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg border border-purple-200/20 dark:border-purple-700/20`}>
+                <div className="flex items-center gap-3 mb-2">
+                  <RealisticIcon Icon={Clock} size={18} padding={8} />
+                  <p className="text-gold text-sm font-semibold">WORKING HOURS</p>
+                </div>
+                <p className={`${darkMode ? 'text-cream' : 'text-navy'} text-lg font-semibold`}>{mall.work_time || '—'}</p>
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
-            {/* Text Content */}
-            <div className="fade-in-up-delay-1">
-              <h3 className="heading-small mb-4">About the Mall</h3>
-              <p className={`mb-4 leading-relaxed ${
-                darkMode ? 'text-gray-400' : 'text-gray-600'
-              }`}>
-                With over {mall.storeCount} carefully selected retailers, {mall.name} offers a world-class shopping experience. From international brands to local boutiques, fashion to electronics, dining to entertainment, we have something for everyone.
-              </p>
-              <p className={`mb-6 leading-relaxed ${
-                darkMode ? 'text-gray-400' : 'text-gray-600'
-              }`}>
-                Visit us today and experience the perfect blend of modern shopping comfort and Uzbek hospitality.
-              </p>
+              <div className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg border border-purple-200/20 dark:border-purple-700/20`}>
+                <div className="flex items-center gap-3 mb-2">
+                  <RealisticIcon Icon={MapPin} size={18} padding={8} />
+                  <p className="text-gold text-sm font-semibold">LOCATION</p>
+                </div>
+                <p className={`${darkMode ? 'text-cream' : 'text-navy'} text-lg font-semibold`}>{mall.address || '—'}</p>
+              </div>
 
-              <div className={`p-6 rounded-lg ${
-                darkMode ? 'bg-gray-800 glass-card-dark' : 'bg-cream glass-card'
-              }`}>
-                <h4 className={`font-semibold mb-3 ${
-                  darkMode ? 'text-cream' : 'text-navy'
-                }`}>Contact Information</h4>
-                <p className={`mb-2 ${
-                  darkMode ? 'text-gray-300' : 'text-gray-700'
-                }`}>
-                  <span className="font-semibold">Phone:</span> {mall.phone}
-                </p>
-                <p className={`mb-2 ${
-                  darkMode ? 'text-gray-300' : 'text-gray-700'
-                }`}>
-                  <span className="font-semibold">Email:</span> {mall.phone}
-                </p>
-                <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
-                  <span className="font-semibold">Website:</span> {mall.website}
-                </p>
+              <div className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg border border-purple-200/20 dark:border-purple-700/20`}>
+                <div className="flex items-center gap-3 mb-2">
+                  <RealisticIcon Icon={Calendar} size={18} padding={8} />
+                  <p className="text-gold text-sm font-semibold">OPENED</p>
+                </div>
+                <p className={`${darkMode ? 'text-cream' : 'text-navy'} text-lg font-semibold`}>{mall.opened_date || '—'}</p>
               </div>
             </div>
 
-            {/* Map Placeholder */}
-            <div className={`rounded-lg overflow-hidden h-96 card-shadow fade-in-up-delay-2 ${
-              darkMode ? 'bg-gray-700' : 'bg-gray-200'
-            }`}>
-              <iframe
-                title="Mall Location Map"
-                className="w-full h-full"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3059.1826087346583!2d66.9796954!3d39.6546892!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f4ea89c7c7c7c7d%3A0x7c7c7c7c7c7c7c7c!2sRegistan%2C%20Samarkand!5e0!3m2!1sen!2sus!4v1234567890123"
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+            {mall.categories?.length ? (
+              <div className="mt-6 flex flex-wrap gap-2">
+                {mall.categories.map((c) => (
+                  <span key={c} className="px-3 py-1 rounded-full bg-gold/15 text-gold text-sm font-semibold">
+                    {c}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      {/* Highlights */}
+      {mallStores.length > 0 ? (
+        <div className={`py-6 border-b ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'}`}>
+          <div className="max-w-6xl mx-auto">
+            <h3 className={`px-4 lg:px-8 mb-4 font-display text-xl font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>
+              Store Highlights
+            </h3>
+            <StoriesCarousel stores={mallStores} />
+          </div>
+        </div>
+      ) : null}
+
+      {/* About + Gallery */}
+      <section className="section-padding max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="fade-in-up">
+            <h2 className="heading-medium mb-6">About {mall.name}</h2>
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} text-lg leading-relaxed`}>{mall.description_full || mall.description_short}</p>
+
+            <div className={`mt-8 p-6 rounded-2xl ${darkMode ? 'bg-gray-800 glass-card-dark' : 'bg-white glass-card'} card-shadow`}>
+              <h4 className={`font-semibold mb-3 ${darkMode ? 'text-cream' : 'text-navy'}`}>Contact Information</h4>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+                <span className="font-semibold">Phone:</span> {mall.phone || '—'}
+              </p>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+                <span className="font-semibold">Website:</span> {mall.social?.website || '—'}
+              </p>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                <span className="font-semibold">Status:</span>{' '}
+                <span className="capitalize">{mall.status?.replace('_', ' ')}</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="fade-in-up-delay-1">
+            <h3 className="heading-small mb-4">Gallery</h3>
+            <div className="grid grid-cols-2 gap-4">
+              {(mall.gallery?.length ? mall.gallery : [banner]).slice(0, 6).map((src, idx) => (
+                <div key={src + idx} className={`rounded-2xl overflow-hidden ${darkMode ? 'bg-gray-800' : 'bg-gray-100'} card-shadow`}>
+                  <img src={src} alt={`${mall.name} ${idx + 1}`} className="w-full h-40 object-cover" loading="lazy" />
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* Interactive Floor Plan */}
-      {allStores.length > 0 && (
+      {mallStores.length > 0 ? (
         <section className="section-padding max-w-6xl mx-auto">
-          <InteractiveFloorPlan stores={allStores} mallId={mallId} />
+          <InteractiveFloorPlan stores={mallStores} mallId={mallId} />
         </section>
-      )}
+      ) : null}
 
       {/* Store Directory Preview */}
-      {stores.length > 0 && (
-        <section className={`section-padding max-w-6xl mx-auto rounded-lg ${
-          darkMode ? 'bg-gray-800' : 'bg-cream'
-        }`}>
+      {featuredStores.length > 0 ? (
+        <section className={`section-padding max-w-6xl mx-auto rounded-2xl ${darkMode ? 'bg-gray-900/50' : 'bg-cream/70'} backdrop-blur`}
+        >
           <div className="flex justify-between items-center mb-8 fade-in-up">
             <h2 className="heading-medium">Featured Stores</h2>
-            <Link
-              to={`/mall/${mallId}/stores`}
-              className="text-gold hover:text-gold/80 font-semibold transition-all duration-300 hover:scale-105"
-            >
+            <Link to={`/mall/${mallId}/stores`} className="text-gold hover:text-gold/80 font-semibold transition-all duration-300 hover:scale-105">
               View All →
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            {stores.map((store, index) => (
+            {featuredStores.map((store, index) => (
               <div key={store.id} className={`fade-in-up-delay-${Math.min(index + 1, 3)}`}>
                 <StoreCard store={store} mallId={mallId} />
               </div>
@@ -215,15 +215,14 @@ export default function MallDetailsPage() {
           </div>
 
           <div className="text-center">
-            <Link
-              to={`/mall/${mallId}/stores`}
-              className="button-primary inline-block"
-            >
-              Explore All Stores
+            <Link to={`/mall/${mallId}/stores`} className="inline-block">
+              <Button3D variant="primary" size="lg">
+                Explore All Stores
+              </Button3D>
             </Link>
           </div>
         </section>
-      )}
+      ) : null}
     </div>
   )
 }

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { MapPin, Phone } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
+import RealisticIcon from './RealisticIcon'
 
 export default function InteractiveFloorPlan({ stores, mallId }) {
   const [selectedStore, setSelectedStore] = useState(null)
@@ -115,14 +117,16 @@ export default function InteractiveFloorPlan({ stores, mallId }) {
             </div>
 
             <div className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              <p className="mb-2">{selectedStore.description}</p>
+              <p className="mb-2">{selectedStore.description_short || selectedStore.description_full || ''}</p>
               <div className="flex items-center gap-4 text-sm mt-4">
-                <span className="flex items-center gap-1">
-                  <span className="text-gold">📍</span> Floor {selectedStore.floor}
+                <span className="flex items-center gap-2">
+                  <RealisticIcon Icon={MapPin} size={14} padding={6} radius={12} className="!shadow-none" />
+                  Floor {selectedStore.floor ?? '—'}
                 </span>
                 {selectedStore.phone && (
-                  <span className="flex items-center gap-1">
-                    <span className="text-gold">📞</span> {selectedStore.phone}
+                  <span className="flex items-center gap-2">
+                    <RealisticIcon Icon={Phone} size={14} padding={6} radius={12} className="!shadow-none" />
+                    {selectedStore.phone}
                   </span>
                 )}
               </div>

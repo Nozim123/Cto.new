@@ -15,7 +15,8 @@ import {
   Calendar,
   Filter,
   Grid,
-  List
+  List,
+  Building2
 } from 'lucide-react';
 
 const MallListPage = () => {

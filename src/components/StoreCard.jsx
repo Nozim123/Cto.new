@@ -50,10 +50,10 @@ export default function StoreCard({ store, mallId }) {
           darkMode ? 'text-gray-400' : 'text-gray-600'
         }`}>
           <p>
-            <span className="font-semibold">Floor:</span> {store.floor}
+           <span className="font-semibold">Floor:</span> {store.floor ?? '—'}
           </p>
           <p>
-            <span className="font-semibold">Hours:</span> {store.hours}
+           <span className="font-semibold">Hours:</span> {store.work_time || '—'}
           </p>
         </div>
 

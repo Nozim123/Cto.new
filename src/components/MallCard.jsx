@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
+import { MapPin } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import Button3D from './Button3D'
+import RealisticIcon from './RealisticIcon'
 
 export default function MallCard({ mall, index = 0 }) {
   const isComingSoon = mall.status === 'coming_soon'
@@ -17,7 +19,7 @@ export default function MallCard({ mall, index = 0 }) {
       {/* Image Container */}
       <div className="relative overflow-hidden bg-gray-200 dark:bg-gray-700 h-48 sm:h-56 md:h-64 group">
         <img
-          src={mall.image}
+          src={mall.banner || mall.gallery?.[0]}
           alt={mall.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 lazy"
           loading="lazy"
@@ -41,16 +43,17 @@ export default function MallCard({ mall, index = 0 }) {
           }`}>
             {mall.name}
           </h3>
-          <p className={`mb-2 text-sm md:text-base flex items-center gap-1 ${
+          <p className={`mb-2 text-sm md:text-base flex items-center gap-2 ${
             darkMode ? 'text-gray-400' : 'text-sage'
           }`}>
-            <span style={{ color: seasonalColors.primary }}>📍</span> {mall.location}
+            <RealisticIcon Icon={MapPin} size={14} padding={6} radius={12} className="!shadow-none" />
+            <span className="truncate">{mall.address}</span>
           </p>
           {!isComingSoon && (
             <p className={`text-sm md:text-base mb-4 ${
               darkMode ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              {mall.description}
+              {mall.description_short}
             </p>
           )}
         </div>

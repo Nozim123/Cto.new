@@ -1,5 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
+import { Home, Info, Building2, PhoneCall } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
+import RealisticIcon from './RealisticIcon'
 
 export default function BottomNavigation() {
   const location = useLocation()
@@ -16,22 +18,22 @@ export default function BottomNavigation() {
     {
       label: 'Home',
       path: '/',
-      icon: '🏠'
+      Icon: Home
     },
     {
       label: 'About',
       path: '#about',
-      icon: 'ℹ️'
+      Icon: Info
     },
     {
       label: 'Malls',
       path: '#malls',
-      icon: '🏢'
+      Icon: Building2
     },
     {
       label: 'Contact',
       path: '#contact',
-      icon: '📞'
+      Icon: PhoneCall
     }
   ]
 
@@ -56,7 +58,7 @@ export default function BottomNavigation() {
                             : 'text-gray-600 hover:text-gold'
                         }`}
             >
-              <span className="text-xl">{item.icon}</span>
+              <RealisticIcon Icon={item.Icon} size={18} padding={6} radius={14} />
               <span className="text-xs font-medium">{item.label}</span>
             </a>
           ) : (
@@ -73,7 +75,7 @@ export default function BottomNavigation() {
                             : 'text-gray-600 hover:text-gold'
                         }`}
             >
-              <span className="text-xl">{item.icon}</span>
+              <RealisticIcon Icon={item.Icon} size={18} padding={6} radius={14} />
               <span className="text-xs font-medium">{item.label}</span>
             </Link>
           )

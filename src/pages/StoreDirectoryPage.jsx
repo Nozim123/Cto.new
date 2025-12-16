@@ -1,48 +1,54 @@
-import { useParams, Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import mallsData from '../data/malls.json'
-import storesData from '../data/stores.json'
+import { Link, useParams } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+
+import { useRealtimeData } from '../contexts/RealtimeDataContext'
 import StoreCard from '../components/StoreCard'
 
 export default function StoreDirectoryPage() {
   const { mallId } = useParams()
-  const [mall, setMall] = useState(null)
-  const [stores, setStores] = useState([])
-  const [filteredStores, setFilteredStores] = useState([])
+  const { malls, stores } = useRealtimeData()
+
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedFloor, setSelectedFloor] = useState('all')
   const [sortBy, setSortBy] = useState('name')
 
-  useEffect(() => {
-    const mallData = mallsData.find((m) => m.id === mallId)
-    setMall(mallData)
+  const mall = useMemo(() => malls.find((m) => m.id === mallId) || null, [malls, mallId])
+  const mallStores = useMemo(() => stores.filter((s) => s.mall_id === mallId), [stores, mallId])
 
-    const mallStores = storesData.filter((s) => s.mallId === mallId)
-    setStores(mallStores)
-  }, [mallId])
+  const categories = useMemo(() => ['all', ...new Set(mallStores.map((s) => s.category).filter(Boolean))], [mallStores])
+  const floors = useMemo(() => {
+    const f = mallStores.map((s) => s.floor).filter((x) => x !== null && x !== undefined)
+    return ['all', ...new Set(f)].sort((a, b) => {
+      if (a === 'all') return -1
+      if (b === 'all') return 1
+      return Number(a) - Number(b)
+    })
+  }, [mallStores])
 
-  useEffect(() => {
-    let filtered = [...stores]
+  const filteredStores = useMemo(() => {
+    let filtered = [...mallStores]
 
-    // Filter by category
     if (selectedCategory !== 'all') {
       filtered = filtered.filter((s) => s.category === selectedCategory)
     }
 
-    // Filter by floor
     if (selectedFloor !== 'all') {
-      filtered = filtered.filter((s) => s.floor === parseInt(selectedFloor))
+      filtered = filtered.filter((s) => String(s.floor) === String(selectedFloor))
     }
 
-    // Sort
     if (sortBy === 'name') {
-      filtered.sort((a, b) => a.name.localeCompare(b.name))
+      filtered.sort((a, b) => String(a.name).localeCompare(String(b.name)))
     } else if (sortBy === 'floor') {
-      filtered.sort((a, b) => a.floor - b.floor)
+      filtered.sort((a, b) => Number(a.floor ?? 0) - Number(b.floor ?? 0))
     }
 
-    setFilteredStores(filtered)
-  }, [stores, selectedCategory, selectedFloor, sortBy])
+    return filtered
+  }, [mallStores, selectedCategory, selectedFloor, sortBy])
+
+  useEffect(() => {
+    setSelectedCategory('all')
+    setSelectedFloor('all')
+  }, [mallId])
 
   if (!mall) {
     return (
@@ -54,9 +60,6 @@ export default function StoreDirectoryPage() {
       </div>
     )
   }
-
-  const categories = ['all', ...new Set(stores.map((s) => s.category))]
-  const floors = ['all', ...new Set(stores.map((s) => s.floor)).sort()]
 
   return (
     <div className="min-h-screen">
@@ -71,16 +74,14 @@ export default function StoreDirectoryPage() {
             {mall.name}
           </Link>
           <span>/</span>
-          <span className="text-navy font-semibold">Directory</span>
+          <span className="text-navy font-semibold">Stores</span>
         </div>
       </div>
 
       {/* Header */}
       <div className="section-padding max-w-6xl mx-auto">
-        <h1 className="heading-large mb-2">{mall.name} Directory</h1>
-        <p className="text-gray-600 text-lg">
-          {filteredStores.length} store{filteredStores.length !== 1 ? 's' : ''} available
-        </p>
+        <h1 className="heading-large mb-2">{mall.name} Stores</h1>
+        <p className="text-gray-600 text-lg">{filteredStores.length} store{filteredStores.length !== 1 ? 's' : ''} available</p>
       </div>
 
       {/* Filters */}
@@ -109,7 +110,7 @@ export default function StoreDirectoryPage() {
             {/* Floor Filter */}
             <div>
               <label htmlFor="floor" className="block text-sm font-semibold text-gold mb-2">
-                Floor Level
+                Floor
               </label>
               <select
                 id="floor"
@@ -118,7 +119,7 @@ export default function StoreDirectoryPage() {
                 className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
               >
                 {floors.map((floor) => (
-                  <option key={floor} value={floor}>
+                  <option key={String(floor)} value={String(floor)}>
                     {floor === 'all' ? 'All Floors' : `Floor ${floor}`}
                   </option>
                 ))}
@@ -137,7 +138,7 @@ export default function StoreDirectoryPage() {
                 className="w-full px-4 py-2 rounded-lg text-navy focus:outline-none focus:ring-2 focus:ring-gold"
               >
                 <option value="name">Name (A-Z)</option>
-                <option value="floor">Floor Level</option>
+                <option value="floor">Floor</option>
               </select>
             </div>
           </div>
