@@ -381,6 +381,32 @@ const translations = {
         title: 'Xizmatlar',
         description: 'Ko\'plab xizmatlar va imkoniyatlar'
       }
+    },
+    immersive: {
+      title: 'Immersiv Tajriba',
+      subtitle: 'Immersiv Kontent',
+      description: 'Savdo markazlarimizni 360° ko\'rinishda, video sayohatda va AR texnologiyasi bilan kashf eting',
+      comingSoon: 'Tez Orada',
+      '360': {
+        title: '360° Virtual Tur',
+        description: 'Interaktiv 360° ko\'rinish bilan savdo markazini to\'liq o\'rganing. Har qanday burchakka erkin harakatlaning.'
+      },
+      video: {
+        title: 'Video Sayohat',
+        description: 'Professional video orqali savdo markazining barcha qismlarini ko\'ring. HD sifat va immersiv audio.'
+      },
+      ar: {
+        title: 'AR Ko\'rinish',
+        description: 'Augmented Reality texnologiyasi bilan haqiqiy vaqtda navigatsiya va ma\'lumot olish.'
+      },
+      features: {
+        realistic: 'Realistik Ko\'rinish',
+        realisticDesc: 'Yuqori sifatli tasvirlar va 3D texnologiya',
+        interactive: 'Interaktiv',
+        interactiveDesc: 'To\'liq boshqaruv va erkin harakatlanish',
+        accessible: 'Osongina Kirish',
+        accessibleDesc: 'Har qanday qurilmadan foydalanish mumkin'
+      }
     }
   },
   ru: {
@@ -567,6 +593,32 @@ const translations = {
         title: 'Услуги',
         description: 'Множество услуг и возможностей'
       }
+    },
+    immersive: {
+      title: 'Иммерсивный Опыт',
+      subtitle: 'Иммерсивный Контент',
+      description: 'Исследуйте наши торговые центры в 360°, видео-турах и AR технологии',
+      comingSoon: 'Скоро',
+      '360': {
+        title: '360° Виртуальный Тур',
+        description: 'Полностью изучите торговый центр с интерактивным 360° обзором. Свободно перемещайтесь в любом направлении.'
+      },
+      video: {
+        title: 'Видео Экскурсия',
+        description: 'Посмотрите все части торгового центра через профессиональное видео. HD качество и иммерсивный звук.'
+      },
+      ar: {
+        title: 'AR Просмотр',
+        description: 'Навигация и информация в реальном времени с технологией дополненной реальности.'
+      },
+      features: {
+        realistic: 'Реалистичный Вид',
+        realisticDesc: 'Высококачественные изображения и 3D технология',
+        interactive: 'Интерактивный',
+        interactiveDesc: 'Полный контроль и свободное перемещение',
+        accessible: 'Легкий Доступ',
+        accessibleDesc: 'Можно использовать с любого устройства'
+      }
     }
   },
   en: {
@@ -735,7 +787,7 @@ const translations = {
       visitWebsite: 'Visit Website'
     },
     virtualTour: {
-      subtitle: 'Explore Mega Travel Center in Depth',
+      subtitle: 'Explore Mega Travel Center In Depth',
       welcome: {
         title: 'Welcome to Virtual Tour',
         description: 'We will help you start exploring Mega Travel Center'
@@ -747,6 +799,32 @@ const translations = {
       services: {
         title: 'Services',
         description: 'Many services and opportunities'
+      }
+    },
+    immersive: {
+      title: 'Immersive Experience',
+      subtitle: 'Immersive Content',
+      description: 'Explore our shopping centers in 360°, video tours, and AR technology',
+      comingSoon: 'Coming Soon',
+      '360': {
+        title: '360° Virtual Tour',
+        description: 'Fully explore the mall with an interactive 360° view. Move freely in any direction.'
+      },
+      video: {
+        title: 'Video Walkthrough',
+        description: 'See all parts of the mall through professional video. HD quality and immersive audio.'
+      },
+      ar: {
+        title: 'AR View',
+        description: 'Real-time navigation and information with Augmented Reality technology.'
+      },
+      features: {
+        realistic: 'Realistic View',
+        realisticDesc: 'High-quality images and 3D technology',
+        interactive: 'Interactive',
+        interactiveDesc: 'Full control and free movement',
+        accessible: 'Easy Access',
+        accessibleDesc: 'Can be used from any device'
       }
     }
   }

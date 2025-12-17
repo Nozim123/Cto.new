@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import productsData from '../data/products.json'
+import { checkMallStatus, getMallsWithStatus } from '../utils/mallStatus'
 
 export default function RealTimeMap() {
   const { darkMode, accentColor } = useTheme()
@@ -15,6 +16,7 @@ export default function RealTimeMap() {
   const [mapCenter, setMapCenter] = useState([39.6542, 66.9597])
   const [userLocation, setUserLocation] = useState(null)
   const [liveEvents, setLiveEvents] = useState([])
+  const [mallsWithStatus, setMallsWithStatus] = useState([])
   const mapRef = useRef(null)
 
   // Simulate real-time events
@@ -50,19 +52,40 @@ export default function RealTimeMap() {
     }
   }, [])
 
-  const openMalls = mallsData.filter(mall => mall.status === 'open')
+  // Update mall statuses in real-time
+  useEffect(() => {
+    const updateStatuses = () => {
+      setMallsWithStatus(getMallsWithStatus(mallsData))
+    }
+    
+    updateStatuses()
+    
+    // Update every minute
+    const interval = setInterval(updateStatuses, 60000)
+    
+    return () => clearInterval(interval)
+  }, [])
+
+  const openMalls = mallsWithStatus.filter(mall => 
+    mall.status === 'open' && mall.realTimeStatus?.isOpen
+  )
+  const closedMalls = mallsWithStatus.filter(mall => 
+    mall.status === 'open' && !mall.realTimeStatus?.isOpen
+  )
   const comingSoonMalls = mallsData.filter(mall => mall.status === 'coming_soon')
 
   const getMarkerStyle = (mall) => {
     const isSelected = selectedMall?.id === mall.id
-    const isOpen = mall.status === 'open'
+    const mallWithStatus = mallsWithStatus.find(m => m.id === mall.id) || mall
+    const isOpen = mallWithStatus.realTimeStatus?.isOpen || false
+    const isComingSoon = mall.status === 'coming_soon'
     
     return {
       left: `${50 + (mall.coordinates[1] - 66.9) * 1000}%`,
       top: `${50 - (mall.coordinates[0] - 39.6) * 1000}%`,
       transform: isSelected ? 'scale(1.5)' : 'scale(1)',
-      backgroundColor: isOpen ? 'var(--accent-primary)' : '#6B7280',
-      boxShadow: isSelected ? `0 0 20px var(--accent-primary)` : '0 2px 10px rgba(0,0,0,0.3)'
+      backgroundColor: isComingSoon ? '#6B7280' : (isOpen ? '#10B981' : '#EF4444'),
+      boxShadow: isSelected ? `0 0 20px ${isOpen ? '#10B981' : '#EF4444'}` : '0 2px 10px rgba(0,0,0,0.3)'
     }
   }
 
@@ -109,18 +132,24 @@ export default function RealTimeMap() {
               </div>
 
               {/* Mall Markers */}
-              {mallsData.map((mall) => (
-                <div
-                  key={mall.id}
-                  className={`absolute w-6 h-6 rounded-full border-2 border-white dark:border-gray-800 cursor-pointer transition-all duration-300 hover:scale-125 animate-pulse-glow ${mall.status === 'open' ? 'bg-green-500' : 'bg-gray-400'}`}
-                  style={getMarkerStyle(mall)}
-                  onClick={() => setSelectedMall(mall)}
-                >
-                  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 hover:opacity-100 transition-opacity whitespace-nowrap">
-                    {mall.name}
+              {mallsData.map((mall) => {
+                const mallWithStatus = mallsWithStatus.find(m => m.id === mall.id) || mall
+                const isOpen = mallWithStatus.realTimeStatus?.isOpen
+                return (
+                  <div
+                    key={mall.id}
+                    className={`absolute w-6 h-6 rounded-full border-2 border-white dark:border-gray-800 cursor-pointer transition-all duration-300 hover:scale-125 ${
+                      isOpen ? 'animate-pulse-glow' : ''
+                    }`}
+                    style={getMarkerStyle(mall)}
+                    onClick={() => setSelectedMall(mallWithStatus)}
+                  >
+                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 hover:opacity-100 transition-opacity whitespace-nowrap">
+                      {mall.name} {isOpen !== undefined && (isOpen ? '🟢' : '🔴')}
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
 
               {/* User Location */}
               {userLocation && (
@@ -163,8 +192,12 @@ export default function RealTimeMap() {
             <div className="mt-4 p-4 bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg rounded-2xl border border-purple-200/30 dark:border-purple-700/30">
               <div className="flex flex-wrap gap-6 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span>Open Malls ({openMalls.length})</span>
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                  <span>Open Now ({openMalls.length})</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <span>Closed ({closedMalls.length})</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
@@ -173,10 +206,6 @@ export default function RealTimeMap() {
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
                   <span>Your Location</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
-                  <span>Selected Mall</span>
                 </div>
               </div>
             </div>
@@ -204,9 +233,23 @@ export default function RealTimeMap() {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className={`w-2 h-2 rounded-full ${selectedMall.status === 'open' ? 'bg-green-500' : 'bg-gray-400'}`}></span>
-                    <span className="text-sm capitalize">{selectedMall.status.replace('_', ' ')}</span>
+                  {/* Real-time Status */}
+                  <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${
+                    selectedMall.realTimeStatus?.isOpen
+                      ? 'bg-green-100 dark:bg-green-900/30'
+                      : 'bg-red-100 dark:bg-red-900/30'
+                  }`}>
+                    <span className={`w-2 h-2 rounded-full ${
+                      selectedMall.realTimeStatus?.isOpen ? 'bg-green-500 animate-pulse' : 'bg-red-500'
+                    }`}></span>
+                    <span className={`text-sm font-medium ${
+                      selectedMall.realTimeStatus?.isOpen
+                        ? 'text-green-700 dark:text-green-300'
+                        : 'text-red-700 dark:text-red-300'
+                    }`}>
+                      {selectedMall.realTimeStatus?.isOpen ? t('common.open') : t('common.closed')}
+                      {selectedMall.realTimeStatus?.message && ` - ${selectedMall.realTimeStatus.message}`}
+                    </span>
                   </div>
                   
                   {selectedMall.rating > 0 && (
@@ -397,8 +440,8 @@ export default function RealTimeMap() {
             {/* Quick Stats */}
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: t('map.openNow'), value: openMalls.length, icon: '🏢', color: 'from-green-400 to-green-600' },
-                { label: t('common.comingSoon'), value: comingSoonMalls.length, icon: '🚧', color: 'from-orange-400 to-orange-600' }
+                { label: t('map.openNow'), value: openMalls.length, icon: '🟢', color: 'from-green-400 to-green-600' },
+                { label: t('common.closed'), value: closedMalls.length, icon: '🔴', color: 'from-red-400 to-red-600' }
               ].map((stat, index) => (
                 <div 
                   key={index}

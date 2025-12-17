@@ -1,10 +1,24 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
+import { useState, useEffect } from 'react'
 import Button3D from './Button3D'
+import { checkMallStatus } from '../utils/mallStatus'
 
 export default function MallCard({ mall, index = 0 }) {
   const isComingSoon = mall.status === 'coming_soon'
   const { darkMode, seasonalColors } = useTheme()
+  const { t } = useLanguage()
+  const [realTimeStatus, setRealTimeStatus] = useState(checkMallStatus(mall))
+
+  // Update status every minute
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRealTimeStatus(checkMallStatus(mall))
+    }, 60000) // Update every minute
+
+    return () => clearInterval(interval)
+  }, [mall])
 
   const delayClass = `fade-in-up-delay-${Math.min(index % 3, 3)}`
 
@@ -22,6 +36,19 @@ export default function MallCard({ mall, index = 0 }) {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 lazy"
           loading="lazy"
         />
+        {/* Real-time Status Badge */}
+        {!isComingSoon && (
+          <div className={`absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md text-xs font-medium ${
+            realTimeStatus.isOpen
+              ? 'bg-green-500/90 text-white'
+              : 'bg-red-500/90 text-white'
+          }`}>
+            <div className={`w-2 h-2 rounded-full ${
+              realTimeStatus.isOpen ? 'bg-white animate-pulse' : 'bg-white'
+            }`}></div>
+            {realTimeStatus.isOpen ? t('common.open') : t('common.closed')}
+          </div>
+        )}
         {isComingSoon && (
           <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
             <div className="text-center">
@@ -47,11 +74,29 @@ export default function MallCard({ mall, index = 0 }) {
             <span style={{ color: seasonalColors.primary }}>📍</span> {mall.location}
           </p>
           {!isComingSoon && (
-            <p className={`text-sm md:text-base mb-4 ${
-              darkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}>
-              {mall.description}
-            </p>
+            <>
+              {/* Real-time Hours */}
+              <div className={`flex items-center gap-2 mb-3 text-sm ${
+                darkMode ? 'text-gray-300' : 'text-gray-600'
+              }`}>
+                <span>🕐</span>
+                <span className="font-medium">{mall.hours}</span>
+                {realTimeStatus.message && (
+                  <span className={`ml-auto px-2 py-1 rounded-full text-xs ${
+                    realTimeStatus.isOpen
+                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                      : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                  }`}>
+                    {realTimeStatus.message}
+                  </span>
+                )}
+              </div>
+              <p className={`text-sm md:text-base mb-4 ${
+                darkMode ? 'text-gray-300' : 'text-gray-600'
+              }`}>
+                {mall.description}
+              </p>
+            </>
           )}
         </div>
 
