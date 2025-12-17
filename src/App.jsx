@@ -14,6 +14,7 @@ import HomePage from './pages/HomePage'
 import MallDetailsPage from './pages/MallDetailsPage'
 import StoreDirectoryPage from './pages/StoreDirectoryPage'
 import StoreDetailsPage from './pages/StoreDetailsPage'
+import ProductDetailPage from './pages/ProductDetailPage'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -73,6 +74,7 @@ function AppContent() {
                 <Route path="/mall/:mallId" element={<MallDetailsPage />} />
                 <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
                 <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />
+                <Route path="/product/:productId" element={<ProductDetailPage />} />
               </Routes>
             </main>
             {!isAdminRoute && (
