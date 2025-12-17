@@ -119,7 +119,8 @@
     "interiorImage": "https://images.unsplash.com/photo-1455849318169-8849d6287d0d?w=1200&h=600&fit=crop",
     "hasPromo": false
   },
-  // Makon Mall Stores
+
+  
   {
     "id": "ai-tech-store",
     "name": "AI Tech Store",
@@ -201,7 +202,9 @@
     "promoDescription": "Transform your kitchen with smart technology. Up to 30% off!",
     "promoDiscount": "30% OFF"
   },
-  // Festival Mall Stores
+
+  
+
   {
     "id": "music-world",
     "name": "Music World",
