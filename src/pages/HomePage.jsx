@@ -156,12 +156,12 @@ export default function HomePage() {
           {/* Enhanced Real-time Stats */}
           <div className="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
             {[
-              { label: t('home.activeMalls'), value: 8, icon: '🏢' },
-              { label: t('home.totalStores'), value: 845, suffix: '+', icon: '🏪' },
-              { label: t('home.comingSoon'), value: 2, icon: '🚧' },
+              { label: t('home.activeMalls'), value: mallsData.filter((m) => m.status === 'open').length, icon: '🏢' },
+              { label: t('home.totalStores'), value: mallsData.filter((m) => m.status === 'open').reduce((acc, m) => acc + (Number(m.storeCount) || 0), 0), suffix: '+', icon: '🏪' },
+              { label: t('home.comingSoon'), value: mallsData.filter((m) => m.status === 'coming_soon').length, icon: '🚧' },
               { label: t('home.happyVisitors'), value: 50, suffix: 'K+', icon: '😊' }
             ].map((stat, index) => (
-              <div 
+              <div
                 key={index}
                 className="group p-3 md:p-6 rounded-lg md:rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2 text-center"
               >
