@@ -11,6 +11,177 @@ export function useLanguage() {
 }
 
 const translations = {
+  tr: {
+    nav: {
+      home: 'Ana Sayfa',
+      about: 'Hakkımızda',
+      contact: 'İletişim',
+      admin: 'Yönetim Paneli',
+      profile: 'Profil',
+      settings: 'Ayarlar',
+      logout: 'Çıkış Yap'
+    },
+    home: {
+      title: 'Samarkand Mall',
+      subtitle: 'Modern Alışveriş ve Eğlence Merkezi',
+      explore: 'Keşfet',
+      discover: 'Keşfet',
+      experiences: 'Deneyimler',
+      events: 'Etkinlikler',
+      promotions: 'Kampanyalar',
+      openings: 'Yeni Açılışlar',
+      insights: 'İçgörüler',
+      virtual: 'Sanal Tur',
+      reviews: 'Değerlendirmeler',
+      spotlight: 'Marka Spot',
+      deals: 'Fırsatlar',
+      sustainability: 'Sürdürülebilirlik',
+      news: 'Haberler',
+      help: 'Yardım Merkezi',
+      future: 'Gelecek İnovasyonları',
+      activeMalls: 'Aktif Mallar',
+      totalStores: 'Toplam Mağaza',
+      comingSoon: 'Çok Yakında',
+      happyVisitors: 'Mutlu Ziyaretçiler',
+      virtualTour: 'Sanal Tur',
+      questions: 'Sorular?',
+      questionsDescription: 'Alışveriş merkezlerimiz hakkında sorularınız mı var? Gerçek zamanlı destek ve kişiselleştirilmiş önerilerle yardıma hazırız!'
+    },
+    profile: {
+      title: 'Profilim',
+      name: 'İsim',
+      email: 'E-posta',
+      phone: 'Telefon',
+      edit: 'Düzenle',
+      save: 'Kaydet',
+      cancel: 'İptal',
+      notSet: 'Ayarlanmamış'
+    },
+    settings: {
+      title: 'Ayarlar',
+      language: 'Dil',
+      theme: 'Tema',
+      darkMode: 'Karanlık Mod',
+      notifications: 'Bildirimler',
+      languageSettings: 'Dil Ayarları',
+      themeSettings: 'Tema Ayarları',
+      mallUpdates: 'Mall Güncellemeleri',
+      promotionsNotify: 'Kampanyalar',
+      eventsNotify: 'Etkinlikler'
+    },
+    common: {
+      loading: 'Yükleniyor...',
+      error: 'Bir hata oluştu',
+      retry: 'Tekrar Deneyin',
+      logout: 'Çıkış Yap',
+      login: 'Giriş Yap',
+      email: 'E-posta',
+      password: 'Şifre',
+      submit: 'Gönder',
+      close: 'Kapat',
+      open: 'Açık',
+      closed: 'Kapalı',
+      comingSoon: 'Çok Yakında',
+      share: 'Paylaş',
+      shareStore: 'Mağazayı Paylaş',
+      shareProduct: 'Ürünü Paylaş',
+      copyLink: 'Linki Kopyala',
+      copied: 'Kopyalandı!'
+    },
+    admin: {
+      login: 'Yönetim Paneli Giriş',
+      welcome: 'Hoş Geldiniz!',
+      emailPlaceholder: 'admin@samarkandmall.uz',
+      passwordPlaceholder: 'admin123',
+      loginButton: 'Giriş Yap',
+      invalidCredentials: 'Geçersiz giriş veya şifre'
+    },
+    map: {
+      title: 'İnteraktif Harita',
+      liveUpdates: 'Canlı Güncellemeler',
+      selectMall: 'Mall Seçin',
+      stores: 'Mağazalar',
+      products: 'Ürünler',
+      viewDetails: 'Detayları Görüntüle',
+      viewMallDetails: 'Mall Detaylarını Görüntüle',
+      viewStoreDetails: 'Mağaza Detaylarını Görüntüle',
+      liveEvents: 'Canlı Etkinlikler',
+      openNow: 'Şimdi Açık',
+      floor: 'Kat',
+      storesInMall: 'Bu mall\'daki mağazalar:'
+    },
+    sections: {
+      experiences: 'Deneyimler',
+      experiencesSubtitle: 'Alışverişten fazlası - sinemalar, çocuk alanları, yemek mahalleri ve festivaller',
+      eventsPromotions: 'Etkinlikler ve Kampanyalar',
+      eventsPromotionsSubtitle: 'Mevsimsel indirimler ve sınırlı süreli teklifler için merkezi hub',
+      newOpenings: 'Yeni Açılışlar',
+      newOpeningsSubtitle: 'Yeni alışveriş merkezleri ve mağazalar - açılış tarihleri ve özel önizlemelerle',
+      insights: 'İçgörüler',
+      insightsSubtitle: 'Veri odaklı içgörüler - en yoğun ziyaret saatleri, popüler kategoriler ve akış eğilimleri',
+      virtualTour: 'Sanal Tur',
+      virtualTourSubtitle: 'Sürükleyici önizlemeler: 360° turlar, video gezintileri ve AR hazır mekanlar',
+      dealsNearYou: 'Yakınınızdaki Fırsatlar',
+      dealsNearYouSubtitle: 'Konuma duyarlı promosyonlar - coğrafi hedefli teklifler ve kişiselleştirilmiş bildirimler için gelecek hazır taban',
+      sustainability: 'Sürdürülebilirlik',
+      sustainabilitySubtitle: 'Yeşil girişimler, çevre dostu seyahat ve gelecek için sorumluluk',
+      newsUpdates: 'Haberler ve Güncellemeler',
+      newsUpdatesSubtitle: 'Seyahat için en son haberler, açılışlar ve editöryel içerik',
+      helpCenter: 'Yardım Merkezi',
+      helpCenterSubtitle: 'Modern destek: AI sohbet asistanı, SSS ve iletişim formları'
+    },
+    buttons: {
+      viewStore: 'Mağazayı Görüntüle',
+      viewProducts: 'Ürünleri Görüntüle',
+      saveDeal: 'Fırsatı Kaydet',
+      startVirtualTour: 'Sanal Tur Başlat',
+      liveMallStatus: 'Canlı Mall Durumu',
+      launchDemo: 'Demo Başlat',
+      enableLocation: 'Konumu Etkinleştir',
+      locating: 'Konum Belirleniyor...',
+      contactSupport: 'Destekle İletişime Geç',
+      send: 'Gönder',
+      share: 'Paylaş',
+      copy: 'Kopyala'
+    },
+    stores: {
+      title: 'Mağazalar',
+      noStores: 'Mağaza bulunamadı',
+      loading: 'Mağazalar yükleniyor...',
+      featured: 'Öne Çıkan Mağazalar',
+      categories: 'Kategoriler',
+      allCategories: 'Tüm Kategoriler',
+      searchPlaceholder: 'Mağaza ara...',
+      sortBy: 'Sırala',
+      filterBy: 'Filtrele'
+    },
+    products: {
+      title: 'Ürünler',
+      noProducts: 'Ürün bulunamadı',
+      loading: 'Ürünler yükleniyor...',
+      featured: 'Öne Çıkan Ürünler',
+      categories: 'Kategoriler',
+      allCategories: 'Tüm Kategoriler',
+      searchPlaceholder: 'Ürün ara...',
+      sortBy: 'Sırala',
+      filterBy: 'Filtrele',
+      price: 'Fiyat',
+      addToCart: 'Sepete Ekle',
+      buyNow: 'Şimdi Al',
+      shareProduct: 'Ürünü Paylaş'
+    },
+    malls: {
+      title: 'Alışveriş Merkezleri',
+      featured: 'Öne Çıkan Mallar',
+      allMalls: 'Tüm Mallar',
+      comingSoon: 'Çok Yakında',
+      openNow: 'Şimdi Açık',
+      viewOnMap: 'Haritada Görüntüle',
+      getDirections: 'Yol Tarifi Al',
+      call: 'Ara',
+      visitWebsite: 'Web Sitesini Ziyaret Et'
+    }
+  },
   uz: {
     nav: {
       home: 'Bosh sahifa',
@@ -81,7 +252,12 @@ const translations = {
       close: 'Yopish',
       open: 'Ochiq',
       closed: 'Yopiq',
-      comingSoon: 'Tez orada'
+      comingSoon: 'Tez orada',
+      share: 'Ulashish',
+      shareStore: 'Do\'konni ulashish',
+      shareProduct: 'Mahsulotni ulashish',
+      copyLink: 'Havolani nusxalash',
+      copied: 'Nusxalandi!'
     },
     admin: {
       login: 'Admin Panel Kirish',
@@ -127,6 +303,7 @@ const translations = {
     },
     buttons: {
       viewStore: 'Do\'konni ko\'rish',
+      viewProducts: 'Mahsulotlarni ko\'rish',
       saveDeal: 'Taklifni saqlash',
       startVirtualTour: 'Virtual sayohatni boshlash',
       liveMallStatus: 'Jonli Mall Holati',
@@ -134,7 +311,46 @@ const translations = {
       enableLocation: 'Joylashuvni yoqish',
       locating: 'Joylashuv aniqlanmoqda...',
       contactSupport: 'Qo\'llab-quvvatlash bilan bog\'lanish',
-      send: 'Yuborish'
+      send: 'Yuborish',
+      share: 'Ulashish',
+      copy: 'Nusxalash'
+    },
+    stores: {
+      title: 'Do\'konlar',
+      noStores: 'Do\'kon topilmadi',
+      loading: 'Do\'konlar yuklanmoqda...',
+      featured: 'Tavsiya etiladigan do\'konlar',
+      categories: 'Kategoriyalar',
+      allCategories: 'Barcha kategoriyalar',
+      searchPlaceholder: 'Do\'kon qidirish...',
+      sortBy: 'Saralash',
+      filterBy: 'Filtrlash'
+    },
+    products: {
+      title: 'Mahsulotlar',
+      noProducts: 'Mahsulot topilmadi',
+      loading: 'Mahsulotlar yuklanmoqda...',
+      featured: 'Tavsiya etiladigan mahsulotlar',
+      categories: 'Kategoriyalar',
+      allCategories: 'Barcha kategoriyalar',
+      searchPlaceholder: 'Mahsulot qidirish...',
+      sortBy: 'Saralash',
+      filterBy: 'Filtrlash',
+      price: 'Narx',
+      addToCart: 'Savatga qo\'shish',
+      buyNow: 'Hoziroq sotib olish',
+      shareProduct: 'Mahsulotni ulashish'
+    },
+    malls: {
+      title: 'Savdo markazlari',
+      featured: 'Tavsiya etiladigan mallar',
+      allMalls: 'Barcha mallar',
+      comingSoon: 'Tez orada',
+      openNow: 'Hozir ochiq',
+      viewOnMap: 'Xaritani ko\'rish',
+      getDirections: 'Yo\'lni topish',
+      call: 'Qo\'ng\'iroq qilish',
+      visitWebsite: 'Veb-saytga o\'tish'
     }
   },
   ru: {
@@ -207,7 +423,12 @@ const translations = {
       close: 'Закрыть',
       open: 'Открыт',
       closed: 'Закрыт',
-      comingSoon: 'Скоро откроется'
+      comingSoon: 'Скоро откроется',
+      share: 'Поделиться',
+      shareStore: 'Поделиться магазином',
+      shareProduct: 'Поделиться товаром',
+      copyLink: 'Скопировать ссылку',
+      copied: 'Скопировано!'
     },
     admin: {
       login: 'Вход в админ-панель',
@@ -253,6 +474,7 @@ const translations = {
     },
     buttons: {
       viewStore: 'Посмотреть магазин',
+      viewProducts: 'Посмотреть товары',
       saveDeal: 'Сохранить предложение',
       startVirtualTour: 'Начать виртуальный тур',
       liveMallStatus: 'Статус молла в реальном времени',
@@ -260,7 +482,46 @@ const translations = {
       enableLocation: 'Включить местоположение',
       locating: 'Определение местоположения...',
       contactSupport: 'Связаться с поддержкой',
-      send: 'Отправить'
+      send: 'Отправить',
+      share: 'Поделиться',
+      copy: 'Копировать'
+    },
+    stores: {
+      title: 'Магазины',
+      noStores: 'Магазины не найдены',
+      loading: 'Загрузка магазинов...',
+      featured: 'Рекомендуемые магазины',
+      categories: 'Категории',
+      allCategories: 'Все категории',
+      searchPlaceholder: 'Поиск магазинов...',
+      sortBy: 'Сортировка',
+      filterBy: 'Фильтр'
+    },
+    products: {
+      title: 'Товары',
+      noProducts: 'Товары не найдены',
+      loading: 'Загрузка товаров...',
+      featured: 'Рекомендуемые товары',
+      categories: 'Категории',
+      allCategories: 'Все категории',
+      searchPlaceholder: 'Поиск товаров...',
+      sortBy: 'Сортировка',
+      filterBy: 'Фильтр',
+      price: 'Цена',
+      addToCart: 'В корзину',
+      buyNow: 'Купить сейчас',
+      shareProduct: 'Поделиться товаром'
+    },
+    malls: {
+      title: 'Торговые центры',
+      featured: 'Рекомендуемые моллы',
+      allMalls: 'Все моллы',
+      comingSoon: 'Скоро откроется',
+      openNow: 'Сейчас открыто',
+      viewOnMap: 'Посмотреть на карте',
+      getDirections: 'Получить направления',
+      call: 'Позвонить',
+      visitWebsite: 'Посетить веб-сайт'
     }
   },
   en: {
@@ -379,6 +640,7 @@ const translations = {
     },
     buttons: {
       viewStore: 'View store',
+      viewProducts: 'View Products',
       saveDeal: 'Save deal',
       startVirtualTour: 'Start Virtual Tour',
       liveMallStatus: 'Live Mall Status',
@@ -386,7 +648,46 @@ const translations = {
       enableLocation: 'Enable location',
       locating: 'Locating…',
       contactSupport: 'Contact support',
-      send: 'Send'
+      send: 'Send',
+      share: 'Share',
+      copy: 'Copy'
+    },
+    stores: {
+      title: 'Stores',
+      noStores: 'No stores found',
+      loading: 'Loading stores...',
+      featured: 'Featured Stores',
+      categories: 'Categories',
+      allCategories: 'All Categories',
+      searchPlaceholder: 'Search stores...',
+      sortBy: 'Sort by',
+      filterBy: 'Filter by'
+    },
+    products: {
+      title: 'Products',
+      noProducts: 'No products found',
+      loading: 'Loading products...',
+      featured: 'Featured Products',
+      categories: 'Categories',
+      allCategories: 'All Categories',
+      searchPlaceholder: 'Search products...',
+      sortBy: 'Sort by',
+      filterBy: 'Filter by',
+      price: 'Price',
+      addToCart: 'Add to Cart',
+      buyNow: 'Buy Now',
+      shareProduct: 'Share Product'
+    },
+    malls: {
+      title: 'Shopping Centers',
+      featured: 'Featured Malls',
+      allMalls: 'All Malls',
+      comingSoon: 'Coming Soon',
+      openNow: 'Open Now',
+      viewOnMap: 'View on Map',
+      getDirections: 'Get Directions',
+      call: 'Call',
+      visitWebsite: 'Visit Website'
     }
   }
 }
