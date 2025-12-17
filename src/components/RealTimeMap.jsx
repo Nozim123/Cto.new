@@ -22,15 +22,16 @@ export default function RealTimeMap() {
     const interval = setInterval(() => {
       const events = [
         { type: 'crowd', message: 'Heavy crowd at Family Park Mall', mall: 'family-park', time: new Date() },
-        { type: 'promotion', message: '50% off at Samarkand Central', mall: 'samarkand-central', time: new Date() },
-        { type: 'event', message: 'Cultural event at Orient Bazaar', mall: 'orient-bazaar', time: new Date() },
-        { type: 'maintenance', message: 'Elevator maintenance at Golden Gate', mall: 'golden-gate', time: new Date() }
+        { type: 'promotion', message: 'Smart deals live now at Makon Mall', mall: 'makon-mall', time: new Date() },
+        { type: 'event', message: 'Live performance tonight at Festival Mall', mall: 'festival-mall', time: new Date() },
+        { type: 'event', message: 'Silk Road Mall: artisan pop-up market', mall: 'silk-road-mall', time: new Date() },
+        { type: 'maintenance', message: 'Registan Tower: escalator maintenance (Level 2)', mall: 'registan-tower', time: new Date() }
       ]
-      
+
       // Randomly add an event
       if (Math.random() < 0.3) {
         const newEvent = events[Math.floor(Math.random() * events.length)]
-        setLiveEvents(prev => [newEvent, ...prev.slice(0, 4)])
+        setLiveEvents((prev) => [newEvent, ...prev.slice(0, 4)])
       }
     }, 5000)
 

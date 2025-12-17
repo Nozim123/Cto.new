@@ -15,6 +15,7 @@ import MallDetailsPage from './pages/MallDetailsPage'
 import StoreDirectoryPage from './pages/StoreDirectoryPage'
 import StoreDetailsPage from './pages/StoreDetailsPage'
 import ProductDetailPage from './pages/ProductDetailPage'
+import MapPage from './pages/MapPage'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -71,6 +72,7 @@ function AppContent() {
             <main className={`flex-grow relative z-10 ${!isAdminRoute ? 'pb-16 md:pb-0' : ''}`}>
               <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/map" element={<MapPage />} />
                 <Route path="/mall/:mallId" element={<MallDetailsPage />} />
                 <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
                 <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />
