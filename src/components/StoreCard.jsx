@@ -1,67 +1,61 @@
 import { Link } from 'react-router-dom'
-import { useTheme } from '../contexts/ThemeContext'
+import Button3D from './Button3D'
 
 export default function StoreCard({ store, mallId }) {
-  const { darkMode } = useTheme()
-  const statusColor = store.status === 'open' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+  const statusColor = store.status === 'open' ? 'text-green-400' : 'text-yellow-400'
   const statusText = store.status === 'open' ? 'Open' : 'Coming Soon'
 
   return (
-    <Link
-      to={`/mall/${mallId}/store/${store.id}`}
-      className={`card-shadow rounded-lg overflow-hidden hover:no-underline group h-full transition-all duration-300 ${
-        darkMode ? 'bg-gray-800 glass-card-dark' : 'bg-white glass-card'
-      }`}
-    >
-      {/* Logo Container */}
-      <div className={`relative overflow-hidden h-48 sm:h-56 md:h-64 ${
-        darkMode ? 'bg-gray-700' : 'bg-gray-100'
-      }`}>
+    <div className="group relative bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-gold/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl flex flex-col h-full">
+      {/* Cover Image */}
+      <div className="relative h-48 overflow-hidden">
         <img
-          src={store.logo}
+          src={store.image || store.interiorImage}
           alt={store.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 lazy"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           loading="lazy"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+        
+        {/* Logo overlay */}
+        <div className="absolute bottom-4 left-4 w-12 h-12 bg-white rounded-lg p-1 shadow-lg">
+          <img 
+            src={store.logo} 
+            alt="logo" 
+            className="w-full h-full object-contain"
+          />
+        </div>
+
+        {/* Status Badge */}
+        <div className={`absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 ${statusColor}`}>
+          {statusText}
+        </div>
       </div>
 
       {/* Content */}
-      <div className="p-5">
-        <div className="flex justify-between items-start gap-2 mb-3">
-          <div>
-            <h3 className={`font-display text-lg lg:text-xl font-bold group-hover:text-gold transition-colors duration-300 ${
-              darkMode ? 'text-cream' : 'text-navy'
-            }`}>
-              {store.name}
-            </h3>
-            <p className={`text-sm ${
-              darkMode ? 'text-gray-400' : 'text-sage'
-            }`}>
-              {store.category}
-            </p>
+      <div className="p-5 flex-grow flex flex-col">
+        <div className="mb-4">
+          <div className="text-xs text-gold font-bold uppercase tracking-wider mb-1">
+            {store.category}
           </div>
-          <span className={`text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap ${statusColor}`}>
-            {statusText}
-          </span>
+          <h3 className="text-xl font-display font-bold text-white mb-2 group-hover:text-gold transition-colors">
+            {store.name}
+          </h3>
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <span>⭐ 4.8</span>
+            <span>•</span>
+            <span>Floor {store.floor}</span>
+          </div>
         </div>
-
-        {/* Meta Info */}
-        <div className={`space-y-2 text-sm ${
-          darkMode ? 'text-gray-400' : 'text-gray-600'
-        }`}>
-          <p>
-            <span className="font-semibold">Floor:</span> {store.floor}
-          </p>
-          <p>
-            <span className="font-semibold">Hours:</span> {store.hours}
-          </p>
-        </div>
-
-        {/* CTA */}
-        <div className="mt-4 text-gold font-semibold group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">
-          View Store →
+        
+        <div className="mt-auto">
+          <Link to={`/mall/${mallId}/store/${store.id}`}>
+            <Button3D variant="primary" className="w-full text-sm py-2">
+              View Products
+            </Button3D>
+          </Link>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }

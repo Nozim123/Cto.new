@@ -7,7 +7,20 @@
     "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
     "category": "Footwear",
     "tag": "Best Seller",
-    "description": "Professional-grade running shoes with advanced cushioning technology. Perfect for marathon training and daily jogging."
+    "description": "Professional-grade running shoes with advanced cushioning technology. Perfect for marathon training and daily jogging. Features include breathable mesh upper, responsive foam midsole, and durable rubber outsole for maximum traction.",
+    "brand": "Terra Athletics",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Mesh, Rubber",
+      "Weight": "250g",
+      "Origin": "Vietnam",
+      "Warranty": "1 Year"
+    },
+    "gallery": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=800&h=800&fit=crop"
+    ]
   },
   {
     "id": "tp-002",
@@ -17,7 +30,18 @@
     "image": "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=400&fit=crop",
     "category": "Apparel",
     "tag": "New",
-    "description": "Breathable athletic t-shirt designed for high-performance activities with quick-dry technology."
+    "description": "Breathable athletic t-shirt designed for high-performance activities with quick-dry technology. Stay cool and dry during your most intense workouts.",
+    "brand": "Terra Athletics",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Polyester blend",
+      "Fit": "Regular",
+      "Care": "Machine wash cold"
+    },
+    "gallery": [
+      "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=800&fit=crop"
+    ]
   },
   {
     "id": "tp-003",
