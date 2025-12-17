@@ -180,6 +180,21 @@ const translations = {
       getDirections: 'Yol Tarifi Al',
       call: 'Ara',
       visitWebsite: 'Web Sitesini Ziyaret Et'
+    },
+    virtualTour: {
+      subtitle: 'Mega Travel Center ni chuqur o\'rganing',
+      welcome: {
+        title: 'Virtual Tourga Xush Kelibsiz',
+        description: 'Mega Travel Center bilan tanishishni boshlashingizga yordam beramiz'
+      },
+      spaces: {
+        title: 'Fazolar',
+        description: 'Bizning katta savdo markazlarimizni o\'rganing'
+      },
+      services: {
+        title: 'Xizmatlar',
+        description: 'Ko\'plab xizmatlar va imkoniyatlar'
+      }
     }
   },
   uz: {
@@ -351,6 +366,21 @@ const translations = {
       getDirections: 'Yo\'lni topish',
       call: 'Qo\'ng\'iroq qilish',
       visitWebsite: 'Veb-saytga o\'tish'
+    },
+    virtualTour: {
+      subtitle: 'Mega Travel Center ni chuqur o\'rganing',
+      welcome: {
+        title: 'Virtual Tourga Xush Kelibsiz',
+        description: 'Mega Travel Center bilan tanishishni boshlashingizga yordam beramiz'
+      },
+      spaces: {
+        title: 'Fazolar',
+        description: 'Bizning katta savdo markazlarimizni o\'rganing'
+      },
+      services: {
+        title: 'Xizmatlar',
+        description: 'Ko\'plab xizmatlar va imkoniyatlar'
+      }
     }
   },
   ru: {
@@ -522,6 +552,21 @@ const translations = {
       getDirections: 'Получить направления',
       call: 'Позвонить',
       visitWebsite: 'Посетить веб-сайт'
+    },
+    virtualTour: {
+      subtitle: 'Глубоко изучите Mega Travel Center',
+      welcome: {
+        title: 'Добро пожаловать в Виртуальный Тур',
+        description: 'Мы поможем вам начать знакомство с Mega Travel Center'
+      },
+      spaces: {
+        title: 'Пространства',
+        description: 'Исследуйте наши большие торговые центры'
+      },
+      services: {
+        title: 'Услуги',
+        description: 'Множество услуг и возможностей'
+      }
     }
   },
   en: {
@@ -688,6 +733,21 @@ const translations = {
       getDirections: 'Get Directions',
       call: 'Call',
       visitWebsite: 'Visit Website'
+    },
+    virtualTour: {
+      subtitle: 'Explore Mega Travel Center in Depth',
+      welcome: {
+        title: 'Welcome to Virtual Tour',
+        description: 'We will help you start exploring Mega Travel Center'
+      },
+      spaces: {
+        title: 'Spaces',
+        description: 'Explore our large shopping centers'
+      },
+      services: {
+        title: 'Services',
+        description: 'Many services and opportunities'
+      }
     }
   }
 }

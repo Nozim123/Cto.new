@@ -16,6 +16,7 @@ import StoreDirectoryPage from './pages/StoreDirectoryPage'
 import StoreDetailsPage from './pages/StoreDetailsPage'
 import ProductDetailPage from './pages/ProductDetailPage'
 import MapPage from './pages/MapPage'
+import VirtualTourPage from './pages/VirtualTourPage'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -73,6 +74,7 @@ function AppContent() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/map" element={<MapPage />} />
+                <Route path="/virtual-tour" element={<VirtualTourPage />} />
                 <Route path="/mall/:mallId" element={<MallDetailsPage />} />
                 <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
                 <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />

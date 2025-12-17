@@ -43,6 +43,12 @@ export default function Navigation() {
               </span>
               <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
             </Link>
+            <Link to="/virtual-tour" className="relative overflow-hidden group">
+              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
+                Virtual Tour ❄️
+              </span>
+              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
+            </Link>
             <Link to="/map" className="relative overflow-hidden group">
               <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
                 {t('map.title')}
@@ -109,6 +115,13 @@ export default function Navigation() {
               onClick={() => setMenuOpen(false)}
             >
               {t('nav.home')}
+            </Link>
+            <Link 
+              to="/virtual-tour" 
+              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Virtual Tour ❄️
             </Link>
             <Link 
               to="/map" 
