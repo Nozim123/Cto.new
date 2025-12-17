@@ -4,6 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext'
 import HeroSection from '../components/HeroSection'
 import MallCard from '../components/MallCard'
 import NextGenDiscoverySections from '../components/NextGenDiscoverySections'
+import ImmersiveContentSection from '../components/ImmersiveContentSection'
 import { SkeletonMallCard } from '../components/SkeletonCard'
 import AnimatedCounter from '../components/AnimatedCounter'
 import Button3D from '../components/Button3D'
@@ -188,6 +189,11 @@ export default function HomePage() {
       {/* Next-Gen Discovery Sections */}
       <div className="relative z-10">
         <NextGenDiscoverySections />
+      </div>
+
+      {/* Immersive Content Section - 360°/Video/AR */}
+      <div className="relative z-10">
+        <ImmersiveContentSection />
       </div>
 
       {/* Enhanced CTA Section */}
