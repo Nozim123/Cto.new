@@ -86,7 +86,20 @@ const translations = {
       shareStore: 'Mağazayı Paylaş',
       shareProduct: 'Ürünü Paylaş',
       copyLink: 'Linki Kopyala',
-      copied: 'Kopyalandı!'
+      copied: 'Kopyalandı!',
+      all: 'Tümü',
+      searchInStore: 'Mağazada ara...',
+      outOfStock: 'Stokta Yok'
+    },
+    sort: {
+      featured: 'Öne Çıkanlar',
+      new: 'En Yeni',
+      priceLow: 'Fiyat: Düşükten Yükseğe',
+      priceHigh: 'Fiyat: Yüksekten Düşüğe',
+      popular: 'Popüler'
+    },
+    errors: {
+      storeNotFound: 'Mağaza Bulunamadı'
     },
     admin: {
       login: 'Yönetim Paneli Giriş',
@@ -142,7 +155,14 @@ const translations = {
       contactSupport: 'Destekle İletişime Geç',
       send: 'Gönder',
       share: 'Paylaş',
-      copy: 'Kopyala'
+      copy: 'Kopyala',
+      backToMall: 'Mall\'a Geri Dön',
+      backToHome: 'Ana Sayfaya Dön',
+      follow: 'Takip Et',
+      quickView: 'Hızlı Görünüm',
+      viewFullDetails: 'Tam Detayları Görüntüle',
+      addToWishlist: 'Favorilere Ekle',
+      clearFilters: 'Tüm Filtreleri Temizle'
     },
     stores: {
       title: 'Mağazalar',
@@ -168,7 +188,12 @@ const translations = {
       price: 'Fiyat',
       addToCart: 'Sepete Ekle',
       buyNow: 'Şimdi Al',
-      shareProduct: 'Ürünü Paylaş'
+      shareProduct: 'Ürünü Paylaş',
+      showing: 'Gösteriliyor',
+      products: 'ürün',
+      of: 'üzerinden',
+      tryAdjusting: 'Filtrelerinizi veya arama sorgunuzu ayarlamayı deneyin',
+      specifications: 'Özellikler'
     },
     malls: {
       title: 'Alışveriş Merkezleri',
@@ -272,7 +297,20 @@ const translations = {
       shareStore: 'Do\'konni ulashish',
       shareProduct: 'Mahsulotni ulashish',
       copyLink: 'Havolani nusxalash',
-      copied: 'Nusxalandi!'
+      copied: 'Nusxalandi!',
+      all: 'Barchasi',
+      searchInStore: 'Do\'konda qidirish...',
+      outOfStock: 'Qolmadi'
+    },
+    sort: {
+      featured: 'Tavsiya etilgan',
+      new: 'Eng yangi',
+      priceLow: 'Narx: Pastdan Yuqoriga',
+      priceHigh: 'Narx: Yuqoridan Pastga',
+      popular: 'Mashhur'
+    },
+    errors: {
+      storeNotFound: 'Do\'kon topilmadi'
     },
     admin: {
       login: 'Admin Panel Kirish',
@@ -328,7 +366,14 @@ const translations = {
       contactSupport: 'Qo\'llab-quvvatlash bilan bog\'lanish',
       send: 'Yuborish',
       share: 'Ulashish',
-      copy: 'Nusxalash'
+      copy: 'Nusxalash',
+      backToMall: 'Mallga qaytish',
+      backToHome: 'Bosh sahifaga qaytish',
+      follow: 'Kuzatish',
+      quickView: 'Tez ko\'rish',
+      viewFullDetails: 'To\'liq tafsilotlarni ko\'rish',
+      addToWishlist: 'Saqlanganlar',
+      clearFilters: 'Barcha filtrlarni tozalash'
     },
     stores: {
       title: 'Do\'konlar',
@@ -354,7 +399,12 @@ const translations = {
       price: 'Narx',
       addToCart: 'Savatga qo\'shish',
       buyNow: 'Hoziroq sotib olish',
-      shareProduct: 'Mahsulotni ulashish'
+      shareProduct: 'Mahsulotni ulashish',
+      showing: 'Ko\'rsatilmoqda',
+      products: 'mahsulot',
+      of: 'dan',
+      tryAdjusting: 'Filtrlaringizni yoki qidiruv so\'rovingizni sozlashga harakat qiling',
+      specifications: 'Xususiyatlar'
     },
     malls: {
       title: 'Savdo markazlari',
@@ -484,7 +534,20 @@ const translations = {
       shareStore: 'Поделиться магазином',
       shareProduct: 'Поделиться товаром',
       copyLink: 'Скопировать ссылку',
-      copied: 'Скопировано!'
+      copied: 'Скопировано!',
+      all: 'Все',
+      searchInStore: 'Искать в магазине...',
+      outOfStock: 'Нет в наличии'
+    },
+    sort: {
+      featured: 'Рекомендуемые',
+      new: 'Новинки',
+      priceLow: 'Цена: По возрастанию',
+      priceHigh: 'Цена: По убыванию',
+      popular: 'Популярные'
+    },
+    errors: {
+      storeNotFound: 'Магазин не найден'
     },
     admin: {
       login: 'Вход в админ-панель',
@@ -540,7 +603,14 @@ const translations = {
       contactSupport: 'Связаться с поддержкой',
       send: 'Отправить',
       share: 'Поделиться',
-      copy: 'Копировать'
+      copy: 'Копировать',
+      backToMall: 'Вернуться в молл',
+      backToHome: 'Вернуться на главную',
+      follow: 'Подписаться',
+      quickView: 'Быстрый просмотр',
+      viewFullDetails: 'Посмотреть все детали',
+      addToWishlist: 'В избранное',
+      clearFilters: 'Очистить все фильтры'
     },
     stores: {
       title: 'Магазины',
@@ -566,7 +636,12 @@ const translations = {
       price: 'Цена',
       addToCart: 'В корзину',
       buyNow: 'Купить сейчас',
-      shareProduct: 'Поделиться товаром'
+      shareProduct: 'Поделиться товаром',
+      showing: 'Показано',
+      products: 'товаров',
+      of: 'из',
+      tryAdjusting: 'Попробуйте изменить фильтры или поисковый запрос',
+      specifications: 'Характеристики'
     },
     malls: {
       title: 'Торговые центры',
@@ -691,7 +766,25 @@ const translations = {
       close: 'Close',
       open: 'Open',
       closed: 'Closed',
-      comingSoon: 'Coming Soon'
+      comingSoon: 'Coming Soon',
+      share: 'Share',
+      shareStore: 'Share Store',
+      shareProduct: 'Share Product',
+      copyLink: 'Copy Link',
+      copied: 'Copied!',
+      all: 'All',
+      searchInStore: 'Search in store...',
+      outOfStock: 'Out of Stock'
+    },
+    sort: {
+      featured: 'Featured',
+      new: 'Newest',
+      priceLow: 'Price: Low to High',
+      priceHigh: 'Price: High to Low',
+      popular: 'Popular'
+    },
+    errors: {
+      storeNotFound: 'Store Not Found'
     },
     admin: {
       login: 'Admin Panel Login',
@@ -747,7 +840,14 @@ const translations = {
       contactSupport: 'Contact support',
       send: 'Send',
       share: 'Share',
-      copy: 'Copy'
+      copy: 'Copy',
+      backToMall: 'Back to Mall',
+      backToHome: 'Back to Home',
+      follow: 'Follow',
+      quickView: 'Quick View',
+      viewFullDetails: 'View Full Details',
+      addToWishlist: 'Add to Wishlist',
+      clearFilters: 'Clear All Filters'
     },
     stores: {
       title: 'Stores',
@@ -773,7 +873,12 @@ const translations = {
       price: 'Price',
       addToCart: 'Add to Cart',
       buyNow: 'Buy Now',
-      shareProduct: 'Share Product'
+      shareProduct: 'Share Product',
+      showing: 'Showing',
+      products: 'products',
+      of: 'of',
+      tryAdjusting: 'Try adjusting your filters or search query',
+      specifications: 'Specifications'
     },
     malls: {
       title: 'Shopping Centers',
