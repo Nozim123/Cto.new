@@ -7,7 +7,6 @@ import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import productsData from '../data/products.json'
 import ProductModal from './ProductModal'
-import RealTimeMap from './RealTimeMap'
 import {
   trackBehavior
 } from '../services/behavior'
@@ -33,6 +32,19 @@ const formatCountdown = (ms) => {
   if (days > 0) return `${days}d ${hours}h ${minutes}m`
   if (hours > 0) return `${hours}h ${minutes}m`
   return `${minutes}m`
+}
+
+// Haversine formula to calculate distance between two coordinates
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const R = 6371 // Earth's radius in kilometers
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLon = (lon2 - lon1) * Math.PI / 180
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  return R * c // Distance in kilometers
 }
 
 const SectionShell = ({ id, title, subtitle, children }) => {
@@ -295,9 +307,6 @@ export default function NextGenDiscoverySections() {
 
   return (
     <div>
-      {/* Real-time Map Section */}
-      <RealTimeMap />
-
       <SectionShell
         id="experiences"
         title={t('sections.experiences')}
@@ -498,10 +507,10 @@ export default function NextGenDiscoverySections() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                Status: <span className="font-semibold">{geoStatus.state}</span>
+                Status: <span className="font-semibold">{geoStatus.state === 'ready' ? '✅ Location enabled' : geoStatus.state === 'denied' ? '❌ Location denied' : geoStatus.state === 'loading' ? '⏳ Getting location...' : '📍 Enable location'}</span>
               </p>
               <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                We only use your location to rank nearby deals (demo uses approximate distances).
+                Enable your location to see real-time distances to malls and get the best deals near you.
               </p>
             </div>
 
@@ -517,7 +526,23 @@ export default function NextGenDiscoverySections() {
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             {promosWithCountdown.slice(0, 4).map((promo) => {
-              const distanceKm = 0.8 + (stableNumberFromString(promo.id) % 25) / 10
+              // Find mall for this promo
+              const mall = mallsData.find(m => m.id === promo.mallId)
+              
+              // Calculate real distance if user location is available
+              let distanceKm = null
+              let distanceText = 'Location required'
+              
+              if (geoStatus.state === 'ready' && geoStatus.lat && geoStatus.lng && mall?.coordinates) {
+                distanceKm = calculateDistance(
+                  geoStatus.lat,
+                  geoStatus.lng,
+                  mall.coordinates[0],
+                  mall.coordinates[1]
+                )
+                distanceText = `${distanceKm.toFixed(1)} km away`
+              }
+              
               return (
                 <div key={promo.id} className={`rounded-xl p-5 border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
                   <div className="flex items-start justify-between gap-4">
@@ -525,8 +550,13 @@ export default function NextGenDiscoverySections() {
                       <p className="text-gold text-sm font-semibold">{promo.discount}</p>
                       <p className={`font-bold ${darkMode ? 'text-cream' : 'text-navy'}`}>{promo.title}</p>
                       <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Approx. {distanceKm.toFixed(1)} km away
+                        {mall?.name} - {distanceText}
                       </p>
+                      {mall?.address && (
+                        <p className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                          📍 {mall.address}
+                        </p>
+                      )}
                     </div>
                     <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                       {formatCountdown(promo.endsAt - now)}
@@ -545,28 +575,6 @@ export default function NextGenDiscoverySections() {
               )
             })}
           </div>
-        </div>
-      </SectionShell>
-
-      <SectionShell
-        id="sustainability"
-        title={t('sections.sustainability')}
-        subtitle={t('sections.sustainabilitySubtitle')}
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {[
-            { title: 'Green malls', desc: 'Energy-efficient lighting and smarter cooling systems', icon: '🌿' },
-            { title: 'Sustainable brands', desc: 'Spot eco-friendly materials and ethical manufacturing', icon: '♻️' },
-            { title: 'Recycling programs', desc: 'Drop-off points and seasonal collection drives', icon: '🧴' }
-          ].map((x) => (
-            <div key={x.title} className={`rounded-2xl p-6 card-shadow ${baseCard}`}>
-              <div className="text-3xl mb-3">{x.icon}</div>
-              <h3 className={`font-display text-xl font-bold mb-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>
-                {x.title}
-              </h3>
-              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{x.desc}</p>
-            </div>
-          ))}
         </div>
       </SectionShell>
 
