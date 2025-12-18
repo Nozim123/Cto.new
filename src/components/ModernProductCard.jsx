@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
+import { useEcosystem } from '../contexts/EcosystemContext'
 
 export default function ModernProductCard({ product, onQuickView }) {
   const { darkMode } = useTheme()
   const { t } = useLanguage()
   const { isFavorite, toggleFavorite } = useUser()
+  const { compareProductIds, toggleCompare } = useEcosystem()
   const liked = isFavorite('products', product.id)
+  const compared = (compareProductIds || []).includes(product.id)
   const [imageLoaded, setImageLoaded] = useState(false)
 
   const handleLike = (e) => {
@@ -23,6 +26,12 @@ export default function ModernProductCard({ product, onQuickView }) {
     if (onQuickView) {
       onQuickView(product)
     }
+  }
+
+  const handleCompare = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    toggleCompare(product.id)
   }
 
   return (
@@ -74,6 +83,19 @@ export default function ModernProductCard({ product, onQuickView }) {
             }`}
           >
             <span className="text-xl">{liked ? '❤️' : '♡'}</span>
+          </button>
+
+          {/* Compare Button */}
+          <button
+            onClick={handleCompare}
+            className={`absolute top-14 right-3 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-lg transform hover:scale-110 ${
+              compared
+                ? 'bg-purple-600 text-white'
+                : 'bg-white/80 text-gray-700 hover:bg-white'
+            }`}
+            aria-label="Compare"
+          >
+            <span className="text-sm font-bold">≡</span>
           </button>
 
           {/* Quick View Button - Appears on Hover */}

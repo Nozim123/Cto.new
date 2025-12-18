@@ -8,6 +8,7 @@ export default function StoreCard({ store, mallId }) {
   const { t } = useLanguage()
   const { isFavorite, toggleFavorite } = useUser()
   const liked = isFavorite('stores', store.id)
+  const verified = store.verified !== false
   const statusColor = store.status === 'open' ? 'text-green-400' : 'text-yellow-400'
   const statusText = store.status === 'open' ? t('common.open') : t('common.comingSoon')
 
@@ -36,6 +37,12 @@ export default function StoreCard({ store, mallId }) {
         <div className={`absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 ${statusColor}`}>
           {statusText}
         </div>
+
+        {verified ? (
+          <div className="absolute top-4 left-14 text-[10px] font-bold px-2 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-green-200">
+            ✓ Verified
+          </div>
+        ) : null}
 
         {/* Favorite Button */}
         <button

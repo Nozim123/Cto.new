@@ -4,6 +4,9 @@ import { useLanguage } from '../contexts/LanguageContext'
 import HeroSection from '../components/HeroSection'
 import MallCard from '../components/MallCard'
 import { SkeletonMallCard } from '../components/SkeletonCard'
+import SponsoredContentSection from '../components/SponsoredContentSection'
+import RecentlyViewedSection from '../components/RecentlyViewedSection'
+import TrustSection from '../components/TrustSection'
 import mallsData from '../data/malls.json'
 
 export default function HomePage() {
@@ -110,9 +113,12 @@ export default function HomePage() {
         </div>
       </section>
 
+      <SponsoredContentSection />
+      <RecentlyViewedSection />
+
       {/* Featured Malls Section - Mobile Optimized */}
       <section id="malls" className="relative z-10 py-12 md:py-20">
-        <div className="max-w-7xl mx-auto px-4">
+
           <div className="text-center mb-8 md:mb-16 animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/20 to-purple-600/20 text-purple-300 text-xs md:text-sm font-medium mb-4 md:mb-6">
               <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-purple-400 rounded-full animate-pulse"></span>
@@ -174,9 +180,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      <TrustSection />
+
       {/* CTA Section */}
       <section className="relative z-10 py-16 md:py-32">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/90 via-purple-700/90 to-purple-800/90 backdrop-blur-sm"></div>
+
         <div className="relative max-w-6xl mx-auto text-center px-4">
           <div className="animate-fade-in-up">
             <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-white mb-4 md:mb-6">

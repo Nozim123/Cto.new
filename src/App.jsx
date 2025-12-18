@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { UserProvider } from './contexts/UserContext'
+import { EcosystemProvider } from './contexts/EcosystemContext'
 import Navigation from './components/Navigation'
 import Footer from './components/Footer'
 import BottomNavigation from './components/BottomNavigation'
@@ -18,6 +19,15 @@ import StoresPage from './pages/StoresPage'
 import AccountPage from './pages/AccountPage'
 import MapPage from './pages/MapPage'
 import VirtualTourPage from './pages/VirtualTourPage'
+import ComparePage from './pages/ComparePage'
+import RewardsPage from './pages/RewardsPage'
+import OrdersPage from './pages/OrdersPage'
+import ReturnsPage from './pages/ReturnsPage'
+import FeedbackPage from './pages/FeedbackPage'
+import InsightsPage from './pages/InsightsPage'
+import SellerDashboardPage from './pages/SellerDashboardPage'
+import CmsPage from './pages/CmsPage'
+import CompareBar from './components/CompareBar'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -31,6 +41,10 @@ import ProductFormPage from './admin/pages/ProductFormPage'
 import BannerListPage from './admin/pages/BannerListPage'
 import BannerFormPage from './admin/pages/BannerFormPage'
 import SettingsPage from './admin/pages/SettingsPage'
+import CmsPagesPage from './admin/pages/CmsPagesPage'
+import FeedbackAdminPage from './admin/pages/FeedbackAdminPage'
+import SellerApprovalsPage from './admin/pages/SellerApprovalsPage'
+import SeasonEnginePage from './admin/pages/SeasonEnginePage'
 import { ProtectedRoute } from './admin/hooks/useAuth'
 
 // Component to handle route-based navigation
@@ -62,6 +76,10 @@ function AppContent() {
               <Route path="/admin/banners" element={<BannerListPage />} />
               <Route path="/admin/banners/new" element={<BannerFormPage />} />
               <Route path="/admin/banners/:id/edit" element={<BannerFormPage />} />
+              <Route path="/admin/sellers" element={<SellerApprovalsPage />} />
+              <Route path="/admin/season" element={<SeasonEnginePage />} />
+              <Route path="/admin/cms" element={<CmsPagesPage />} />
+              <Route path="/admin/feedback" element={<FeedbackAdminPage />} />
               <Route path="/admin/settings" element={<SettingsPage />} />
             </Routes>
           </ProtectedRoute>
@@ -76,6 +94,14 @@ function AppContent() {
                 <Route path="/promotions" element={<PromotionsPage />} />
                 <Route path="/stores" element={<StoresPage />} />
                 <Route path="/account" element={<AccountPage />} />
+                <Route path="/compare" element={<ComparePage />} />
+                <Route path="/rewards" element={<RewardsPage />} />
+                <Route path="/orders" element={<OrdersPage />} />
+                <Route path="/returns" element={<ReturnsPage />} />
+                <Route path="/feedback" element={<FeedbackPage />} />
+                <Route path="/insights" element={<InsightsPage />} />
+                <Route path="/seller" element={<SellerDashboardPage />} />
+                <Route path="/p/:slug" element={<CmsPage />} />
                 <Route path="/map" element={<MapPage />} />
                 <Route path="/virtual-tour" element={<VirtualTourPage />} />
                 <Route path="/mall/:mallId" element={<MallDetailsPage />} />
@@ -85,12 +111,13 @@ function AppContent() {
               </Routes>
             </main>
             {!isAdminRoute && (
-              <>
-                <Footer />
-                <BottomNavigation />
-              </>
+             <>
+               <Footer />
+               <BottomNavigation />
+               <CompareBar />
+             </>
             )}
-          </>
+
         } />
       </Routes>
       
@@ -132,9 +159,11 @@ function App() {
     <ThemeProvider>
       <LanguageProvider>
         <UserProvider>
-          <Router>
-            <AppContent />
-          </Router>
+          <EcosystemProvider>
+            <Router>
+              <AppContent />
+            </Router>
+          </EcosystemProvider>
         </UserProvider>
       </LanguageProvider>
     </ThemeProvider>

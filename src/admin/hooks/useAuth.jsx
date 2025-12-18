@@ -35,7 +35,7 @@ export const useAuth = () => {
       const userData = JSON.parse(savedUser);
       
       // Only allow specific admin email
-      const adminEmails = ['admin@samarkandmall.uz', 'nozim.roziyev@gmail.com'];
+      const adminEmails = ['admin@samarkand.com', 'admin@samarkandmall.uz', 'nozim.roziyev@gmail.com'];
       if (!adminEmails.includes(userData.email)) {
         localStorage.removeItem('adminToken');
         localStorage.removeItem('user');
@@ -59,11 +59,14 @@ export const useAuth = () => {
   const login = async (credentials) => {
     try {
       // Simulate authentication - in real app, this would call your API
-      if (credentials.email === 'admin@samarkandmall.uz' && credentials.password === 'admin123') {
+      if (
+        (credentials.email === 'admin@samarkand.com' || credentials.email === 'admin@samarkandmall.uz') &&
+        credentials.password === 'admin123'
+      ) {
         const adminUser = {
           id: 'admin-1',
           name: 'Admin User',
-          email: 'admin@samarkandmall.uz',
+          email: credentials.email,
           role: 'admin'
         };
         

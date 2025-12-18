@@ -31,14 +31,29 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#about" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
-                  About
-                </a>
+                <Link to="/p/about-us" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
+                  About Us
+                </Link>
               </li>
               <li>
-                <a href="#contact" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
-                  Contact
-                </a>
+                <Link to="/p/about-the-mall" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
+                  About the Mall
+                </Link>
+              </li>
+              <li>
+                <Link to="/p/faq" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link to="/p/terms" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
+                  Terms
+                </Link>
+              </li>
+              <li>
+                <Link to="/p/privacy" className="hover:text-gold transition-all duration-300 hover:translate-x-1 inline-block">
+                  Privacy
+                </Link>
               </li>
             </ul>
           </div>

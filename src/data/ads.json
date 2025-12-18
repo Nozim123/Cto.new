@@ -1,0 +1,39 @@
+{
+  "heroAds": [
+    {
+      "id": "hero-1",
+      "title": "Sponsored: Winter Picks",
+      "subtitle": "Limited-time deals across top stores",
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1600&h=900&fit=crop",
+      "href": "/promotions"
+    }
+  ],
+  "sponsoredStores": [
+    {
+      "id": "ss-1",
+      "storeId": "terra-pro",
+      "headline": "Sponsored Store",
+      "copy": "Premium sportswear — curated picks & fast pickup"
+    },
+    {
+      "id": "ss-2",
+      "storeId": "elegance-boutique",
+      "headline": "Sponsored Store",
+      "copy": "New season fashion — limited drops"
+    }
+  ],
+  "featuredProducts": [
+    {
+      "id": "fp-1",
+      "productId": "tp-001",
+      "headline": "Featured",
+      "copy": "Top-rated today"
+    },
+    {
+      "id": "fp-2",
+      "productId": "tp-002",
+      "headline": "Featured",
+      "copy": "New arrival"
+    }
+  ]
+}

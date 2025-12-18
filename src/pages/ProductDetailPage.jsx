@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react'
 import { trackBehavior } from '../services/behavior'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
-import productsData from '../data/products.json'
 import Button3D from '../components/Button3D'
 import { useScrollToTop } from '../hooks/useScrollToTop'
+import { useEcosystem } from '../contexts/EcosystemContext'
 
 export default function ProductDetailPage() {
   const { productId } = useParams()
@@ -17,39 +17,39 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState('')
   const [quantity, setQuantity] = useState(1)
 
+  const { getProductById, getProductsByStore, addRecentlyViewed, awardPoints, toggleCompare } = useEcosystem()
+
   useScrollToTop()
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    
-    // Find product
-    const productData = productsData.find((p) => p.id === productId)
-    
+
+    const productData = getProductById(productId)
+
     if (!productData) {
       return
     }
 
     setProduct(productData)
     setActiveImage(productData.image)
-    
-    // Find store
+
     const storeData = storesData.find((s) => s.id === productData.storeId)
     setStore(storeData)
 
-    // Find mall
     if (storeData) {
       const mallData = mallsData.find((m) => m.id === storeData.mallId)
       setMall(mallData)
     }
 
-    // Find related products (same category or store)
-    const related = productsData
-      .filter((p) => p.storeId === productData.storeId && p.id !== productId)
+    const related = getProductsByStore(productData.storeId)
+      .filter((p) => p.id !== productId)
       .slice(0, 4)
     setRelatedProducts(related)
 
-    trackBehavior({ type: 'product_view', id: productId, category: productData.category })
-  }, [productId])
+    addRecentlyViewed('products', productId)
+    awardPoints(2, 'view_product')
+    trackBehavior({ type: 'product', id: productId, category: productData.category })
+  }, [productId, addRecentlyViewed, awardPoints, getProductById, getProductsByStore])
 
   if (!product || !store || !mall) {
     return (
@@ -187,7 +187,7 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4 flex-col sm:flex-row mb-10">
+            <div className="flex gap-4 flex-col sm:flex-row mb-4">
               <div className="flex-1">
                 <Button3D variant="primary" className="w-full py-4 text-lg">
                   Add to Cart
@@ -199,6 +199,14 @@ export default function ProductDetailPage() {
                 </Button3D>
               </div>
             </div>
+
+            <button
+              type="button"
+              onClick={() => toggleCompare(product.id)}
+              className="w-full mb-10 px-4 py-3 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors font-semibold"
+            >
+              Compare
+            </button>
 
             {/* Features/Specs */}
             <div className="bg-white/5 rounded-xl border border-white/10 p-6">
