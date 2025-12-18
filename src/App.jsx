@@ -7,9 +7,6 @@ import Navigation from './components/Navigation'
 import Footer from './components/Footer'
 import BottomNavigation from './components/BottomNavigation'
 import SeasonalBackground from './components/SeasonalBackground'
-import InteractiveBackground from './components/InteractiveBackground'
-import FloatingActionButton from './components/FloatingActionButton'
-import CustomCursor from './components/CustomCursor'
 import HomePage from './pages/HomePage'
 import MallDetailsPage from './pages/MallDetailsPage'
 import StoreDirectoryPage from './pages/StoreDirectoryPage'
@@ -43,8 +40,6 @@ function AppContent() {
 
   return (
     <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
-      <CustomCursor />
-      <InteractiveBackground />
       <SeasonalBackground />
       
       {/* Public routes */}
@@ -93,7 +88,6 @@ function AppContent() {
               <>
                 <Footer />
                 <BottomNavigation />
-                <FloatingActionButton />
               </>
             )}
           </>

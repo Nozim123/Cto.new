@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
-import Button3D from './Button3D'
 
 export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -39,17 +38,17 @@ export default function HeroSection() {
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 lg:px-8 py-12 md:py-0">
         <div className="text-center">
           {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-display font-bold text-cream mb-4 md:mb-6 fade-in-up">
-            <span className="bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 bg-clip-text text-transparent animate-gradient">
-              Mega Travel Center
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-display font-bold text-cream mb-4 md:mb-6">
+            <span className="text-purple-300">
+              Samarkand Mall Directory
             </span>
             <br className="hidden sm:block" />
-            <span className="text-gold">Premium Digital Experience</span>
+            <span className="text-gold">Your Shopping Guide</span>
           </h1>
 
           {/* Subheading */}
-          <p className="text-base sm:text-lg md:text-xl text-cream text-opacity-90 mb-8 md:mb-10 max-w-2xl mx-auto fade-in-up-delay-1">
-            A world-class digital platform combining luxury, innovation, and interactive experiences
+          <p className="text-base sm:text-lg md:text-xl text-cream text-opacity-90 mb-8 md:mb-10 max-w-2xl mx-auto">
+            Discover the finest shopping destinations in historic Samarkand
           </p>
 
           {/* Search Bar */}
@@ -71,22 +70,23 @@ export default function HeroSection() {
                 aria-label="Search malls"
               />
             </div>
-            <Button3D type="submit" variant="primary" size="md">
+            <button 
+              type="submit"
+              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
+            >
               Search
-            </Button3D>
+            </button>
           </form>
 
           {/* CTA */}
-          <div className="mt-8 md:mt-12 fade-in-up-delay-3">
-            <Button3D 
+          <div className="mt-8 md:mt-12">
+            <button 
               onClick={() => window.location.hash = 'malls'} 
-              variant="outline"
-              size="lg"
-              className="!border-2 !border-cream !text-cream hover:!bg-cream hover:!text-navy"
+              className="px-8 py-4 border-2 border-cream text-cream rounded-lg hover:bg-cream hover:text-navy transition-colors font-semibold text-lg"
             >
               <span>Browse Malls</span>
               <span className="ml-2">↓</span>
-            </Button3D>
+            </button>
           </div>
         </div>
       </div>

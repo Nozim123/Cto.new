@@ -3,7 +3,6 @@ import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
 import { useState, useEffect } from 'react'
-import Button3D from './Button3D'
 import { checkMallStatus } from '../utils/mallStatus'
 
 export default function MallCard({ mall, index = 0 }) {
@@ -125,14 +124,14 @@ export default function MallCard({ mall, index = 0 }) {
         {/* Button */}
         {!isComingSoon ? (
           <Link to={`/mall/${mall.id}`} className="mt-4 block">
-            <Button3D variant="primary" fullWidth>
+            <button className="w-full py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold">
               View Details →
-            </Button3D>
+            </button>
           </Link>
         ) : (
-          <Button3D variant="outline" fullWidth disabled className="mt-4 opacity-60">
+          <button disabled className="w-full py-3 px-4 border border-gray-300 text-gray-500 rounded-lg mt-4 opacity-60 cursor-not-allowed">
             Coming Soon
-          </Button3D>
+          </button>
         )}
       </div>
     </div>
