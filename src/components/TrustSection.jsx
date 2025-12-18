@@ -30,10 +30,10 @@ export default function TrustSection() {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-500/20 text-green-200 border border-green-500/30">
+              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-500/10 text-green-700 border border-green-500/20 dark:bg-green-500/20 dark:text-green-200 dark:border-green-500/30">
                 Secure
               </span>
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-200 border border-purple-500/30">
+              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-700 border border-purple-500/20 dark:bg-purple-500/20 dark:text-purple-200 dark:border-purple-500/30">
                 Verified
               </span>
             </div>

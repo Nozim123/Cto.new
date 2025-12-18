@@ -59,21 +59,21 @@ export default function PromotionsPage() {
   }, [])
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-primary'} text-white`}>
+    <div className={`min-h-screen ${darkMode ? 'bg-primary text-white' : 'bg-cream text-gray-900'}`}>
       <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
               {t('promotions.title') || "Today's Deals"}
             </h1>
-            <p className="text-white/70 max-w-2xl">
+            <p className={`${darkMode ? 'text-white/70' : 'text-gray-600'} max-w-2xl`}>
               {t('promotions.subtitle') ||
                 'Flash sales, store discounts, and mall-wide campaigns — updated in real time.'}
             </p>
           </div>
           <Link
             to="/"
-            className="text-sm text-purple-200 hover:text-purple-100 hover:underline"
+            className="text-sm text-purple-700 hover:text-purple-600 dark:text-purple-200 dark:hover:text-purple-100 hover:underline"
           >
             {t('buttons.backToHome') || 'Back to Home'}
           </Link>
@@ -86,7 +86,7 @@ export default function PromotionsPage() {
               <Link
                 key={store.id}
                 to={`/mall/${store.mallId}/store/${store.id}`}
-                className="group rounded-3xl overflow-hidden border border-white/10 bg-white/5 hover:bg-white/10 transition-all hover:-translate-y-1"
+                className="group rounded-3xl overflow-hidden border border-gray-200 bg-white hover:bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 transition-all hover:-translate-y-1"
               >
                 <div className="relative h-44 overflow-hidden">
                   <img
@@ -123,18 +123,18 @@ export default function PromotionsPage() {
                 </div>
 
                 <div className="p-5">
-                  <p className="text-sm text-white/90 font-semibold mb-1">
+                  <p className="text-sm text-gray-900 dark:text-white/90 font-semibold mb-1">
                     {store.promoTitle}
                   </p>
-                  <p className="text-sm text-white/70 line-clamp-2 mb-4">
+                  <p className="text-sm text-gray-600 dark:text-white/70 line-clamp-2 mb-4">
                     {store.promoDescription}
                   </p>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-purple-200 bg-purple-500/15 border border-purple-500/25 px-2 py-1 rounded-full">
+                    <span className="text-xs text-purple-700 bg-purple-500/10 border border-purple-500/20 dark:text-purple-200 dark:bg-purple-500/15 dark:border-purple-500/25 px-2 py-1 rounded-full">
                       {store.category}
                     </span>
-                    <span className="text-sm font-semibold text-white group-hover:text-purple-200 transition-colors">
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-200 transition-colors">
                       {t('promotions.cta') || 'View offer'} →
                     </span>
                   </div>
@@ -145,12 +145,12 @@ export default function PromotionsPage() {
         </div>
 
         {promos.length === 0 ? (
-          <div className="text-center py-20 rounded-3xl border border-white/10 bg-white/5 mt-10">
+          <div className="text-center py-20 rounded-3xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/5 mt-10">
             <div className="text-6xl mb-4">🎁</div>
             <h2 className="text-xl font-semibold mb-2">
               {t('promotions.noneTitle') || 'No active promotions'}
             </h2>
-            <p className="text-white/70">
+            <p className={darkMode ? 'text-white/70' : 'text-gray-600'}>
               {t('promotions.noneSubtitle') || 'Check back soon for new deals and campaigns.'}
             </p>
           </div>

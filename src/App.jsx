@@ -8,6 +8,7 @@ import Navigation from './components/Navigation'
 import Footer from './components/Footer'
 import BottomNavigation from './components/BottomNavigation'
 import SeasonalBackground from './components/SeasonalBackground'
+import NewYearEntrance from './components/NewYearEntrance'
 import HomePage from './pages/HomePage'
 import MallDetailsPage from './pages/MallDetailsPage'
 import StoreDirectoryPage from './pages/StoreDirectoryPage'
@@ -55,6 +56,7 @@ function AppContent() {
   return (
     <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
       <SeasonalBackground />
+      {!isAdminRoute && <NewYearEntrance />}
       
       {/* Public routes */}
       <Routes>

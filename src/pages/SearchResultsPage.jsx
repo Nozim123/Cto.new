@@ -16,7 +16,7 @@ const TypeTab = ({ active, children, onClick }) => (
     className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all border ${
       active
         ? 'bg-purple-600 text-white border-purple-500 shadow-lg shadow-purple-500/20'
-        : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/10'
+        : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50 dark:bg-white/5 dark:text-white/80 dark:border-white/10 dark:hover:bg-white/10'
     }`}
   >
     {children}
@@ -26,25 +26,25 @@ const TypeTab = ({ active, children, onClick }) => (
 const ResultCard = ({ title, subtitle, image, href, badge }) => (
   <Link
     to={href}
-    className="group flex items-center gap-4 p-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
+    className="group flex items-center gap-4 p-4 rounded-2xl border border-gray-200 bg-white hover:bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 transition-all"
   >
-    <div className="w-14 h-14 rounded-2xl overflow-hidden bg-white/10 border border-white/10 flex-shrink-0">
+    <div className="w-14 h-14 rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 dark:bg-white/10 dark:border-white/10 flex-shrink-0">
       {image ? <img src={image} alt="" className="w-full h-full object-cover" loading="lazy" /> : null}
     </div>
     <div className="min-w-0 flex-1">
       <div className="flex items-center gap-2">
-        <p className="text-white font-semibold truncate group-hover:text-purple-300 transition-colors">
+        <p className="text-gray-900 dark:text-white font-semibold truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors">
           {title}
         </p>
         {badge ? (
-          <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-200">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-700 dark:bg-purple-500/20 dark:border-purple-500/30 dark:text-purple-200">
             {badge}
           </span>
         ) : null}
       </div>
-      {subtitle ? <p className="text-sm text-white/60 truncate">{subtitle}</p> : null}
+      {subtitle ? <p className="text-sm text-gray-600 dark:text-white/60 truncate">{subtitle}</p> : null}
     </div>
-    <span className="text-white/40 group-hover:text-white/70 transition-colors">→</span>
+    <span className="text-gray-400 dark:text-white/40 group-hover:text-gray-600 dark:group-hover:text-white/70 transition-colors">→</span>
   </Link>
 )
 
@@ -79,18 +79,18 @@ export default function SearchResultsPage() {
   }
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-primary'} text-white`}> 
+    <div className={`min-h-screen ${darkMode ? 'bg-primary text-white' : 'bg-cream text-gray-900'}`}>
       <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         <div className="mb-8">
           <h1 className="text-2xl md:text-3xl font-bold mb-2">
             {t('search.resultsTitle') || 'Search results'}
           </h1>
-          <p className="text-white/70">
+          <p className={darkMode ? 'text-white/70' : 'text-gray-600'}>
             {query ? (
               <>
-                <span className="font-semibold text-white">{total}</span>{' '}
+                <span className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{total}</span>{' '}
                 {t('search.resultsFor') || 'results for'}{' '}
-                <span className="font-semibold text-white">“{query}”</span>
+                <span className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>“{query}”</span>
               </>
             ) : (
               t('search.typeToSearch') || 'Type something to search…'
@@ -126,12 +126,12 @@ export default function SearchResultsPage() {
         </div>
 
         {query && total === 0 ? (
-          <div className="text-center py-20 rounded-3xl border border-white/10 bg-white/5">
+          <div className="text-center py-20 rounded-3xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/5">
             <div className="text-6xl mb-4">🔍</div>
             <h2 className="text-xl font-semibold mb-2">
               {t('search.noResults') || 'No results'}
             </h2>
-            <p className="text-white/70 max-w-xl mx-auto">
+            <p className="text-gray-600 dark:text-white/70 max-w-xl mx-auto">
               {t('search.tryDifferent') || 'Try a different keyword or switch categories.'}
             </p>
           </div>
@@ -177,7 +177,7 @@ export default function SearchResultsPage() {
           <div className="mb-10">
             <div className="flex items-center justify-between gap-4 mb-4">
               <h2 className="text-lg font-semibold">{t('search.products') || 'Products'}</h2>
-              <Link to="/" className="text-sm text-purple-200 hover:text-purple-100 hover:underline">
+              <Link to="/" className="text-sm text-purple-700 hover:text-purple-600 dark:text-purple-200 dark:hover:text-purple-100 hover:underline">
                 {t('buttons.backToHome') || 'Back to Home'}
               </Link>
             </div>
@@ -194,11 +194,11 @@ export default function SearchResultsPage() {
         ) : null}
 
         {(type === SEARCH_TYPES.products || type === SEARCH_TYPES.all) && results.products.length > 0 ? (
-          <div className="mt-12 p-6 rounded-3xl border border-white/10 bg-white/5">
+          <div className="mt-12 p-6 rounded-3xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/5">
             <h3 className="text-base font-semibold mb-2">
               {t('search.tipTitle') || 'Tip'}
             </h3>
-            <p className="text-sm text-white/70">
+            <p className="text-sm text-gray-600 dark:text-white/70">
               {t('search.tipText') || 'Use Quick View to compare products without leaving the page.'}
             </p>
           </div>

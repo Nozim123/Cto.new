@@ -13,16 +13,16 @@ const SectionTitle = ({ children }) => (
 const ItemRow = ({ title, subtitle, image, href }) => (
   <Link
     to={href}
-    className="flex items-center gap-4 p-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
+    className="flex items-center gap-4 p-4 rounded-2xl border border-gray-200 bg-white hover:bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 transition-all"
   >
-    <div className="w-12 h-12 rounded-2xl overflow-hidden bg-white/10 border border-white/10 flex-shrink-0">
+    <div className="w-12 h-12 rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 dark:bg-white/10 dark:border-white/10 flex-shrink-0">
       {image ? <img src={image} alt="" className="w-full h-full object-cover" loading="lazy" /> : null}
     </div>
     <div className="min-w-0 flex-1">
-      <p className="text-white font-semibold truncate">{title}</p>
-      {subtitle ? <p className="text-sm text-white/60 truncate">{subtitle}</p> : null}
+      <p className="text-gray-900 dark:text-white font-semibold truncate">{title}</p>
+      {subtitle ? <p className="text-sm text-gray-600 dark:text-white/60 truncate">{subtitle}</p> : null}
     </div>
-    <span className="text-white/40">→</span>
+    <span className="text-gray-400 dark:text-white/40">→</span>
   </Link>
 )
 
@@ -41,21 +41,25 @@ export default function AccountPage() {
   const favProducts = getAllProducts().filter((p) => favorites.products.includes(p.id))
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-primary'} text-white`}>
+    <div className={`min-h-screen ${darkMode ? 'bg-primary text-white' : 'bg-cream text-gray-900'}`}>
       <div className="max-w-5xl mx-auto px-4 lg:px-8 pt-10 pb-20">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
           <div>
             <h1 className="text-3xl font-bold mb-2">
               {t('account.title') || 'My Account'}
             </h1>
-            <p className="text-white/70">
+            <p className={darkMode ? 'text-white/70' : 'text-gray-600'}>
               {t('account.subtitle') || 'Profile, favorites, and preferences'}
             </p>
           </div>
           <div className="flex items-center gap-3">
             <Link
               to="/"
-              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-sm font-semibold"
+              className={`px-4 py-2 rounded-xl border text-sm font-semibold transition-colors ${
+                darkMode
+                  ? 'bg-white/10 hover:bg-white/15 border-white/10'
+                  : 'bg-gray-100 hover:bg-gray-200 border-gray-200'
+              }`}
             >
               {t('buttons.backToHome') || 'Back to Home'}
             </Link>
@@ -69,14 +73,14 @@ export default function AccountPage() {
           </div>
         </div>
 
-        <div className="p-6 rounded-3xl border border-white/10 bg-white/5 mb-10">
+        <div className="p-6 rounded-3xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/5 mb-10">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-700 flex items-center justify-center text-white font-bold text-xl">
               {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
             </div>
             <div>
-              <p className="text-white font-semibold text-lg">{user.name}</p>
-              <p className="text-white/70 text-sm">{user.email}</p>
+              <p className="text-gray-900 dark:text-white font-semibold text-lg">{user.name}</p>
+              <p className="text-gray-600 dark:text-white/70 text-sm">{user.email}</p>
             </div>
           </div>
         </div>
@@ -96,7 +100,7 @@ export default function AccountPage() {
 
         <div className="grid gap-8">
           <div>
-            <h3 className="text-sm font-semibold text-white/80 mb-3">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-white/80 mb-3">
               {t('search.malls') || 'Malls'} ({favMalls.length})
             </h3>
             <div className="grid gap-3">
@@ -111,7 +115,7 @@ export default function AccountPage() {
                   />
                 ))
               ) : (
-                <p className="text-sm text-white/60">
+                <p className="text-sm text-gray-600 dark:text-white/60">
                   {t('account.noFavMalls') || 'No favorite malls yet.'}
                 </p>
               )}
@@ -119,7 +123,7 @@ export default function AccountPage() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-white/80 mb-3">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-white/80 mb-3">
               {t('search.stores') || 'Stores'} ({favStores.length})
             </h3>
             <div className="grid gap-3">
@@ -134,7 +138,7 @@ export default function AccountPage() {
                   />
                 ))
               ) : (
-                <p className="text-sm text-white/60">
+                <p className="text-sm text-gray-600 dark:text-white/60">
                   {t('account.noFavStores') || 'No favorite stores yet.'}
                 </p>
               )}
@@ -142,7 +146,7 @@ export default function AccountPage() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-white/80 mb-3">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-white/80 mb-3">
               {t('search.products') || 'Products'} ({favProducts.length})
             </h3>
             <div className="grid gap-3">
@@ -157,7 +161,7 @@ export default function AccountPage() {
                   />
                 ))
               ) : (
-                <p className="text-sm text-white/60">
+                <p className="text-sm text-gray-600 dark:text-white/60">
                   {t('account.noFavProducts') || 'No saved products yet.'}
                 </p>
               )}

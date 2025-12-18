@@ -7,8 +7,8 @@ export default function DarkModeToggle() {
     <button
       onClick={toggleDarkMode}
       className="relative w-14 h-7 rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2"
-      style={{ 
-        backgroundColor: darkMode ? '#2C3E50' : '#D4AF37'
+      style={{
+        backgroundColor: darkMode ? '#0F172A' : 'var(--accent-primary)'
       }}
       aria-label="Toggle dark mode"
     >

@@ -21,12 +21,17 @@ const getTargetRoute = (type, item) => {
   return null
 }
 
-const SearchRow = ({ type, item, meta, active, onSelect }) => {
+const SearchRow = ({ type, item, meta, active, onSelect, darkMode }) => {
   const base =
     'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors'
+
   const activeCls = active
-    ? 'bg-purple-500/15 ring-1 ring-purple-500/30'
-    : 'hover:bg-white/10'
+    ? darkMode
+      ? 'bg-purple-500/15 ring-1 ring-purple-500/30'
+      : 'bg-purple-500/10 ring-1 ring-purple-500/20'
+    : darkMode
+      ? 'hover:bg-white/10'
+      : 'hover:bg-gray-50'
 
   const icon =
     type === SEARCH_TYPES.malls ? '🏢' : type === SEARCH_TYPES.stores ? '🏪' : '🛍️'
@@ -40,19 +45,23 @@ const SearchRow = ({ type, item, meta, active, onSelect }) => {
 
   return (
     <button type="button" className={`${base} ${activeCls}`} onClick={onSelect}>
-      <div className="w-10 h-10 rounded-xl overflow-hidden bg-white/10 border border-white/10 flex-shrink-0">
+      <div
+        className={`w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 border ${
+          darkMode ? 'bg-white/10 border-white/10' : 'bg-gray-50 border-gray-200'
+        }`}
+      >
         {image ? (
           <img src={image} alt="" className="w-full h-full object-cover" loading="lazy" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-lg">{icon}</div>
+          <div className={`w-full h-full flex items-center justify-center text-lg ${darkMode ? 'text-white' : 'text-gray-700'}`}>{icon}</div>
         )}
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-semibold text-white truncate">{item.name}</p>
-          <span className="text-xs text-white/60 flex-shrink-0">{icon}</span>
+          <p className={`text-sm font-semibold truncate ${darkMode ? 'text-white' : 'text-gray-900'}`}>{item.name}</p>
+          <span className={`text-xs flex-shrink-0 ${darkMode ? 'text-white/60' : 'text-gray-500'}`}>{icon}</span>
         </div>
-        {meta ? <p className="text-xs text-white/60 truncate">{meta}</p> : null}
+        {meta ? <p className={`text-xs truncate ${darkMode ? 'text-white/60' : 'text-gray-600'}`}>{meta}</p> : null}
       </div>
     </button>
   )
@@ -171,7 +180,7 @@ export default function GlobalSearch() {
   const Shell = ({ children }) => (
     <div
       ref={rootRef}
-      className={`relative w-full max-w-3xl mx-auto ${darkMode ? 'text-white' : 'text-white'}`}
+      className={`relative w-full max-w-3xl mx-auto ${darkMode ? 'text-white' : 'text-gray-900'}`}
     >
       {children}
     </div>
@@ -187,7 +196,9 @@ export default function GlobalSearch() {
           className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border whitespace-nowrap ${
             type === o.key
               ? 'bg-purple-600 text-white border-purple-500 shadow-lg shadow-purple-500/20'
-              : 'bg-white/10 text-white/80 border-white/10 hover:bg-white/15'
+              : darkMode
+                ? 'bg-white/10 text-white/80 border-white/10 hover:bg-white/15'
+                : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'
           }`}
         >
           {t(o.labelKey) || o.key}
@@ -203,7 +214,7 @@ export default function GlobalSearch() {
       </div>
 
       {query.trim() && suggestions.length === 0 ? (
-        <div className="px-4 py-8 text-center text-sm text-white/70">
+        <div className={`px-4 py-8 text-center text-sm ${darkMode ? 'text-white/70' : 'text-gray-600'}`}>
           {t('search.noResults') || 'No results'}
         </div>
       ) : null}
@@ -230,17 +241,22 @@ export default function GlobalSearch() {
               meta={meta}
               active={idx === activeIndex}
               onSelect={() => handleSelect(s)}
+              darkMode={darkMode}
             />
           )
         })}
       </div>
 
       {query.trim() ? (
-        <div className="p-2 border-t border-white/10">
+        <div className={`p-2 border-t ${darkMode ? 'border-white/10' : 'border-gray-200'}`}>
           <button
             type="button"
             onClick={handleSubmit}
-            className="w-full px-4 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-sm font-semibold text-white transition-colors"
+            className={`w-full px-4 py-3 rounded-xl border text-sm font-semibold transition-colors ${
+              darkMode
+                ? 'bg-white/10 hover:bg-white/15 border-white/10 text-white'
+                : 'bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-900'
+            }`}
           >
             {t('search.viewAll') || 'View all results'}
           </button>
@@ -257,10 +273,10 @@ export default function GlobalSearch() {
           className={`relative flex items-center gap-3 rounded-2xl border px-4 py-3 shadow-xl backdrop-blur-xl transition-all ${
             darkMode
               ? 'bg-white/5 border-white/10'
-              : 'bg-white/10 border-white/10'
+              : 'bg-gray-50 border-gray-200'
           }`}
         >
-          <span className="text-white/70">🔎</span>
+          <span className={darkMode ? 'text-white/70' : 'text-gray-500'}>🔎</span>
           <input
             ref={inputRef}
             value={query}
@@ -272,7 +288,9 @@ export default function GlobalSearch() {
             onFocus={() => setOpen(true)}
             onKeyDown={(e) => onKeyDown(e)}
             placeholder={t('search.placeholder') || 'Search malls, stores, products…'}
-            className="flex-1 bg-transparent outline-none text-white placeholder:text-white/60 text-sm md:text-base"
+            className={`flex-1 bg-transparent outline-none text-sm md:text-base ${
+              darkMode ? 'text-white placeholder:text-white/60' : 'text-gray-900 placeholder:text-gray-400'
+            }`}
             aria-label={t('search.placeholder') || 'Search'}
           />
           {query ? (
@@ -283,7 +301,7 @@ export default function GlobalSearch() {
                 setActiveIndex(-1)
                 inputRef.current?.focus()
               }}
-              className="text-white/60 hover:text-white transition-colors"
+              className={`transition-colors ${darkMode ? 'text-white/60 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
               aria-label={t('common.close') || 'Clear'}
             >
               ✕
@@ -299,7 +317,11 @@ export default function GlobalSearch() {
         </div>
 
         {open ? (
-          <div className="absolute left-0 right-0 mt-3 rounded-2xl border border-white/10 bg-gray-950/70 backdrop-blur-xl shadow-2xl overflow-hidden">
+          <div
+            className={`absolute left-0 right-0 mt-3 rounded-2xl border backdrop-blur-xl shadow-2xl overflow-hidden ${
+              darkMode ? 'border-white/10 bg-gray-950/70' : 'border-gray-200 bg-white'
+            }`}
+          >
             <Suggestions />
           </div>
         ) : null}
@@ -310,10 +332,12 @@ export default function GlobalSearch() {
         <button
           type="button"
           onClick={() => setMobileOpen(true)}
-          className="w-full flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-xl shadow-xl"
+          className={`w-full flex items-center gap-3 rounded-2xl border px-4 py-3 backdrop-blur-xl shadow-xl ${
+            darkMode ? 'border-white/10 bg-white/10' : 'border-gray-200 bg-white'
+          }`}
         >
-          <span className="text-white/70">🔎</span>
-          <span className="text-sm text-white/70 truncate">
+          <span className={darkMode ? 'text-white/70' : 'text-gray-500'}>🔎</span>
+          <span className={`text-sm truncate ${darkMode ? 'text-white/70' : 'text-gray-600'}`}>
             {t('search.placeholder') || 'Search malls, stores, products…'}
           </span>
         </button>

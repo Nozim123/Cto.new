@@ -21,9 +21,9 @@ function getCurrentSeason() {
 
 const colorPresets = {
   purple: {
-    primary: '#8B5CF6',
-    secondary: '#C4B5FD', 
-    accent: '#A78BFA',
+    primary: '#0EA5E9',
+    secondary: '#38BDF8',
+    accent: '#7DD3FC',
     gradient: 'from-purple-400 via-purple-500 to-purple-600'
   },
   blue: {
@@ -74,7 +74,7 @@ export function ThemeProvider({ children }) {
 
   const [accentColor, setAccentColor] = useState(() => {
     const saved = localStorage.getItem('accentColor')
-    return saved || 'purple' // Default to purple instead of gold
+    return saved || 'purple'
   })
 
   useEffect(() => {

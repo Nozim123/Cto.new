@@ -59,7 +59,7 @@ export default function LanguageSwitcher() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="flex items-center gap-2 px-2.5 sm:px-3 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300"
+        className="flex items-center gap-2 px-2.5 sm:px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-white/10 dark:hover:bg-white/20 backdrop-blur-md border border-gray-200 dark:border-white/20 transition-all duration-300"
       >
         <span className="text-lg" aria-hidden="true">
           {current.flag}
@@ -79,7 +79,7 @@ export default function LanguageSwitcher() {
       {open ? (
         <div
           ref={dropdownRef}
-          className="hidden sm:block absolute top-full left-0 mt-2 w-48 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg rounded-xl shadow-2xl border border-white/20 z-50"
+          className="hidden sm:block absolute top-full left-0 mt-2 w-48 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg rounded-xl shadow-2xl border border-gray-200 dark:border-white/20 z-50"
           role="dialog"
           aria-label={t('settings.language')}
         >
@@ -119,7 +119,7 @@ export default function LanguageSwitcher() {
             aria-label={t('common.close')}
           />
 
-          <div className="absolute inset-x-0 bottom-0 rounded-t-2xl bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-t border-white/10 p-4 pb-6">
+          <div className="absolute inset-x-0 bottom-0 rounded-t-2xl bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-t border-gray-200 dark:border-white/10 p-4 pb-6">
             <div className="flex items-center justify-between mb-3">
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400">{t('settings.language')}</p>
@@ -145,7 +145,7 @@ export default function LanguageSwitcher() {
                   className={`flex items-center gap-2 px-3 py-3 rounded-xl border transition-all ${
                     language === lang.code
                       ? 'border-gold/50 bg-gold/10'
-                      : 'border-white/10 bg-white/10 dark:bg-white/5'
+                      : 'border-gray-200 bg-gray-50 dark:border-white/10 dark:bg-white/5'
                   }`}
                 >
                   <span className="text-lg" aria-hidden="true">

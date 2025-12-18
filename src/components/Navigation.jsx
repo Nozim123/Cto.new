@@ -106,7 +106,11 @@ export default function Navigation() {
               {isAuthenticated && user ? (
                 <Link
                   to="/account"
-                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-sm font-semibold text-white"
+                  className={`px-3 py-2 rounded-xl border text-sm font-semibold transition-colors ${
+                    darkMode
+                      ? 'bg-white/10 hover:bg-white/15 border-white/10 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-900'
+                  }`}
                 >
                   {t('account.title') || 'Account'}
                 </Link>

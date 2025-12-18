@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --accent-primary: #8B5CF6;
-  --accent-secondary: #C4B5FD;
-  --accent-accent: #A78BFA;
+  --accent-primary: #0EA5E9;
+  --accent-secondary: #38BDF8;
+  --accent-accent: #7DD3FC;
   --accent-gradient: from-purple-400 via-purple-500 to-purple-600;
 }
 
@@ -16,10 +16,11 @@ html {
 body {
   font-family: 'Inter', sans-serif;
   @apply text-gray-800 transition-colors duration-300;
+  background-color: theme('colors.cream');
 }
 
-body.dark {
-  background-color: rgba(37, 40, 54, 1);
+.dark body {
+  background-color: theme('colors.primary');
   @apply text-cream;
 }
 

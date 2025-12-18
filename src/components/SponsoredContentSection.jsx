@@ -41,7 +41,7 @@ export default function SponsoredContentSection() {
           <div className={`p-5 rounded-3xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}>
             <div className="flex items-center justify-between mb-3">
               <p className="font-semibold">Sponsored stores</p>
-              <span className="text-[10px] px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-200 border border-yellow-500/30">
+              <span className="text-[10px] px-2 py-1 rounded-full bg-yellow-500/10 text-yellow-800 border border-yellow-500/20 dark:bg-yellow-500/20 dark:text-yellow-200 dark:border-yellow-500/30">
                 Sponsored
               </span>
             </div>
@@ -73,7 +73,7 @@ export default function SponsoredContentSection() {
           <div className={`p-5 rounded-3xl border lg:col-span-2 ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}>
             <div className="flex items-center justify-between mb-3">
               <p className="font-semibold">Featured products</p>
-              <span className="text-[10px] px-2 py-1 rounded-full bg-purple-500/20 text-purple-200 border border-purple-500/30">
+              <span className="text-[10px] px-2 py-1 rounded-full bg-purple-500/10 text-purple-700 border border-purple-500/20 dark:bg-purple-500/20 dark:text-purple-200 dark:border-purple-500/30">
                 Featured
               </span>
             </div>
@@ -94,7 +94,7 @@ export default function SponsoredContentSection() {
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 border border-white/10">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 border border-gray-200 dark:bg-white/10 dark:border-white/10">
                           {ad.headline}
                         </span>
                         <span className={`${darkMode ? 'text-white/60' : 'text-gray-600'} text-xs`}>{ad.copy}</span>
