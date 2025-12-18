@@ -2,9 +2,12 @@ import { Link } from 'react-router-dom'
 import Button3D from './Button3D'
 import ShareComponent from './ShareComponent'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useUser } from '../contexts/UserContext'
 
 export default function StoreCard({ store, mallId }) {
   const { t } = useLanguage()
+  const { isFavorite, toggleFavorite } = useUser()
+  const liked = isFavorite('stores', store.id)
   const statusColor = store.status === 'open' ? 'text-green-400' : 'text-yellow-400'
   const statusText = store.status === 'open' ? t('common.open') : t('common.comingSoon')
 
@@ -33,6 +36,24 @@ export default function StoreCard({ store, mallId }) {
         <div className={`absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 ${statusColor}`}>
           {statusText}
         </div>
+
+        {/* Favorite Button */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            toggleFavorite('stores', store.id)
+          }}
+          className={`absolute top-14 right-4 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-lg transform hover:scale-110 border ${
+            liked
+              ? 'bg-white text-red-500 border-white/40'
+              : 'bg-white/80 text-gray-400 hover:bg-white hover:text-red-400 border-white/20'
+          }`}
+          aria-label={liked ? t('favorites.remove') || 'Remove from favorites' : t('favorites.add') || 'Add to favorites'}
+        >
+          <span className="text-xl">{liked ? '❤️' : '♡'}</span>
+        </button>
 
         {/* Share Button */}
         <div className="absolute top-4 left-4">

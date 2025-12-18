@@ -1,19 +1,14 @@
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { trackBehavior } from '../services/behavior'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import productsData from '../data/products.json'
-import Navigation from '../components/Navigation'
-import Footer from '../components/Footer'
-import InteractiveBackground from '../components/InteractiveBackground'
 import Button3D from '../components/Button3D'
-import ProductCard from '../components/ProductCard'
 import { useScrollToTop } from '../hooks/useScrollToTop'
 
 export default function ProductDetailPage() {
   const { productId } = useParams()
-  const navigate = useNavigate()
   const [product, setProduct] = useState(null)
   const [store, setStore] = useState(null)
   const [mall, setMall] = useState(null)
@@ -22,8 +17,7 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState('')
   const [quantity, setQuantity] = useState(1)
 
-  // Scroll to top on mount
-  useScrollToTop && useScrollToTop()
+  useScrollToTop()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -87,7 +81,7 @@ export default function ProductDetailPage() {
           <span className="mx-2">/</span>
           <Link to={`/mall/${mall.id}`} className="hover:text-gold transition-colors">{mall.name}</Link>
           <span className="mx-2">/</span>
-          <Link to={`/store/${store.id}`} className="hover:text-gold transition-colors">{store.name}</Link>
+          <Link to={`/mall/${mall.id}/store/${store.id}`} className="hover:text-gold transition-colors">{store.name}</Link>
           <span className="mx-2">/</span>
           <span className="text-white font-medium truncate">{product.name}</span>
         </nav>
@@ -222,7 +216,7 @@ export default function ProductDetailPage() {
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-2">
                   <span className="text-gray-400">Store</span>
-                  <Link to={`/store/${store.id}`} className="text-gold hover:underline font-medium">{store.name}</Link>
+                  <Link to={`/mall/${mall.id}/store/${store.id}`} className="text-gold hover:underline font-medium">{store.name}</Link>
                 </div>
               </div>
             </div>

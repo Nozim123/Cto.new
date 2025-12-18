@@ -1,17 +1,18 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button3D from './Button3D'
 import ShareComponent from './ShareComponent'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useUser } from '../contexts/UserContext'
 
 export default function ProductCard({ product, onSelect }) {
   const { t } = useLanguage()
-  const [liked, setLiked] = useState(false)
+  const { isFavorite, toggleFavorite } = useUser()
+  const liked = isFavorite('products', product.id)
 
   const handleLike = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    setLiked(!liked)
+    toggleFavorite('products', product.id)
   }
 
   const handleQuickView = (e) => {

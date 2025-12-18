@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useUser } from '../contexts/UserContext'
 import { useState, useEffect } from 'react'
 import Button3D from './Button3D'
 import { checkMallStatus } from '../utils/mallStatus'
@@ -9,6 +10,8 @@ export default function MallCard({ mall, index = 0 }) {
   const isComingSoon = mall.status === 'coming_soon'
   const { darkMode, seasonalColors } = useTheme()
   const { t } = useLanguage()
+  const { isFavorite, toggleFavorite } = useUser()
+  const liked = isFavorite('malls', mall.id)
   const [realTimeStatus, setRealTimeStatus] = useState(checkMallStatus(mall))
 
   // Update status every minute
@@ -36,6 +39,25 @@ export default function MallCard({ mall, index = 0 }) {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 lazy"
           loading="lazy"
         />
+
+        {/* Favorite */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            toggleFavorite('malls', mall.id)
+          }}
+          className={`absolute top-4 left-4 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-lg transform hover:scale-110 border ${
+            liked
+              ? 'bg-white text-red-500 border-white/40'
+              : 'bg-white/80 text-gray-400 hover:bg-white hover:text-red-400 border-white/20'
+          }`}
+          aria-label={liked ? t('favorites.remove') || 'Remove from favorites' : t('favorites.add') || 'Add to favorites'}
+        >
+          <span className="text-xl">{liked ? '❤️' : '♡'}</span>
+        </button>
+
         {/* Real-time Status Badge */}
         {!isComingSoon && (
           <div className={`absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md text-xs font-medium ${
