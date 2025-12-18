@@ -3,12 +3,7 @@ import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import HeroSection from '../components/HeroSection'
 import MallCard from '../components/MallCard'
-import NextGenDiscoverySections from '../components/NextGenDiscoverySections'
-import ImmersiveContentSection from '../components/ImmersiveContentSection'
 import { SkeletonMallCard } from '../components/SkeletonCard'
-import AnimatedCounter from '../components/AnimatedCounter'
-import Button3D from '../components/Button3D'
-import { useScrollReveal } from '../hooks/useScrollReveal'
 import mallsData from '../data/malls.json'
 
 export default function HomePage() {
@@ -49,22 +44,20 @@ export default function HomePage() {
             {t('home.explore')}
           </h3>
           <div className="grid grid-cols-2 gap-3">
-            <Button3D 
-              variant="primary" 
-              className="py-3 text-sm"
+            <button 
+              className="py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
               onClick={() => window.location.href = '/map'}
             >
               <span className="mr-2">🗺️</span>
               {t('map.title')}
-            </Button3D>
-            <Button3D 
-              variant="secondary" 
-              className="py-3 text-sm"
+            </button>
+            <button 
+              className="py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
               onClick={() => window.location.href = '/stores'}
             >
               <span className="mr-2">🏪</span>
               {t('stores.title')}
-            </Button3D>
+            </button>
           </div>
         </div>
       </section>
@@ -155,7 +148,7 @@ export default function HomePage() {
           </div>
 
           {/* Enhanced Real-time Stats */}
-          <div className="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
+          <div className="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
               { label: t('home.activeMalls'), value: mallsData.filter((m) => m.status === 'open').length, icon: '🏢' },
               { label: t('home.totalStores'), value: mallsData.filter((m) => m.status === 'open').reduce((acc, m) => acc + (Number(m.storeCount) || 0), 0), suffix: '+', icon: '🏪' },
@@ -164,18 +157,13 @@ export default function HomePage() {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="group p-3 md:p-6 rounded-lg md:rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2 text-center"
+                className="p-3 md:p-6 rounded-lg bg-white/10 backdrop-blur-lg border border-white/10 text-center"
               >
-                <div className="text-xl md:text-3xl mb-2 group-hover:scale-110 transition-transform">
+                <div className="text-xl md:text-3xl mb-2">
                   {stat.icon}
                 </div>
-                <div className="text-lg md:text-2xl mb-1">
-                  <AnimatedCounter 
-                    end={stat.value} 
-                    suffix={stat.suffix || ''} 
-                    duration={2000}
-                    className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent"
-                  />
+                <div className="text-lg md:text-2xl mb-1 text-purple-300">
+                  {stat.value}{stat.suffix || ''}
                 </div>
                 <div className="text-xs md:text-sm text-gray-400">
                   {stat.label}
@@ -186,17 +174,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Next-Gen Discovery Sections */}
-      <div className="relative z-10">
-        <NextGenDiscoverySections />
-      </div>
-
-      {/* Immersive Content Section - 360°/Video/AR */}
-      <div className="relative z-10">
-        <ImmersiveContentSection />
-      </div>
-
-      {/* Enhanced CTA Section */}
+      {/* CTA Section */}
       <section className="relative z-10 py-16 md:py-32">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/90 via-purple-700/90 to-purple-800/90 backdrop-blur-sm"></div>
         <div className="relative max-w-6xl mx-auto text-center px-4">
@@ -209,22 +187,18 @@ export default function HomePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 md:gap-6 justify-center items-center">
-              <Button3D 
-                variant="ghost" 
-                size="lg"
-                className="!bg-white !text-purple-700 hover:!bg-purple-50 w-full sm:w-auto"
+              <button 
+                className="bg-white text-purple-700 px-6 py-3 rounded-lg hover:bg-purple-50 transition-colors font-semibold w-full sm:w-auto"
               >
                 {t('buttons.startVirtualTour')}
-              </Button3D>
+              </button>
               
-              <Button3D 
-                variant="outline" 
-                size="lg"
-                className="!border-2 !border-white/30 !text-white hover:!bg-white/10 !backdrop-blur-sm w-full sm:w-auto"
+              <button 
+                className="border-2 border-white/30 text-white px-6 py-3 rounded-lg hover:bg-white/10 backdrop-blur-sm transition-colors font-semibold w-full sm:w-auto"
               >
                 <span className="mr-2">📍</span>
                 {t('buttons.liveMallStatus')}
-              </Button3D>
+              </button>
             </div>
           </div>
         </div>
