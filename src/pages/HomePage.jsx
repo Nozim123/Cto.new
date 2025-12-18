@@ -225,9 +225,9 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
               {[
-                { icon: '📞', title: 'Call Us', info: '+998 (99) 689-24-80', color: 'from-blue-400 to-blue-600' },
-                { icon: '✉️', title: 'Email Us', info: 'roziyevnozim43@gmail.com', color: 'from-green-400 to-green-600' },
-                { icon: '📍', title: 'Visit Us', info: 'Samarkand Mikrarayon bozorchasi', color: 'from-purple-400 to-purple-600' }
+                { icon: '📞', title: 'Call Us', info: '+998 (66) 233-30-30', color: 'from-blue-400 to-blue-600' },
+                { icon: '✉️', title: 'Email Us', info: 'info@megatravelcenter.com', color: 'from-green-400 to-green-600' },
+                { icon: '📍', title: 'Visit Us', info: 'Mirzo Ulugbek Street 1, Samarkand 140100', color: 'from-purple-400 to-purple-600' }
               ].map((contact, index) => (
                 <div 
                   key={index}

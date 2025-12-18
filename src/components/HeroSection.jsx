@@ -40,10 +40,10 @@ export default function HeroSection() {
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-display font-bold text-cream mb-4 md:mb-6">
             <span className="text-purple-300">
-              Samarkand Mall Directory
+              Mega Travel Center
             </span>
             <br className="hidden sm:block" />
-            <span className="text-gold">Your Shopping Guide</span>
+            <span className="text-gold">Premium Digital Experience</span>
           </h1>
 
           {/* Subheading */}
