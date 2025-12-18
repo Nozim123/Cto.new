@@ -2,9 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useEcosystem } from '../contexts/EcosystemContext'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
-import productsData from '../data/products.json'
 import { SEARCH_TYPES, searchMarketplace } from '../utils/search'
 
 const TYPE_OPTIONS = [
@@ -62,6 +62,7 @@ export default function GlobalSearch() {
   const navigate = useNavigate()
   const { darkMode } = useTheme()
   const { t } = useLanguage()
+  const { getAllProducts } = useEcosystem()
 
   const [query, setQuery] = useState('')
   const [type, setType] = useState(SEARCH_TYPES.all)
@@ -79,10 +80,10 @@ export default function GlobalSearch() {
       type,
       malls: mallsData,
       stores: storesData,
-      products: productsData,
+      products: getAllProducts(),
       limit: 10
     })
-  }, [query, type])
+  }, [query, type, getAllProducts])
 
   const suggestions = results.flat
 

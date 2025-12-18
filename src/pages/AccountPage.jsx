@@ -2,9 +2,9 @@ import { Link, Navigate } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
+import { useEcosystem } from '../contexts/EcosystemContext'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
-import productsData from '../data/products.json'
 
 const SectionTitle = ({ children }) => (
   <h2 className="text-lg font-semibold mb-4">{children}</h2>
@@ -30,6 +30,7 @@ export default function AccountPage() {
   const { darkMode } = useTheme()
   const { t } = useLanguage()
   const { user, isAuthenticated, logout, favorites } = useUser()
+  const { getAllProducts } = useEcosystem()
 
   if (!isAuthenticated || !user) {
     return <Navigate to="/" replace />
@@ -37,7 +38,7 @@ export default function AccountPage() {
 
   const favMalls = mallsData.filter((m) => favorites.malls.includes(m.id))
   const favStores = storesData.filter((s) => favorites.stores.includes(s.id))
-  const favProducts = productsData.filter((p) => favorites.products.includes(p.id))
+  const favProducts = getAllProducts().filter((p) => favorites.products.includes(p.id))
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-primary'} text-white`}>
@@ -78,6 +79,17 @@ export default function AccountPage() {
               <p className="text-white/70 text-sm">{user.email}</p>
             </div>
           </div>
+        </div>
+
+        <SectionTitle>{t('account.ecosystem') || 'Ecosystem'}</SectionTitle>
+
+        <div className="grid sm:grid-cols-2 gap-3 mb-10">
+          <ItemRow title="Loyalty & Rewards" subtitle="Points, tiers, perks" href="/rewards" />
+          <ItemRow title="Orders & Pickup" subtitle="QR pickup flow" href="/orders" />
+          <ItemRow title="Refunds & Returns" subtitle="Request and track status" href="/returns" />
+          <ItemRow title="Seller Dashboard" subtitle="Store owner area (approval required)" href="/seller" />
+          <ItemRow title="Traffic Insights" subtitle="Busy hours & trends" href="/insights" />
+          <ItemRow title="Feedback" subtitle="Suggest features or report issues" href="/feedback" />
         </div>
 
         <SectionTitle>{t('account.favorites') || 'Favorites & Wishlist'}</SectionTitle>

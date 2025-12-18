@@ -63,8 +63,15 @@ export function ThemeProvider({ children }) {
     const saved = localStorage.getItem('darkMode')
     return saved ? JSON.parse(saved) : false
   })
-  
-  const [season, setSeason] = useState(getCurrentSeason())
+
+  const [seasonMode, setSeasonMode] = useState(() => localStorage.getItem('seasonMode') || 'auto')
+  const [seasonOverride, setSeasonOverride] = useState(() => localStorage.getItem('seasonOverride') || getCurrentSeason())
+  const [season, setSeason] = useState(() => {
+    const mode = localStorage.getItem('seasonMode') || 'auto'
+    const override = localStorage.getItem('seasonOverride') || getCurrentSeason()
+    return mode === 'auto' ? getCurrentSeason() : override
+  })
+
   const [accentColor, setAccentColor] = useState(() => {
     const saved = localStorage.getItem('accentColor')
     return saved || 'purple' // Default to purple instead of gold
@@ -94,8 +101,24 @@ export function ThemeProvider({ children }) {
   }, [accentColor])
 
   useEffect(() => {
-    setSeason(getCurrentSeason())
-  }, [])
+    localStorage.setItem('seasonMode', seasonMode)
+  }, [seasonMode])
+
+  useEffect(() => {
+    localStorage.setItem('seasonOverride', seasonOverride)
+  }, [seasonOverride])
+
+  useEffect(() => {
+    if (seasonMode === 'auto') {
+      setSeason(getCurrentSeason())
+      const interval = window.setInterval(() => {
+        setSeason(getCurrentSeason())
+      }, 60 * 60 * 1000)
+      return () => window.clearInterval(interval)
+    }
+
+    setSeason(seasonOverride)
+  }, [seasonMode, seasonOverride])
 
   const toggleDarkMode = () => {
     setDarkMode(prev => !prev)
@@ -136,6 +159,10 @@ export function ThemeProvider({ children }) {
     darkMode,
     toggleDarkMode,
     season,
+    seasonMode,
+    seasonOverride,
+    setSeasonMode,
+    setSeasonOverride,
     accentColor,
     changeAccentColor,
     colorPresets,

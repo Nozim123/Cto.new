@@ -1,0 +1,27 @@
+{
+  "about-us": {
+    "title": "About Us",
+    "subtitle": "Mega Travel Center (MTC)",
+    "content": "Mega Travel Center is a premium digital ecosystem connecting visitors, stores, and mall operations.\n\nOur mission is to deliver a minimalistic, ultra-modern experience that blends online discovery with offline pickup and real-world shopping.\n\nThis page is fully editable from the admin panel."
+  },
+  "about-the-mall": {
+    "title": "About the Mall",
+    "subtitle": "Premium digital experience for Samarkand malls",
+    "content": "Explore stores, products, and promotions with real-time mall status and immersive discovery.\n\nPowered by a seasonal experience engine and a modern card-based UI.\n\nThis page is fully editable from the admin panel."
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "subtitle": "User agreement",
+    "content": "By using this platform you agree to follow applicable rules and policies.\n\nContent and availability may change at any time.\n\nThis page is fully editable from the admin panel."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "subtitle": "How we protect users",
+    "content": "We store minimal data required for features like favorites, rewards, and recently viewed.\n\nYou can clear local data by signing out or clearing browser storage.\n\nThis page is fully editable from the admin panel."
+  },
+  "faq": {
+    "title": "FAQ",
+    "subtitle": "Help Center",
+    "content": "Q: Do I need an account?\nA: No — guest browsing is supported.\n\nQ: How does pickup work?\nA: Generate a pickup QR code and show it at the store pickup desk.\n\nQ: How do returns work?\nA: Submit a return request and track the status.\n\nThis page is fully editable from the admin panel."
+  }
+}

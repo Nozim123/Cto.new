@@ -2,9 +2,9 @@ import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useEcosystem } from '../contexts/EcosystemContext'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
-import productsData from '../data/products.json'
 import { SEARCH_TYPES, searchMarketplace } from '../utils/search'
 import ModernProductCard from '../components/ModernProductCard'
 import ProductQuickView from '../components/ProductQuickView'
@@ -52,6 +52,7 @@ export default function SearchResultsPage() {
   const [params, setParams] = useSearchParams()
   const { darkMode } = useTheme()
   const { t } = useLanguage()
+  const { getAllProducts } = useEcosystem()
 
   const query = (params.get('q') || '').trim()
   const type = params.get('type') || SEARCH_TYPES.all
@@ -64,10 +65,10 @@ export default function SearchResultsPage() {
       type,
       malls: mallsData,
       stores: storesData,
-      products: productsData,
+      products: getAllProducts(),
       limit: 100
     })
-  }, [query, type])
+  }, [query, type, getAllProducts])
 
   const total = results.malls.length + results.stores.length + results.products.length
 

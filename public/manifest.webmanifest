@@ -1,0 +1,17 @@
+{
+  "name": "Mega Travel Center",
+  "short_name": "MTC",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#252836",
+  "theme_color": "#8B5CF6",
+  "description": "Premium mall digital ecosystem for stores, shoppers, and pickup.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

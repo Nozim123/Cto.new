@@ -3,9 +3,9 @@ import { useState, useEffect, useMemo } from 'react'
 import { trackBehavior } from '../services/behavior'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
-import productsData from '../data/products.json'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useEcosystem } from '../contexts/EcosystemContext'
 import StoreHeader from '../components/StoreHeader'
 import ProductFilterBar from '../components/ProductFilterBar'
 import ModernProductCard from '../components/ModernProductCard'
@@ -20,6 +20,7 @@ export default function StoreDetailsPage() {
   const [scrolled, setScrolled] = useState(false)
   const { darkMode } = useTheme()
   const { t } = useLanguage()
+  const { addRecentlyViewed, awardPoints, getProductsByStore } = useEcosystem()
 
   // Filter and Sort States
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -49,13 +50,15 @@ export default function StoreDetailsPage() {
 
     if (currentStore) {
       trackBehavior({ type: 'store', id: storeId, category: currentStore.category })
+      addRecentlyViewed('stores', storeId)
+      awardPoints(2, 'view_store')
     }
 
-    const storeProducts = productsData.filter((p) => p.storeId === storeId)
+    const storeProducts = getProductsByStore(storeId)
     setProducts(storeProducts)
-    
+
     window.scrollTo(0, 0)
-  }, [mallId, storeId])
+  }, [mallId, storeId, addRecentlyViewed, awardPoints, getProductsByStore])
 
   // Get unique categories from products
   const categories = useMemo(() => {
@@ -108,6 +111,8 @@ export default function StoreDetailsPage() {
 
   const handleQuickView = (product) => {
     trackBehavior({ type: 'product_quick_view', id: product.id, category: product.category })
+    addRecentlyViewed('products', product.id)
+    awardPoints(1, 'quick_view')
     setSelectedProduct(product)
   }
 
