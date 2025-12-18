@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 const UserContext = createContext()
 
@@ -10,19 +10,44 @@ export function useUser() {
   return context
 }
 
-export function UserProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('user')
-    return saved ? JSON.parse(saved) : null
-  })
+const FAVORITES_STORAGE_KEY = 'mtc_favorites_v1'
 
-  const [isAdmin, setIsAdmin] = useState(() => {
-    const saved = localStorage.getItem('isAdmin')
-    return saved ? JSON.parse(saved) : false
-  })
+const safeParse = (raw, fallback) => {
+  if (!raw) return fallback
+  try {
+    return JSON.parse(raw)
+  } catch {
+    return fallback
+  }
+}
+
+const normalizeFavorites = (value) => {
+  const base = {
+    malls: [],
+    stores: [],
+    products: []
+  }
+
+  if (!value || typeof value !== 'object') return base
+
+  return {
+    malls: Array.isArray(value.malls) ? value.malls : [],
+    stores: Array.isArray(value.stores) ? value.stores : [],
+    products: Array.isArray(value.products) ? value.products : []
+  }
+}
+
+export function UserProvider({ children }) {
+  const [user, setUser] = useState(() => safeParse(localStorage.getItem('user'), null))
+
+  const [isAdmin, setIsAdmin] = useState(() => safeParse(localStorage.getItem('isAdmin'), false))
 
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return !!localStorage.getItem('token')
+  })
+
+  const [favorites, setFavorites] = useState(() => {
+    return normalizeFavorites(safeParse(localStorage.getItem(FAVORITES_STORAGE_KEY), null))
   })
 
   useEffect(() => {
@@ -38,16 +63,23 @@ export function UserProvider({ children }) {
   }, [isAdmin])
 
   useEffect(() => {
+    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites))
+  }, [favorites])
+
+  useEffect(() => {
     const token = localStorage.getItem('token')
     setIsAuthenticated(!!token)
   }, [])
 
-  const login = (userData, adminToken = null) => {
+  const login = (userData, token = null) => {
     setUser(userData)
-    if (adminToken) {
-      setIsAdmin(true)
-      localStorage.setItem('token', adminToken)
-    }
+
+    const role = userData?.role
+    const adminRoles = new Set(['admin', 'owner', 'superadmin'])
+    setIsAdmin(adminRoles.has(role))
+
+    const finalToken = token || localStorage.getItem('token') || `user_token_${Date.now()}`
+    localStorage.setItem('token', finalToken)
     setIsAuthenticated(true)
   }
 
@@ -61,22 +93,40 @@ export function UserProvider({ children }) {
   }
 
   const updateProfile = (profileData) => {
-    const updatedUser = { ...user, ...profileData }
+    const updatedUser = { ...(user || {}), ...profileData }
     setUser(updatedUser)
   }
 
-  const value = {
-    user,
-    isAdmin,
-    isAuthenticated,
-    login,
-    logout,
-    updateProfile
+  const toggleFavorite = (kind, id) => {
+    if (!id || !['malls', 'stores', 'products'].includes(kind)) return
+
+    setFavorites((prev) => {
+      const list = prev[kind]
+      const exists = list.includes(id)
+      const next = exists ? list.filter((x) => x !== id) : [id, ...list]
+      return { ...prev, [kind]: next }
+    })
   }
 
-  return (
-    <UserContext.Provider value={value}>
-      {children}
-    </UserContext.Provider>
+  const isFavorite = (kind, id) => {
+    if (!id || !['malls', 'stores', 'products'].includes(kind)) return false
+    return favorites[kind].includes(id)
+  }
+
+  const value = useMemo(
+    () => ({
+      user,
+      isAdmin,
+      isAuthenticated,
+      favorites,
+      login,
+      logout,
+      updateProfile,
+      toggleFavorite,
+      isFavorite
+    }),
+    [user, isAdmin, isAuthenticated, favorites]
   )
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }

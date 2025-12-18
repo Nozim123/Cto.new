@@ -2,17 +2,19 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useUser } from '../contexts/UserContext'
 
 export default function ModernProductCard({ product, onQuickView }) {
   const { darkMode } = useTheme()
   const { t } = useLanguage()
-  const [liked, setLiked] = useState(false)
+  const { isFavorite, toggleFavorite } = useUser()
+  const liked = isFavorite('products', product.id)
   const [imageLoaded, setImageLoaded] = useState(false)
 
   const handleLike = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    setLiked(!liked)
+    toggleFavorite('products', product.id)
   }
 
   const handleQuickView = (e) => {

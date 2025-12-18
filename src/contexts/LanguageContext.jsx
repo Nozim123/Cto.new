@@ -16,6 +16,7 @@ const translations = {
       home: 'Ana Sayfa',
       about: 'Hakkımızda',
       contact: 'İletişim',
+      promotions: 'Kampanyalar',
       admin: 'Yönetim Paneli',
       profile: 'Profil',
       settings: 'Ayarlar',
@@ -90,6 +91,52 @@ const translations = {
       all: 'Tümü',
       searchInStore: 'Mağazada ara...',
       outOfStock: 'Stokta Yok'
+    },
+    favorites: {
+      add: 'Favorilere ekle',
+      remove: 'Favorilerden kaldır'
+    },
+    search: {
+      placeholder: 'Alışveriş merkezleri, mağazalar, ürünler…',
+      search: 'Ara',
+      all: 'Tümü',
+      malls: 'Malllar',
+      stores: 'Mağazalar',
+      products: 'Ürünler',
+      noResults: 'Sonuç bulunamadı',
+      viewAll: 'Tüm sonuçları gör',
+      resultsTitle: 'Arama sonuçları',
+      resultsFor: 'sonuç',
+      typeToSearch: 'Aramak için yazın…',
+      tryDifferent: 'Farklı bir anahtar kelime deneyin veya kategori değiştirin.',
+      tipTitle: 'İpucu',
+      tipText: 'Sayfadan ayrılmadan ürünleri karşılaştırmak için Hızlı Görünüm kullanın.'
+    },
+    promotions: {
+      title: 'Bugünün Kampanyaları',
+      subtitle: 'Flash satışlar, mağaza indirimleri ve mall çapında kampanyalar — gerçek zamanlı güncellenir.',
+      deal: 'Fırsat',
+      cta: 'Kampanyayı gör',
+      noneTitle: 'Aktif kampanya yok',
+      noneSubtitle: 'Yeni fırsatlar için yakında tekrar kontrol edin.'
+    },
+    account: {
+      title: 'Hesabım',
+      subtitle: 'Profil, favoriler ve tercihler',
+      favorites: 'Favoriler & İstek Listesi',
+      noFavMalls: 'Henüz favori mall yok.',
+      noFavStores: 'Henüz favori mağaza yok.',
+      noFavProducts: 'Henüz kayıtlı ürün yok.'
+    },
+    auth: {
+      title: 'Giriş yap',
+      subtitle: 'Favorilerinizi senkronize edin ve kişiselleştirilmiş fırsatlar alın.',
+      name: 'İsim',
+      namePlaceholder: 'Adınız',
+      email: 'E-posta',
+      emailPlaceholder: 'siz@example.com',
+      continue: 'Devam et',
+      notNow: 'Şimdi değil'
     },
     sort: {
       featured: 'Öne Çıkanlar',
@@ -227,6 +274,7 @@ const translations = {
       home: 'Bosh sahifa',
       about: 'Biz haqimizda',
       contact: 'Bog\'lanish',
+      promotions: 'Aksiyalar',
       admin: 'Boshqaruv paneli',
       profile: 'Profil',
       settings: 'Sozlamalar',
@@ -301,6 +349,52 @@ const translations = {
       all: 'Barchasi',
       searchInStore: 'Do\'konda qidirish...',
       outOfStock: 'Qolmadi'
+    },
+    favorites: {
+      add: 'Saqlash',
+      remove: 'Saqlanganlardan olib tashlash'
+    },
+    search: {
+      placeholder: 'Savdo markazlari, do\'konlar, mahsulotlar…',
+      search: 'Qidirish',
+      all: 'Barchasi',
+      malls: 'Malllar',
+      stores: 'Do\'konlar',
+      products: 'Mahsulotlar',
+      noResults: 'Natija topilmadi',
+      viewAll: 'Barcha natijalarni ko\'rish',
+      resultsTitle: 'Qidiruv natijalari',
+      resultsFor: 'natija',
+      typeToSearch: 'Qidirish uchun yozing…',
+      tryDifferent: 'Boshqa so\'z bilan urinib ko\'ring yoki kategoriyani o\'zgartiring.',
+      tipTitle: 'Maslahat',
+      tipText: 'Sahifadan chiqmasdan mahsulotlarni solishtirish uchun Tez ko\'rishdan foydalaning.'
+    },
+    promotions: {
+      title: 'Bugungi Aksiyalar',
+      subtitle: 'Flash savdolar, do\'kon chegirmalari va mall bo\'ylab kampaniyalar — real vaqtda yangilanadi.',
+      deal: 'Chegirma',
+      cta: 'Taklifni ko\'rish',
+      noneTitle: 'Faol aksiyalar yo\'q',
+      noneSubtitle: 'Yangi takliflar uchun tez orada yana tekshiring.'
+    },
+    account: {
+      title: 'Mening hisobim',
+      subtitle: 'Profil, saqlanganlar va sozlamalar',
+      favorites: 'Saqlanganlar & Istaklar',
+      noFavMalls: 'Hali saqlangan mall yo\'q.',
+      noFavStores: 'Hali saqlangan do\'kon yo\'q.',
+      noFavProducts: 'Hali saqlangan mahsulot yo\'q.'
+    },
+    auth: {
+      title: 'Kirish',
+      subtitle: 'Saqlanganlarni sinxron qiling va shaxsiy chegirmalarni oling.',
+      name: 'Ism',
+      namePlaceholder: 'Ismingiz',
+      email: 'Email',
+      emailPlaceholder: 'siz@example.com',
+      continue: 'Davom etish',
+      notNow: 'Keyinroq'
     },
     sort: {
       featured: 'Tavsiya etilgan',
@@ -464,6 +558,7 @@ const translations = {
       home: 'Главная',
       about: 'О нас',
       contact: 'Контакты',
+      promotions: 'Акции',
       admin: 'Админ панель',
       profile: 'Профиль',
       settings: 'Настройки',
@@ -538,6 +633,52 @@ const translations = {
       all: 'Все',
       searchInStore: 'Искать в магазине...',
       outOfStock: 'Нет в наличии'
+    },
+    favorites: {
+      add: 'В избранное',
+      remove: 'Убрать из избранного'
+    },
+    search: {
+      placeholder: 'Моллы, магазины, товары…',
+      search: 'Поиск',
+      all: 'Все',
+      malls: 'Моллы',
+      stores: 'Магазины',
+      products: 'Товары',
+      noResults: 'Ничего не найдено',
+      viewAll: 'Показать все результаты',
+      resultsTitle: 'Результаты поиска',
+      resultsFor: 'результатов по запросу',
+      typeToSearch: 'Введите запрос для поиска…',
+      tryDifferent: 'Попробуйте другой запрос или переключите категории.',
+      tipTitle: 'Совет',
+      tipText: 'Используйте быстрый просмотр, чтобы сравнивать товары, не покидая страницу.'
+    },
+    promotions: {
+      title: 'Акции дня',
+      subtitle: 'Флеш-распродажи, скидки магазинов и кампании молла — обновляются в реальном времени.',
+      deal: 'Акция',
+      cta: 'Посмотреть акцию',
+      noneTitle: 'Нет активных акций',
+      noneSubtitle: 'Зайдите позже — скоро появятся новые предложения.'
+    },
+    account: {
+      title: 'Мой аккаунт',
+      subtitle: 'Профиль, избранное и настройки',
+      favorites: 'Избранное & Wishlist',
+      noFavMalls: 'Пока нет избранных моллов.',
+      noFavStores: 'Пока нет избранных магазинов.',
+      noFavProducts: 'Пока нет сохранённых товаров.'
+    },
+    auth: {
+      title: 'Войти',
+      subtitle: 'Создайте профиль, чтобы синхронизировать избранное и получать персональные предложения.',
+      name: 'Имя',
+      namePlaceholder: 'Ваше имя',
+      email: 'Email',
+      emailPlaceholder: 'you@example.com',
+      continue: 'Продолжить',
+      notNow: 'Не сейчас'
     },
     sort: {
       featured: 'Рекомендуемые',
@@ -701,6 +842,7 @@ const translations = {
       home: 'Home',
       about: 'About',
       contact: 'Contact',
+      promotions: 'Promotions',
       admin: 'Admin Panel',
       profile: 'Profile',
       settings: 'Settings',
@@ -775,6 +917,52 @@ const translations = {
       all: 'All',
       searchInStore: 'Search in store...',
       outOfStock: 'Out of Stock'
+    },
+    favorites: {
+      add: 'Add to favorites',
+      remove: 'Remove from favorites'
+    },
+    search: {
+      placeholder: 'Malls, stores, products…',
+      search: 'Search',
+      all: 'All',
+      malls: 'Malls',
+      stores: 'Stores',
+      products: 'Products',
+      noResults: 'No results',
+      viewAll: 'View all results',
+      resultsTitle: 'Search results',
+      resultsFor: 'results for',
+      typeToSearch: 'Type something to search…',
+      tryDifferent: 'Try a different keyword or switch categories.',
+      tipTitle: 'Tip',
+      tipText: 'Use Quick View to compare products without leaving the page.'
+    },
+    promotions: {
+      title: "Today's Deals",
+      subtitle: 'Flash sales, store discounts, and mall-wide campaigns — updated in real time.',
+      deal: 'Deal',
+      cta: 'View offer',
+      noneTitle: 'No active promotions',
+      noneSubtitle: 'Check back soon for new deals and campaigns.'
+    },
+    account: {
+      title: 'My Account',
+      subtitle: 'Profile, favorites, and preferences',
+      favorites: 'Favorites & Wishlist',
+      noFavMalls: 'No favorite malls yet.',
+      noFavStores: 'No favorite stores yet.',
+      noFavProducts: 'No saved products yet.'
+    },
+    auth: {
+      title: 'Sign in',
+      subtitle: 'Create a profile to sync favorites and get personalized deals.',
+      name: 'Name',
+      namePlaceholder: 'Your name',
+      email: 'Email',
+      emailPlaceholder: 'you@example.com',
+      continue: 'Continue',
+      notNow: 'Not now'
     },
     sort: {
       featured: 'Featured',

@@ -15,6 +15,10 @@ import MallDetailsPage from './pages/MallDetailsPage'
 import StoreDirectoryPage from './pages/StoreDirectoryPage'
 import StoreDetailsPage from './pages/StoreDetailsPage'
 import ProductDetailPage from './pages/ProductDetailPage'
+import SearchResultsPage from './pages/SearchResultsPage'
+import PromotionsPage from './pages/PromotionsPage'
+import StoresPage from './pages/StoresPage'
+import AccountPage from './pages/AccountPage'
 import MapPage from './pages/MapPage'
 import VirtualTourPage from './pages/VirtualTourPage'
 
@@ -73,6 +77,10 @@ function AppContent() {
             <main className={`flex-grow relative z-10 ${!isAdminRoute ? 'pb-16 md:pb-0' : ''}`}>
               <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/search" element={<SearchResultsPage />} />
+                <Route path="/promotions" element={<PromotionsPage />} />
+                <Route path="/stores" element={<StoresPage />} />
+                <Route path="/account" element={<AccountPage />} />
                 <Route path="/map" element={<MapPage />} />
                 <Route path="/virtual-tour" element={<VirtualTourPage />} />
                 <Route path="/mall/:mallId" element={<MallDetailsPage />} />

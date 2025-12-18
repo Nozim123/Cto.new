@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTheme } from '../contexts/ThemeContext'
@@ -70,9 +70,10 @@ export default function NextGenDiscoverySections() {
   const { t } = useLanguage()
   const navigate = useNavigate()
 
+  const baseNowRef = useRef(Date.now())
   const [now, setNow] = useState(Date.now())
   const [selectedProduct, setSelectedProduct] = useState(null)
-  const [reviewMallId, setReviewMallId] = useState('family-park')
+
   const [reviewRating, setReviewRating] = useState(5)
   const [reviewText, setReviewText] = useState('')
   const [reviewPhotoUrl, setReviewPhotoUrl] = useState('')
@@ -97,7 +98,7 @@ export default function NextGenDiscoverySections() {
       .map((store) => {
         const seed = stableNumberFromString(store.id)
         const endsInDays = 1 + (seed % 9)
-        const endsAt = new Date(now + endsInDays * 24 * 60 * 60 * 1000).getTime()
+        const endsAt = baseNowRef.current + endsInDays * 24 * 60 * 60 * 1000
 
         return {
           id: store.id,
@@ -111,7 +112,7 @@ export default function NextGenDiscoverySections() {
       })
 
     return base.sort((a, b) => a.endsAt - b.endsAt).slice(0, 6)
-  }, [now])
+  }, [])
 
   const comingSoonMalls = useMemo(
     () => mallsData.filter((m) => m.status === 'coming_soon'),
@@ -122,14 +123,14 @@ export default function NextGenDiscoverySections() {
     return comingSoonMalls.map((mall) => {
       const seed = stableNumberFromString(mall.id)
       const days = 10 + (seed % 60)
-      const openingDate = new Date(now + days * 24 * 60 * 60 * 1000)
+      const openingDate = new Date(baseNowRef.current + days * 24 * 60 * 60 * 1000)
 
       return {
         mall,
         openingDate
       }
     })
-  }, [comingSoonMalls, now])
+  }, [comingSoonMalls])
 
   const mallInsights = useMemo(() => {
     const byMall = new Map()
