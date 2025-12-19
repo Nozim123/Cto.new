@@ -117,7 +117,7 @@ function AppContent() {
                <CompareBar />
              </>
             )}
-
+          </>
         } />
       </Routes>
       
