@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Store as StoreIcon } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import mallsData from '../data/malls.json'
@@ -87,7 +88,7 @@ export default function StoresPage() {
           </div>
         ) : (
           <div className="text-center py-20 rounded-3xl border border-white/10 bg-white/5">
-            <div className="text-6xl mb-4">🏪</div>
+            <StoreIcon size={56} className="mx-auto mb-4 text-white/50" />
             <h2 className="text-xl font-semibold mb-2">{t('stores.noStores') || 'No stores found'}</h2>
             <p className="text-white/70">{t('search.tryDifferent') || 'Try a different keyword.'}</p>
           </div>

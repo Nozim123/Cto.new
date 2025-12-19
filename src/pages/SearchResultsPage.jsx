@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { ArrowRight, Search } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useEcosystem } from '../contexts/EcosystemContext'
@@ -44,7 +45,9 @@ const ResultCard = ({ title, subtitle, image, href, badge }) => (
       </div>
       {subtitle ? <p className="text-sm text-white/60 truncate">{subtitle}</p> : null}
     </div>
-    <span className="text-white/40 group-hover:text-white/70 transition-colors">→</span>
+    <span className="text-white/40 group-hover:text-white/70 transition-colors">
+      <ArrowRight size={16} />
+    </span>
   </Link>
 )
 
@@ -127,7 +130,7 @@ export default function SearchResultsPage() {
 
         {query && total === 0 ? (
           <div className="text-center py-20 rounded-3xl border border-white/10 bg-white/5">
-            <div className="text-6xl mb-4">🔍</div>
+            <Search size={56} className="mx-auto mb-4 text-white/50" />
             <h2 className="text-xl font-semibold mb-2">
               {t('search.noResults') || 'No results'}
             </h2>

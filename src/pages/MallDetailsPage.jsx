@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { ShoppingBag } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { trackBehavior } from '../services/behavior'
 import mallsData from '../data/malls.json'
@@ -105,9 +106,8 @@ export default function MallDetailsPage() {
          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {categories.map((cat, idx) => (
                 <div key={cat} className="group p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-gold/50 transition-all cursor-pointer text-center">
-                    <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-gold/20 to-purple-500/20 rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                        {/* Simple icon mapping based on text could go here, for now generic */}
-                        🛍️
+                    <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-gold/20 to-purple-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <ShoppingBag size={22} className="text-gold" />
                     </div>
                     <span className="font-medium text-sm dark:text-gray-200 group-hover:text-gold transition-colors">{cat}</span>
                 </div>

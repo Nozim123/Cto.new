@@ -1,4 +1,5 @@
 import { Link, Navigate } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
@@ -22,7 +23,9 @@ const ItemRow = ({ title, subtitle, image, href }) => (
       <p className="text-white font-semibold truncate">{title}</p>
       {subtitle ? <p className="text-sm text-white/60 truncate">{subtitle}</p> : null}
     </div>
-    <span className="text-white/40">→</span>
+    <span className="text-white/40">
+      <ArrowRight size={16} />
+    </span>
   </Link>
 )
 

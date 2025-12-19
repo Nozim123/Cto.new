@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowRight, Gift, Timer } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import mallsData from '../data/malls.json'
@@ -101,8 +102,9 @@ export default function PromotionsPage() {
                     {store.promoDiscount || t('promotions.deal') || 'Deal'}
                   </div>
 
-                  <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/40 border border-white/10 text-white text-xs font-semibold backdrop-blur-md">
-                    ⏳ {formatCountdown(endsIn)}
+                  <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/40 border border-white/10 text-white text-xs font-semibold backdrop-blur-md flex items-center">
+                    <Timer size={14} className="mr-1" />
+                    {formatCountdown(endsIn)}
                   </div>
 
                   <div className="absolute bottom-4 left-4 flex items-center gap-3">
@@ -134,8 +136,9 @@ export default function PromotionsPage() {
                     <span className="text-xs text-purple-200 bg-purple-500/15 border border-purple-500/25 px-2 py-1 rounded-full">
                       {store.category}
                     </span>
-                    <span className="text-sm font-semibold text-white group-hover:text-purple-200 transition-colors">
-                      {t('promotions.cta') || 'View offer'} →
+                    <span className="text-sm font-semibold text-white group-hover:text-purple-200 transition-colors flex items-center gap-1">
+                      {t('promotions.cta') || 'View offer'}
+                      <ArrowRight size={16} />
                     </span>
                   </div>
                 </div>
@@ -146,7 +149,7 @@ export default function PromotionsPage() {
 
         {promos.length === 0 ? (
           <div className="text-center py-20 rounded-3xl border border-white/10 bg-white/5 mt-10">
-            <div className="text-6xl mb-4">🎁</div>
+            <Gift size={56} className="mx-auto mb-4 text-white/50" />
             <h2 className="text-xl font-semibold mb-2">
               {t('promotions.noneTitle') || 'No active promotions'}
             </h2>
