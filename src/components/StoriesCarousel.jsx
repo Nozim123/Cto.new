@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { X } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 
 export default function StoriesCarousel({ stores }) {
@@ -88,9 +89,10 @@ export default function StoriesCarousel({ stores }) {
                 </div>
                 <button 
                   onClick={closeStory}
-                  className="text-white text-2xl hover:opacity-80 transition-opacity"
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                  aria-label="Close"
                 >
-                  ✕
+                  <X size={18} />
                 </button>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ArrowDown } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 
 export default function HeroSection() {
@@ -82,10 +83,10 @@ export default function HeroSection() {
           <div className="mt-8 md:mt-12">
             <button 
               onClick={() => window.location.hash = 'malls'} 
-              className="px-8 py-4 border-2 border-cream text-cream rounded-lg hover:bg-cream hover:text-navy transition-colors font-semibold text-lg"
+              className="px-8 py-4 border-2 border-cream text-cream rounded-lg hover:bg-cream hover:text-navy transition-colors font-semibold text-lg flex items-center justify-center"
             >
               <span>Browse Malls</span>
-              <span className="ml-2">↓</span>
+              <ArrowDown className="ml-2" size={18} />
             </button>
           </div>
         </div>

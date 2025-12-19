@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect, useMemo } from 'react'
+import { Clock, Layers, Search } from 'lucide-react'
 import { trackBehavior } from '../services/behavior'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
@@ -184,8 +185,14 @@ export default function StoreDetailsPage() {
                   {store.description}
                 </p>
                 <div className="flex items-center gap-4 text-white/80 text-sm">
-                  <span>📍 Floor {store.floor}</span>
-                  <span>🕒 {store.hours}</span>
+                  <span className="flex items-center gap-2">
+                    <Layers size={16} />
+                    Floor {store.floor}
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <Clock size={16} />
+                    {store.hours}
+                  </span>
                   <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                     store.status === 'open'
                       ? 'bg-green-500/90 text-white'
@@ -246,7 +253,7 @@ export default function StoreDetailsPage() {
           <div className={`text-center py-20 rounded-2xl ${
             darkMode ? 'bg-gray-800' : 'bg-white'
           }`}>
-            <div className="text-6xl mb-4">🔍</div>
+            <Search size={56} className="mx-auto mb-4 text-gray-400" />
             <h3 className={`text-xl font-semibold mb-2 ${
               darkMode ? 'text-white' : 'text-gray-900'
             }`}>

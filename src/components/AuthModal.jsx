@@ -1,10 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import { X } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
 
 const generateOtp = () => String(Math.floor(1000 + Math.random() * 9000))
+
+const nameFromEmail = (email) => {
+  const safe = String(email || '').trim()
+  if (!safe) return 'User'
+  const [local] = safe.split('@')
+  return local ? local.slice(0, 24) : 'User'
+}
 
 export default function AuthModal({ isOpen, onClose }) {
   const { darkMode } = useTheme()
@@ -16,7 +24,6 @@ export default function AuthModal({ isOpen, onClose }) {
   const [step, setStep] = useState('method')
   const [method, setMethod] = useState('email')
   const [identifier, setIdentifier] = useState('')
-  const [name, setName] = useState('')
   const [otp, setOtp] = useState('')
   const [generatedOtp, setGeneratedOtp] = useState(generateOtp)
 
@@ -46,16 +53,13 @@ export default function AuthModal({ isOpen, onClose }) {
     setStep('method')
     setMethod('email')
     setIdentifier('')
-    setName('')
     setOtp('')
     setGeneratedOtp(generateOtp())
   }, [isOpen])
 
   if (!isOpen) return null
 
-  const panelCls = darkMode
-    ? 'bg-gray-900 border-white/10 text-white'
-    : 'bg-white border-gray-200 text-gray-900'
+  const panelCls = darkMode ? 'bg-gray-900 border-white/10 text-white' : 'bg-white border-gray-200 text-gray-900'
 
   const inputCls = darkMode
     ? 'bg-white/5 border-white/10 text-white placeholder:text-white/50'
@@ -89,24 +93,16 @@ export default function AuthModal({ isOpen, onClose }) {
     toast.success((t('auth.otpSent') || 'OTP sent') + ` • Demo: ${nextOtp}`)
   }
 
-  const verifyOtp = () => {
-    if (otp.trim() !== generatedOtp) {
-      toast.error(t('auth.invalidOtp') || 'Invalid OTP')
-      return
-    }
-    setStep('profile')
-  }
-
   const complete = () => {
     const now = Date.now()
-    const finalName = name.trim() || 'User'
+    const trimmed = identifier.trim()
 
     login(
       {
         id: `user-${now}`,
-        name: finalName,
-        email: method === 'email' ? identifier.trim() : `user${now}@phone.local`,
-        phone: method === 'phone' ? identifier.trim() : undefined,
+        name: method === 'email' ? nameFromEmail(trimmed) : 'User',
+        email: method === 'email' ? trimmed : `user${now}@phone.local`,
+        phone: method === 'phone' ? trimmed : undefined,
         role: 'user'
       },
       `user_token_${now}`
@@ -114,6 +110,14 @@ export default function AuthModal({ isOpen, onClose }) {
 
     toast.success(t('auth.welcome') || 'Welcome!')
     onClose()
+  }
+
+  const verifyOtp = () => {
+    if (otp.trim() !== generatedOtp) {
+      toast.error(t('auth.invalidOtp') || 'Invalid OTP')
+      return
+    }
+    complete()
   }
 
   return (
@@ -132,7 +136,7 @@ export default function AuthModal({ isOpen, onClose }) {
               } transition-colors`}
               aria-label={t('common.close') || 'Close'}
             >
-              ✕
+              <X size={18} />
             </button>
           </div>
           <p className={`${subtleText} text-sm mt-2`}>
@@ -307,45 +311,6 @@ export default function AuthModal({ isOpen, onClose }) {
                 }`}
               >
                 {t('auth.resend') || 'Resend OTP'}
-              </button>
-            </form>
-          ) : null}
-
-          {step === 'profile' ? (
-            <form
-              className="space-y-4"
-              onSubmit={(e) => {
-                e.preventDefault()
-                complete()
-              }}
-            >
-              <div>
-                <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-white/80' : 'text-gray-700'}`}>
-                  {t('auth.name') || 'Name'}
-                </label>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className={`w-full px-4 py-3 rounded-2xl border outline-none focus:ring-2 focus:ring-purple-500/40 ${inputCls}`}
-                  placeholder={t('auth.namePlaceholder') || 'Your name'}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-700 text-white font-semibold shadow-lg"
-              >
-                {t('auth.finish') || 'Finish'}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setStep('method')}
-                className={`w-full py-3 rounded-2xl border font-semibold ${
-                  darkMode ? 'border-white/10 bg-white/5 hover:bg-white/10' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
-                }`}
-              >
-                {t('auth.startOver') || 'Start over'}
               </button>
             </form>
           ) : null}

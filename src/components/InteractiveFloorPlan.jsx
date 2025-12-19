@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Layers, Phone, X } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 
 export default function InteractiveFloorPlan({ stores, mallId }) {
@@ -105,24 +106,28 @@ export default function InteractiveFloorPlan({ stores, mallId }) {
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => setSelectedStore(null)}
-                className={`text-2xl hover:opacity-70 transition-opacity ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 transition-colors ${
                   darkMode ? 'text-cream' : 'text-navy'
                 }`}
+                aria-label="Close"
               >
-                ✕
+                <X size={18} />
               </button>
             </div>
 
             <div className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
               <p className="mb-2">{selectedStore.description}</p>
               <div className="flex items-center gap-4 text-sm mt-4">
-                <span className="flex items-center gap-1">
-                  <span className="text-gold">📍</span> Floor {selectedStore.floor}
+                <span className="flex items-center gap-2">
+                  <Layers size={16} className="text-gold" />
+                  Floor {selectedStore.floor}
                 </span>
                 {selectedStore.phone && (
-                  <span className="flex items-center gap-1">
-                    <span className="text-gold">📞</span> {selectedStore.phone}
+                  <span className="flex items-center gap-2">
+                    <Phone size={16} className="text-gold" />
+                    {selectedStore.phone}
                   </span>
                 )}
               </div>

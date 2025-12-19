@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Building2, ShoppingBag, Store } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useEcosystem } from '../contexts/EcosystemContext'
@@ -28,8 +29,7 @@ const SearchRow = ({ type, item, meta, active, onSelect }) => {
     ? 'bg-purple-500/15 ring-1 ring-purple-500/30'
     : 'hover:bg-white/10'
 
-  const icon =
-    type === SEARCH_TYPES.malls ? '🏢' : type === SEARCH_TYPES.stores ? '🏪' : '🛍️'
+  const Icon = type === SEARCH_TYPES.malls ? Building2 : type === SEARCH_TYPES.stores ? Store : ShoppingBag
 
   const image =
     type === SEARCH_TYPES.malls
@@ -44,13 +44,17 @@ const SearchRow = ({ type, item, meta, active, onSelect }) => {
         {image ? (
           <img src={image} alt="" className="w-full h-full object-cover" loading="lazy" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-lg">{icon}</div>
+          <div className="w-full h-full flex items-center justify-center">
+            <Icon size={18} className="text-white/70" />
+          </div>
         )}
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <p className="text-sm font-semibold text-white truncate">{item.name}</p>
-          <span className="text-xs text-white/60 flex-shrink-0">{icon}</span>
+          <span className="text-xs text-white/60 flex-shrink-0">
+            <Icon size={14} />
+          </span>
         </div>
         {meta ? <p className="text-xs text-white/60 truncate">{meta}</p> : null}
       </div>

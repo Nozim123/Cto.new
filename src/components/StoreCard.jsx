@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Check, Heart, Star } from 'lucide-react'
 import Button3D from './Button3D'
 import ShareComponent from './ShareComponent'
 import { useLanguage } from '../contexts/LanguageContext'
@@ -23,24 +24,23 @@ export default function StoreCard({ store, mallId }) {
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-        
+
         {/* Logo overlay */}
         <div className="absolute bottom-4 left-4 w-12 h-12 bg-white rounded-lg p-1 shadow-lg">
-          <img 
-            src={store.logo} 
-            alt="logo" 
-            className="w-full h-full object-contain"
-          />
+          <img src={store.logo} alt="logo" className="w-full h-full object-contain" />
         </div>
 
         {/* Status Badge */}
-        <div className={`absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 ${statusColor}`}>
+        <div
+          className={`absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 ${statusColor}`}
+        >
           {statusText}
         </div>
 
         {verified ? (
-          <div className="absolute top-4 left-14 text-[10px] font-bold px-2 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-green-200">
-            ✓ Verified
+          <div className="absolute top-4 left-14 text-[10px] font-bold px-2 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-green-200 flex items-center gap-1">
+            <Check size={12} />
+            Verified
           </div>
         ) : null}
 
@@ -59,14 +59,14 @@ export default function StoreCard({ store, mallId }) {
           }`}
           aria-label={liked ? t('favorites.remove') || 'Remove from favorites' : t('favorites.add') || 'Add to favorites'}
         >
-          <span className="text-xl">{liked ? '❤️' : '♡'}</span>
+          <Heart size={18} fill={liked ? 'currentColor' : 'none'} />
         </button>
 
         {/* Share Button */}
         <div className="absolute top-4 left-4">
-          <ShareComponent 
-            type="store" 
-            item={store} 
+          <ShareComponent
+            type="store"
+            item={store}
             mallId={mallId}
             className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           />
@@ -76,19 +76,22 @@ export default function StoreCard({ store, mallId }) {
       {/* Content */}
       <div className="p-5 flex-grow flex flex-col">
         <div className="mb-4">
-          <div className="text-xs text-gold font-bold uppercase tracking-wider mb-1">
-            {store.category}
-          </div>
+          <div className="text-xs text-gold font-bold uppercase tracking-wider mb-1">{store.category}</div>
           <h3 className="text-xl font-display font-bold text-white mb-2 group-hover:text-gold transition-colors">
             {store.name}
           </h3>
           <div className="flex items-center gap-2 text-sm text-gray-400">
-            <span>⭐ 4.8</span>
+            <span className="flex items-center gap-1">
+              <Star size={14} className="text-yellow-400" fill="currentColor" />
+              4.8
+            </span>
             <span>•</span>
-            <span>{t('map.floor')} {store.floor}</span>
+            <span>
+              {t('map.floor')} {store.floor}
+            </span>
           </div>
         </div>
-        
+
         <div className="mt-auto flex gap-2">
           <Link to={`/mall/${mallId}/store/${store.id}`} className="flex-1">
             <Button3D variant="primary" className="w-full text-sm py-2">

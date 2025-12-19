@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowRight, Clock, Heart, MapPin } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
-import { useState, useEffect } from 'react'
 import { checkMallStatus } from '../utils/mallStatus'
 
 export default function MallCard({ mall, index = 0 }) {
@@ -17,7 +18,7 @@ export default function MallCard({ mall, index = 0 }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setRealTimeStatus(checkMallStatus(mall))
-    }, 60000) // Update every minute
+    }, 60000)
 
     return () => clearInterval(interval)
   }, [mall])
@@ -25,11 +26,11 @@ export default function MallCard({ mall, index = 0 }) {
   const delayClass = `fade-in-up-delay-${Math.min(index % 3, 3)}`
 
   return (
-    <div className={`premium-card rounded-2xl overflow-hidden h-full flex flex-col ${
-      darkMode 
-        ? 'bg-gray-800 frosted-glass-dark' 
-        : 'bg-white frosted-glass'
-    } ${delayClass}`}>
+    <div
+      className={`premium-card rounded-2xl overflow-hidden h-full flex flex-col ${
+        darkMode ? 'bg-gray-800 frosted-glass-dark' : 'bg-white frosted-glass'
+      } ${delayClass}`}
+    >
       {/* Image Container */}
       <div className="relative overflow-hidden bg-gray-200 dark:bg-gray-700 h-48 sm:h-56 md:h-64 group">
         <img
@@ -54,28 +55,28 @@ export default function MallCard({ mall, index = 0 }) {
           }`}
           aria-label={liked ? t('favorites.remove') || 'Remove from favorites' : t('favorites.add') || 'Add to favorites'}
         >
-          <span className="text-xl">{liked ? '❤️' : '♡'}</span>
+          <Heart size={18} fill={liked ? 'currentColor' : 'none'} />
         </button>
 
         {/* Real-time Status Badge */}
         {!isComingSoon && (
-          <div className={`absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md text-xs font-medium ${
-            realTimeStatus.isOpen
-              ? 'bg-green-500/90 text-white'
-              : 'bg-red-500/90 text-white'
-          }`}>
-            <div className={`w-2 h-2 rounded-full ${
-              realTimeStatus.isOpen ? 'bg-white animate-pulse' : 'bg-white'
-            }`}></div>
+          <div
+            className={`absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md text-xs font-medium ${
+              realTimeStatus.isOpen ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'
+            }`}
+          >
+            <div
+              className={`w-2 h-2 rounded-full ${realTimeStatus.isOpen ? 'bg-white animate-pulse' : 'bg-white'}`}
+            ></div>
             {realTimeStatus.isOpen ? t('common.open') : t('common.closed')}
           </div>
         )}
+
         {isComingSoon && (
           <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
             <div className="text-center">
               <p className="text-white font-display text-2xl font-bold mb-2">Coming Soon</p>
-              <div className="w-16 h-1 mx-auto rounded-full" 
-                   style={{ backgroundColor: seasonalColors.primary }}></div>
+              <div className="w-16 h-1 mx-auto rounded-full" style={{ backgroundColor: seasonalColors.primary }}></div>
             </div>
           </div>
         )}
@@ -84,37 +85,34 @@ export default function MallCard({ mall, index = 0 }) {
       {/* Content */}
       <div className="p-6 flex-grow flex flex-col justify-between">
         <div>
-          <h3 className={`font-display text-xl lg:text-2xl font-bold mb-2 ${
-            darkMode ? 'text-cream' : 'text-navy'
-          }`}>
+          <h3 className={`font-display text-xl lg:text-2xl font-bold mb-2 ${darkMode ? 'text-cream' : 'text-navy'}`}>
             {mall.name}
           </h3>
-          <p className={`mb-2 text-sm md:text-base flex items-center gap-1 ${
-            darkMode ? 'text-gray-400' : 'text-sage'
-          }`}>
-            <span style={{ color: seasonalColors.primary }}>📍</span> {mall.location}
+          <p
+            className={`mb-2 text-sm md:text-base flex items-center gap-2 ${darkMode ? 'text-gray-400' : 'text-sage'}`}
+          >
+            <MapPin size={16} style={{ color: seasonalColors.primary }} />
+            {mall.location}
           </p>
           {!isComingSoon && (
             <>
               {/* Real-time Hours */}
-              <div className={`flex items-center gap-2 mb-3 text-sm ${
-                darkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                <span>🕐</span>
+              <div className={`flex items-center gap-2 mb-3 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <Clock size={16} className={darkMode ? 'text-gray-300' : 'text-gray-600'} />
                 <span className="font-medium">{mall.hours}</span>
                 {realTimeStatus.message && (
-                  <span className={`ml-auto px-2 py-1 rounded-full text-xs ${
-                    realTimeStatus.isOpen
-                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-                      : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
-                  }`}>
+                  <span
+                    className={`ml-auto px-2 py-1 rounded-full text-xs ${
+                      realTimeStatus.isOpen
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                        : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                    }`}
+                  >
                     {realTimeStatus.message}
                   </span>
                 )}
               </div>
-              <p className={`text-sm md:text-base mb-4 ${
-                darkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
+              <p className={`text-sm md:text-base mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                 {mall.description}
               </p>
             </>
@@ -124,12 +122,16 @@ export default function MallCard({ mall, index = 0 }) {
         {/* Button */}
         {!isComingSoon ? (
           <Link to={`/mall/${mall.id}`} className="mt-4 block">
-            <button className="w-full py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold">
-              View Details →
+            <button className="w-full py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold flex items-center justify-center">
+              View Details
+              <ArrowRight size={18} className="ml-2" />
             </button>
           </Link>
         ) : (
-          <button disabled className="w-full py-3 px-4 border border-gray-300 text-gray-500 rounded-lg mt-4 opacity-60 cursor-not-allowed">
+          <button
+            disabled
+            className="w-full py-3 px-4 border border-gray-300 text-gray-500 rounded-lg mt-4 opacity-60 cursor-not-allowed"
+          >
             Coming Soon
           </button>
         )}

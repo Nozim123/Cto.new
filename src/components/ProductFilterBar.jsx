@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import { Search, SlidersHorizontal } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 
-export default function ProductFilterBar({ 
-  categories = [], 
-  selectedCategory, 
+export default function ProductFilterBar({
+  categories = [],
+  selectedCategory,
   onCategoryChange,
   sortOption,
   onSortChange,
@@ -23,15 +24,17 @@ export default function ProductFilterBar({
     { value: 'new', label: t('sort.new') || 'Newest' },
     { value: 'price-low', label: t('sort.priceLow') || 'Price: Low to High' },
     { value: 'price-high', label: t('sort.priceHigh') || 'Price: High to Low' },
-    { value: 'popular', label: t('sort.popular') || 'Popular' },
+    { value: 'popular', label: t('sort.popular') || 'Popular' }
   ]
 
   return (
-    <div className={`sticky top-32 md:top-36 z-20 transition-all duration-300 ${
-      darkMode 
-        ? 'bg-gray-900/95 backdrop-blur-xl border-b border-gray-700' 
-        : 'bg-white/95 backdrop-blur-xl border-b border-gray-200'
-    }`}>
+    <div
+      className={`sticky top-32 md:top-36 z-20 transition-all duration-300 ${
+        darkMode
+          ? 'bg-gray-900/95 backdrop-blur-xl border-b border-gray-700'
+          : 'bg-white/95 backdrop-blur-xl border-b border-gray-200'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4">
         {/* Top Row: Search & Sort */}
         <div className="flex items-center gap-3 mb-3">
@@ -48,7 +51,9 @@ export default function ProductFilterBar({
                   : 'bg-gray-50 text-gray-900 border border-gray-200 focus:border-purple-500'
               } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
             />
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <Search size={16} />
+            </span>
           </div>
 
           {/* Sort Dropdown */}
@@ -61,7 +66,7 @@ export default function ProductFilterBar({
                 : 'bg-gray-50 text-gray-900 border border-gray-200 hover:border-purple-500'
             } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
           >
-            {sortOptions.map(option => (
+            {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -70,14 +75,12 @@ export default function ProductFilterBar({
 
           {/* Filter Toggle (Mobile) */}
           <button
+            type="button"
             onClick={() => setShowFilters(!showFilters)}
-            className={`md:hidden px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-              darkMode
-                ? 'bg-purple-600 text-white hover:bg-purple-700'
-                : 'bg-purple-600 text-white hover:bg-purple-700'
-            }`}
+            className="md:hidden px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 bg-purple-600 text-white hover:bg-purple-700"
+            aria-label="Filters"
           >
-            🎛️
+            <SlidersHorizontal size={18} />
           </button>
         </div>
 
@@ -86,6 +89,7 @@ export default function ProductFilterBar({
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {/* All Products */}
             <button
+              type="button"
               onClick={() => onCategoryChange('all')}
               className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                 selectedCategory === 'all'
@@ -102,6 +106,7 @@ export default function ProductFilterBar({
             {categories.map((category) => (
               <button
                 key={category}
+                type="button"
                 onClick={() => onCategoryChange(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                   selectedCategory === category
