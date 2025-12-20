@@ -70,6 +70,17 @@ Fully functional enterprise-grade admin system:
 - Responsive breakpoints
 - Optimized performance
 
+### 🤖 Telegram Bot Integration
+- **Full feature parity** with website
+- **Multi-language support** (Uzbek, Russian, English, Turkish)
+- **Interactive menus** with inline keyboards
+- **Location-based services** (find nearby malls)
+- **Real-time data sync** with website
+- **All core features**: malls, stores, deals, events, cinema, restaurants, jobs, parking, tourist services
+- **Product search** across all stores
+- **Reviews & loyalty program**
+- See [BOT_SETUP.md](./BOT_SETUP.md) for detailed setup instructions
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -103,6 +114,17 @@ npm run server
 ```
 Backend runs on `http://localhost:5000`
 
+5. **Start Telegram bot** (optional)
+```bash
+npm run bot
+```
+See [BOT_SETUP.md](./BOT_SETUP.md) for bot configuration
+
+**Or start everything at once:**
+```bash
+npm run start:all
+```
+
 ### Build for Production
 ```bash
 npm run build
@@ -132,11 +154,17 @@ mega-travel-center/
 │   ├── hooks/              # Custom hooks
 │   │   └── useScrollReveal.js
 │   ├── pages/              # Page components
-│   ├── data/               # JSON data
+│   ├── data/               # JSON data (shared with bot)
+│   │   ├── malls.json
+│   │   ├── stores.json
+│   │   └── products.json
 │   └── index.css           # Global styles
 ├── server.js               # Express backend
+├── bot.js                  # 🤖 Telegram Bot (NEW)
 ├── package.json
-└── README.md
+├── README.md
+├── BOT_SETUP.md           # Bot setup guide
+└── .env.example           # Environment variables template
 ```
 
 ## 🎨 Design System
@@ -251,12 +279,23 @@ Automatic detection and visual adaptation:
 
 ## 🛠️ Technologies
 
+### Frontend
 - **React** 18.2.0 - UI library
 - **React Router** v6 - Navigation
 - **Tailwind CSS** 3.4.1 - Styling
 - **Vite** - Build tool
+- **GSAP** - Animations
+- **Three.js** - 3D effects
+
+### Backend
 - **Express** - Backend server
 - **JWT** - Authentication
+- **Multer** - File uploads
+
+### Telegram Bot
+- **node-telegram-bot-api** - Bot framework
+- **Multi-language** - Full i18n support
+- **Location services** - GPS integration
 
 ## 🌟 Browser Support
 
