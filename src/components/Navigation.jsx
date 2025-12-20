@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { Menu, X } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
@@ -119,27 +120,11 @@ export default function Navigation() {
             <LanguageSwitcher />
             <DarkModeToggle />
             <button
-              className="text-purple-600 text-2xl p-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all duration-300"
+              className="text-purple-600 p-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all duration-300"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
-              <div className="w-6 h-6 flex flex-col justify-center items-center">
-                <div
-                  className={`w-5 h-0.5 bg-current transition-all duration-300 ${
-                    menuOpen ? 'rotate-45 translate-y-1.5' : ''
-                  }`}
-                ></div>
-                <div
-                  className={`w-5 h-0.5 bg-current transition-all duration-300 mt-1 ${
-                    menuOpen ? 'opacity-0' : ''
-                  }`}
-                ></div>
-                <div
-                  className={`w-5 h-0.5 bg-current transition-all duration-300 mt-1 ${
-                    menuOpen ? '-rotate-45 -translate-y-1.5' : ''
-                  }`}
-                ></div>
-              </div>
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>

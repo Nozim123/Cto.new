@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Phone, Mail } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 
 export default function Footer() {
@@ -61,11 +62,13 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h4 className="font-semibold text-gold mb-4">Contact</h4>
-            <p className="text-cream text-opacity-80 mb-2">
-              📞 +998 (66) 233-30-30
+            <p className="text-cream text-opacity-80 mb-2 flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              +998 (66) 233-30-30
             </p>
-            <p className="text-cream text-opacity-80">
-              ✉️ info@megatravelcenter.com
+            <p className="text-cream text-opacity-80 flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              info@megatravelcenter.com
             </p>
           </div>
         </div>

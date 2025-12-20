@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect, useMemo } from 'react'
+import { MapPin, Clock, Search } from 'lucide-react'
 import { trackBehavior } from '../services/behavior'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
@@ -10,6 +11,7 @@ import StoreHeader from '../components/StoreHeader'
 import ProductFilterBar from '../components/ProductFilterBar'
 import ModernProductCard from '../components/ModernProductCard'
 import ProductQuickView from '../components/ProductQuickView'
+import ShareComponent from '../components/ShareComponent'
 
 export default function StoreDetailsPage() {
   const { mallId, storeId } = useParams()
@@ -183,9 +185,15 @@ export default function StoreDetailsPage() {
                 <p className="text-white/90 text-sm md:text-base mb-2">
                   {store.description}
                 </p>
-                <div className="flex items-center gap-4 text-white/80 text-sm">
-                  <span>📍 Floor {store.floor}</span>
-                  <span>🕒 {store.hours}</span>
+                <div className="flex items-center gap-4 text-white/80 text-sm flex-wrap">
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-4 h-4" />
+                    Floor {store.floor}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    {store.hours}
+                  </span>
                   <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                     store.status === 'open'
                       ? 'bg-green-500/90 text-white'
@@ -193,6 +201,13 @@ export default function StoreDetailsPage() {
                   }`}>
                     {store.status === 'open' ? t('common.open') : t('common.closed')}
                   </span>
+                  {store && (
+                    <ShareComponent 
+                      type="store" 
+                      item={store} 
+                      mallId={mallId}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -246,7 +261,9 @@ export default function StoreDetailsPage() {
           <div className={`text-center py-20 rounded-2xl ${
             darkMode ? 'bg-gray-800' : 'bg-white'
           }`}>
-            <div className="text-6xl mb-4">🔍</div>
+            <div className="flex justify-center mb-4">
+              <Search className="w-16 h-16 text-gray-400" />
+            </div>
             <h3 className={`text-xl font-semibold mb-2 ${
               darkMode ? 'text-white' : 'text-gray-900'
             }`}>

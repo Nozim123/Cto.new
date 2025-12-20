@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
+import { Store, Zap, Phone, Mail, MapPin, Users, Building2, ShoppingBag, Hammer, Smile } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import HeroSection from '../components/HeroSection'
 import MallCard from '../components/MallCard'
 import { SkeletonMallCard } from '../components/SkeletonCard'
-import SponsoredContentSection from '../components/SponsoredContentSection'
 import RecentlyViewedSection from '../components/RecentlyViewedSection'
 import TrustSection from '../components/TrustSection'
 import mallsData from '../data/malls.json'
@@ -47,18 +47,18 @@ export default function HomePage() {
             {t('home.explore')}
           </h3>
           <div className="grid grid-cols-2 gap-3">
-            <button 
-              className="py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+            <button
+              className="py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm flex items-center justify-center gap-2"
               onClick={() => window.location.href = '/map'}
             >
-              <span className="mr-2">🗺️</span>
+              <MapPin className="w-4 h-4" />
               {t('map.title')}
             </button>
-            <button 
-              className="py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+            <button
+              className="py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm flex items-center justify-center gap-2"
               onClick={() => window.location.href = '/stores'}
             >
-              <span className="mr-2">🏪</span>
+              <Store className="w-4 h-4" />
               {t('stores.title')}
             </button>
           </div>
@@ -82,38 +82,37 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mt-8 md:mt-12">
               <div className="group animate-slide-in-left">
-                <div className="p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-purple-glow">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                    <span className="text-white text-lg md:text-xl">🏪</span>
+                  <div className="p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-purple-glow">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+                      <Store className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3 text-white">
+                      {t('home.discover')}
+                    </h3>
+                    <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+                      Comprehensive guide to the finest shopping destinations in historic Samarkand, from premium fashion to traditional crafts.
+                    </p>
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3 text-white">
-                    {t('home.discover')}
-                  </h3>
-                  <p className="text-sm md:text-base text-gray-300 leading-relaxed">
-                    Comprehensive guide to the finest shopping destinations in historic Samarkand, from premium fashion to traditional crafts.
-                  </p>
                 </div>
-              </div>
 
-              <div className="group animate-slide-in-right" style={{animationDelay: '0.2s'}}>
-                <div className="p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-purple-glow">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                    <span className="text-white text-lg md:text-xl">✨</span>
+                <div className="group animate-slide-in-right" style={{animationDelay: '0.2s'}}>
+                  <div className="p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-purple-glow">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+                      <Zap className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3 text-white">
+                      {t('home.experiences')}
+                    </h3>
+                    <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+                      Discover vibrant retail landscape with dining, entertainment, and cultural experiences across all shopping centers.
+                    </p>
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3 text-white">
-                    {t('home.experiences')}
-                  </h3>
-                  <p className="text-sm md:text-base text-gray-300 leading-relaxed">
-                    Discover vibrant retail landscape with dining, entertainment, and cultural experiences across all shopping centers.
-                  </p>
                 </div>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <SponsoredContentSection />
       <RecentlyViewedSection />
 
       {/* Featured Malls Section - Mobile Optimized */}
@@ -156,26 +155,29 @@ export default function HomePage() {
           {/* Enhanced Real-time Stats */}
           <div className="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { label: t('home.activeMalls'), value: mallsData.filter((m) => m.status === 'open').length, icon: '🏢' },
-              { label: t('home.totalStores'), value: mallsData.filter((m) => m.status === 'open').reduce((acc, m) => acc + (Number(m.storeCount) || 0), 0), suffix: '+', icon: '🏪' },
-              { label: t('home.comingSoon'), value: mallsData.filter((m) => m.status === 'coming_soon').length, icon: '🚧' },
-              { label: t('home.happyVisitors'), value: 50, suffix: 'K+', icon: '😊' }
-            ].map((stat, index) => (
-              <div
-                key={index}
-                className="p-3 md:p-6 rounded-lg bg-white/10 backdrop-blur-lg border border-white/10 text-center"
-              >
-                <div className="text-xl md:text-3xl mb-2">
-                  {stat.icon}
+              { label: t('home.activeMalls'), value: mallsData.filter((m) => m.status === 'open').length, Icon: Building2 },
+              { label: t('home.totalStores'), value: mallsData.filter((m) => m.status === 'open').reduce((acc, m) => acc + (Number(m.storeCount) || 0), 0), suffix: '+', Icon: ShoppingBag },
+              { label: t('home.comingSoon'), value: mallsData.filter((m) => m.status === 'coming_soon').length, Icon: Hammer },
+              { label: t('home.happyVisitors'), value: 50, suffix: 'K+', Icon: Smile }
+            ].map((stat, index) => {
+              const Icon = stat.Icon
+              return (
+                <div
+                  key={index}
+                  className="p-3 md:p-6 rounded-lg bg-white/10 backdrop-blur-lg border border-white/10 text-center"
+                >
+                  <div className="flex justify-center mb-2">
+                    <Icon className="w-6 h-6 md:w-8 md:h-8 text-purple-300" />
+                  </div>
+                  <div className="text-lg md:text-2xl mb-1 text-purple-300">
+                    {stat.value}{stat.suffix || ''}
+                  </div>
+                  <div className="text-xs md:text-sm text-gray-400">
+                    {stat.label}
+                  </div>
                 </div>
-                <div className="text-lg md:text-2xl mb-1 text-purple-300">
-                  {stat.value}{stat.suffix || ''}
-                </div>
-                <div className="text-xs md:text-sm text-gray-400">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
       </section>
 
@@ -232,26 +234,29 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
               {[
-                { icon: '📞', title: 'Call Us', info: '+998 (99) 689-24-80', color: 'from-blue-400 to-blue-600' },
-                { icon: '✉️', title: 'Email Us', info: 'roziyevnozim43@gmail.com', color: 'from-green-400 to-green-600' },
-                { icon: '📍', title: 'Visit Us', info: 'Samarqand viloyat, Mikrarayon bozorchasi ', color: 'from-purple-400 to-purple-600' }
-              ].map((contact, index) => (
-                <div 
-                  key={index}
-                  className="group p-4 md:p-8 rounded-xl md:rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-3 animate-bounce-in"
-                  style={{animationDelay: `${index * 0.2}s`}}
-                >
-                  <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-r ${contact.color} flex items-center justify-center mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform`}>
-                    <span className="text-white text-lg md:text-xl">{contact.icon}</span>
+                { Icon: Phone, title: 'Call Us', info: '+998 (99) 689-24-80', color: 'from-blue-400 to-blue-600' },
+                { Icon: Mail, title: 'Email Us', info: 'roziyevnozim43@gmail.com', color: 'from-green-400 to-green-600' },
+                { Icon: MapPin, title: 'Visit Us', info: 'Samarqand viloyat, Mikrarayon bozorchasi ', color: 'from-purple-400 to-purple-600' }
+              ].map((contact, index) => {
+                const Icon = contact.Icon
+                return (
+                  <div
+                    key={index}
+                    className="group p-4 md:p-8 rounded-xl md:rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-3 animate-bounce-in"
+                    style={{animationDelay: `${index * 0.2}s`}}
+                  >
+                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-r ${contact.color} flex items-center justify-center mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                    </div>
+                    <h3 className="text-sm md:text-lg font-semibold text-white mb-2">
+                      {contact.title}
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-300 break-words">
+                      {contact.info}
+                    </p>
                   </div>
-                  <h3 className="text-sm md:text-lg font-semibold text-white mb-2">
-                    {contact.title}
-                  </h3>
-                  <p className="text-xs md:text-sm text-gray-300 break-words">
-                    {contact.info}
-                  </p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>
