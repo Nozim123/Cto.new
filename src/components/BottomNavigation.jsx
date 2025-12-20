@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { Home, Info, Building2, Phone } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 
 export default function BottomNavigation() {
@@ -16,22 +17,22 @@ export default function BottomNavigation() {
     {
       label: 'Home',
       path: '/',
-      icon: '🏠'
+      Icon: Home
     },
     {
       label: 'About',
       path: '#about',
-      icon: 'ℹ️'
+      Icon: Info
     },
     {
       label: 'Malls',
       path: '#malls',
-      icon: '🏢'
+      Icon: Building2
     },
     {
       label: 'Contact',
       path: '#contact',
-      icon: '📞'
+      Icon: Phone
     }
   ]
 
@@ -42,6 +43,7 @@ export default function BottomNavigation() {
       <div className="grid grid-cols-4 h-16">
         {navItems.map((item) => {
           const active = isActive(item.path)
+          const Icon = item.Icon
           return item.path.startsWith('#') ? (
             <a
               key={item.path}
@@ -56,7 +58,7 @@ export default function BottomNavigation() {
                             : 'text-gray-600 hover:text-gold'
                         }`}
             >
-              <span className="text-xl">{item.icon}</span>
+              <Icon className="w-6 h-6" />
               <span className="text-xs font-medium">{item.label}</span>
             </a>
           ) : (
@@ -73,7 +75,7 @@ export default function BottomNavigation() {
                             : 'text-gray-600 hover:text-gold'
                         }`}
             >
-              <span className="text-xl">{item.icon}</span>
+              <Icon className="w-6 h-6" />
               <span className="text-xs font-medium">{item.label}</span>
             </Link>
           )

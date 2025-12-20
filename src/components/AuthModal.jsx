@@ -94,19 +94,22 @@ export default function AuthModal({ isOpen, onClose }) {
       toast.error(t('auth.invalidOtp') || 'Invalid OTP')
       return
     }
-    setStep('profile')
+    complete()
   }
 
   const complete = () => {
     const now = Date.now()
-    const finalName = name.trim() || 'User'
+    const emailOrPhone = identifier.trim()
+    const extractedName = method === 'email' 
+      ? emailOrPhone.split('@')[0] 
+      : 'User'
 
     login(
       {
         id: `user-${now}`,
-        name: finalName,
-        email: method === 'email' ? identifier.trim() : `user${now}@phone.local`,
-        phone: method === 'phone' ? identifier.trim() : undefined,
+        name: extractedName,
+        email: method === 'email' ? emailOrPhone : `user${now}@phone.local`,
+        phone: method === 'phone' ? emailOrPhone : undefined,
         role: 'user'
       },
       `user_token_${now}`
@@ -310,46 +313,7 @@ export default function AuthModal({ isOpen, onClose }) {
               </button>
             </form>
           ) : null}
-
-          {step === 'profile' ? (
-            <form
-              className="space-y-4"
-              onSubmit={(e) => {
-                e.preventDefault()
-                complete()
-              }}
-            >
-              <div>
-                <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-white/80' : 'text-gray-700'}`}>
-                  {t('auth.name') || 'Name'}
-                </label>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className={`w-full px-4 py-3 rounded-2xl border outline-none focus:ring-2 focus:ring-purple-500/40 ${inputCls}`}
-                  placeholder={t('auth.namePlaceholder') || 'Your name'}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-700 text-white font-semibold shadow-lg"
-              >
-                {t('auth.finish') || 'Finish'}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setStep('method')}
-                className={`w-full py-3 rounded-2xl border font-semibold ${
-                  darkMode ? 'border-white/10 bg-white/5 hover:bg-white/10' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
-                }`}
-              >
-                {t('auth.startOver') || 'Start over'}
-              </button>
-            </form>
-          ) : null}
-        </div>
+          </div>
       </div>
     </div>
   )
