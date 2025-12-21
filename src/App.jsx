@@ -27,6 +27,8 @@ import FeedbackPage from './pages/FeedbackPage'
 import InsightsPage from './pages/InsightsPage'
 import SellerDashboardPage from './pages/SellerDashboardPage'
 import CmsPage from './pages/CmsPage'
+import UserProfilePage from './pages/UserProfilePage'
+import BlogPage from './pages/BlogPage'
 import CompareBar from './components/CompareBar'
 
 // Admin pages
@@ -104,6 +106,9 @@ function AppContent() {
                 <Route path="/p/:slug" element={<CmsPage />} />
                 <Route path="/map" element={<MapPage />} />
                 <Route path="/virtual-tour" element={<VirtualTourPage />} />
+                <Route path="/profile" element={<UserProfilePage />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/blog/:postId" element={<BlogPage />} />
                 <Route path="/mall/:mallId" element={<MallDetailsPage />} />
                 <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
                 <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />

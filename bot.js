@@ -55,10 +55,71 @@ let supportTickets = loadData('support_tickets.json');
 // Bot token
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || 'YOUR_BOT_TOKEN_HERE';
 
+// Channel/Group ID for subscription requirement (set in .env)
+const REQUIRED_CHANNEL_ID = process.env.REQUIRED_CHANNEL_ID || '@megatravelcenter';
+const REQUIRE_SUBSCRIPTION = process.env.REQUIRE_SUBSCRIPTION === 'true';
+
 // Create bot instance
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
 console.log('🤖 Mega Travel Center Bot (Enterprise Edition) is running...');
+console.log(`📢 Subscription required: ${REQUIRE_SUBSCRIPTION ? 'YES' : 'NO'} (${REQUIRED_CHANNEL_ID})`);
+
+// ========================================
+// SUBSCRIPTION VERIFICATION
+// ========================================
+
+// Check if user is subscribed to required channel
+async function checkSubscription(userId) {
+  if (!REQUIRE_SUBSCRIPTION) return true;
+  
+  try {
+    const chatMember = await bot.getChatMember(REQUIRED_CHANNEL_ID, userId);
+    const status = chatMember.status;
+    
+    // User is subscribed if status is not 'left' or 'kicked'
+    return status !== 'left' && status !== 'kicked';
+  } catch (error) {
+    console.error('Error checking subscription:', error);
+    return false;
+  }
+}
+
+// Send subscription requirement message
+async function sendSubscriptionRequirement(chatId, lang = 'uz') {
+  const t = getTranslationForUser(chatId, lang);
+  const channelName = REQUIRED_CHANNEL_ID.startsWith('@') ? REQUIRED_CHANNEL_ID : `@${REQUIRED_CHANNEL_ID}`;
+  
+  const message = `${t.subscribeRequired || '⚠️ Botdan foydalanish uchun quyidagi kanalga azo bo‘lishingiz kerak:'}\n\n${channelName}\n\n${t.subscribeThenClick || 'Azo bo‘lgach, “✅ Tekshirish” tugmasini bosing.'}`;
+  
+  const options = {
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: t.joinChannel || '➕ Kanalga azo bo‘lish', url: `https://t.me/${channelName.replace('@', '')}` }],
+        [{ text: '✅ Tekshirish', callback_data: 'check_subscription' }]
+      ]
+    },
+    parse_mode: 'Markdown'
+  };
+  
+  try {
+    await bot.sendMessage(chatId, message, options);
+  } catch (error) {
+    console.error('Error sending subscription requirement:', error);
+  }
+}
+
+// Get user language or default
+function getUserLanguage(chatId) {
+  const user = users.find(u => u.id === chatId);
+  return user?.language || userLanguages[chatId] || 'uz';
+}
+
+// Get translation for user
+function getTranslationForUser(chatId, lang = null) {
+  const language = lang || getUserLanguage(chatId);
+  return botTranslations[language] || botTranslations.uz;
+}
 
 // User language preferences (in-memory, merged with user profiles)
 const userLanguages = {};
@@ -1311,12 +1372,19 @@ bot.onText(/\/admin/, (msg) => {
 // ========================================
 
 // Handle text messages (menu buttons and search)
-bot.on('message', (msg) => {
+bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
   const text = msg.text;
   
   // Skip if command
   if (!text || text.startsWith('/')) return;
+  
+  // Check subscription first
+  const isSubscribed = await checkSubscription(chatId);
+  if (!isSubscribed) {
+    await sendSubscriptionRequirement(chatId);
+    return;
+  }
   
   const user = getOrCreateUser(msg.from);
   const lang = getUserLanguage(chatId);
@@ -1733,6 +1801,23 @@ bot.on('callback_query', (query) => {
       message_id: query.message.message_id
     });
     bot.answerCallbackQuery(query.id);
+    return;
+  }
+  
+  // Check subscription callback
+  if (data === 'check_subscription') {
+    const isSubscribed = await checkSubscription(chatId);
+    if (isSubscribed) {
+      bot.sendMessage(chatId, '✅ Azo bolganingiz uchun rahmat! Botdan foydalanishingiz mumkin.', {
+        reply_markup: getMainMenuKeyboard(lang)
+      });
+      bot.deleteMessage(chatId, query.message.message_id);
+    } else {
+      bot.answerCallbackQuery(query.id, { 
+        text: '❌ Siz kanalga azo bolmadingiz. Iltimos, avval kanalga azo boling.',
+        show_alert: true
+      });
+    }
     return;
   }
   
