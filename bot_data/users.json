@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": "ca55f63cf0b52d4f",
+    "telegramId": 986937142,
+    "username": "Ruziyev_Nozim",
+    "firstName": "️",
+    "language": "uz",
+    "isGuest": true,
+    "phone": null,
+    "createdAt": "2025-12-21T17:32:53.584Z",
+    "lastActive": "2025-12-21T17:38:23.200Z",
+    "notificationsEnabled": true
+  },
+  {
+    "id": "a61beefa0a8d4acd",
+    "telegramId": 8196618105,
+    "firstName": "Nozimjon",
+    "lastName": "Ro‘ziyev",
+    "language": "uz",
+    "isGuest": true,
+    "phone": null,
+    "createdAt": "2025-12-21T17:34:11.487Z",
+    "lastActive": "2025-12-21T17:38:10.606Z",
+    "notificationsEnabled": true
+  }
+]

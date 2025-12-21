@@ -53,10 +53,10 @@ let analytics = loadData('analytics.json');
 let supportTickets = loadData('support_tickets.json');
 
 // Bot token
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || 'YOUR_BOT_TOKEN_HERE';
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8333917960:AAGTtWlkzUZL6shNFpUDVg090QuHz7iZnDY';
 
 // Channel/Group ID for subscription requirement (set in .env)
-const REQUIRED_CHANNEL_ID = process.env.REQUIRED_CHANNEL_ID || '@megatravelcenter';
+const REQUIRED_CHANNEL_ID = process.env.REQUIRED_CHANNEL_ID || '@MegaTravelCenter';
 const REQUIRE_SUBSCRIPTION = process.env.REQUIRE_SUBSCRIPTION === 'true';
 
 // Create bot instance
@@ -1515,7 +1515,7 @@ bot.on('message', async (msg) => {
 // CALLBACK QUERY HANDLERS
 // ========================================
 
-bot.on('callback_query', (query) => {
+bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
   const data = query.data;
   const user = getOrCreateUser(query.from);

@@ -1,10 +1,43 @@
 {
-  "totalUsers": 0,
+  "totalUsers": 2,
   "activeUsers": 0,
   "totalOrders": 0,
   "totalReviews": 0,
-  "popularMalls": {},
+  "popularMalls": {
+    "family-park": 3,
+    "silk-road-mall": 1,
+    "registan-tower": 1
+  },
   "popularStores": {},
   "popularProducts": {},
-  "searchQueries": []
+  "searchQueries": [],
+  "command": [
+    {
+      "command": "start",
+      "userId": "a61beefa0a8d4acd",
+      "timestamp": "2025-12-21T17:34:11.496Z"
+    },
+    {
+      "command": "start",
+      "userId": "a61beefa0a8d4acd",
+      "timestamp": "2025-12-21T17:37:27.613Z"
+    },
+    {
+      "command": "start",
+      "userId": "a61beefa0a8d4acd",
+      "timestamp": "2025-12-21T17:37:27.621Z"
+    },
+    {
+      "command": "start",
+      "userId": "a61beefa0a8d4acd",
+      "timestamp": "2025-12-21T17:37:27.628Z"
+    }
+  ],
+  "search": [
+    {
+      "query": "kiyim",
+      "userId": "a61beefa0a8d4acd",
+      "timestamp": "2025-12-21T17:37:57.504Z"
+    }
+  ]
 }

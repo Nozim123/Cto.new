@@ -19,20 +19,51 @@ export default function UserProfilePage() {
   
   const [activeTab, setActiveTab] = useState('profile')
   const [isEditing, setIsEditing] = useState(false)
+
+  // guard favorites to avoid runtime errors if context returns undefined
+  const favSafe = favorites || { stores: [], products: [], malls: [] }
+
   const [profileData, setProfileData] = useState({
     name: user?.name || '',
     email: user?.email || '',
     phone: user?.phone || '',
     language: user?.language || 'uz',
-    notifications: user?.notifications || {
+    // expanded default notification keys used in UI
+    notifications: {
       mallUpdates: true,
-      promotions: true,
-      events: false,
+      storeChanges: true,
+      mallEvents: false,
+      priceDrops: true,
+      backInStock: true,
+      flashSales: false,
+      newArrivals: true,
+      pointsEarned: true,
+      rewardAlerts: true,
+      tierUpgrade: true,
+      birthdayRewards: true,
       lowStock: true,
       email: true,
       push: true
     }
   })
+
+  // sync profileData when user changes, but don't overwrite while editing
+  useEffect(() => {
+    if (user && !isEditing) {
+      setProfileData(prev => ({
+        ...prev,
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        language: user.language || prev.language || 'uz',
+        notifications: {
+          ...prev.notifications,
+          // merge existing defaults with any user-provided notification settings
+          ...(user.notifications || {})
+        }
+      }))
+    }
+  }, [user, isEditing])
 
   if (!isAuthenticated || !user) {
     return (
@@ -49,9 +80,9 @@ export default function UserProfilePage() {
     )
   }
 
-  const favoriteStores = stores.filter(s => favorites.stores.includes(s.id))
-  const favoriteProducts = products.filter(p => favorites.products.includes(p.id))
-  const favoriteMalls = malls.filter(m => favorites.malls.includes(m.id))
+  const favoriteStores = stores.filter(s => (favSafe.stores || []).includes(s.id))
+  const favoriteProducts = products.filter(p => (favSafe.products || []).includes(p.id))
+  const favoriteMalls = malls.filter(m => (favSafe.malls || []).includes(m.id))
 
   const handleSaveProfile = () => {
     // In a real app, this would be an API call
@@ -63,15 +94,15 @@ export default function UserProfilePage() {
     setProfileData(prev => ({
       ...prev,
       notifications: {
-        ...prev.notifications,
-        [key]: !prev.notifications[key]
+        ...(prev.notifications || {}),
+        [key]: !prev.notifications?.[key]
       }
     }))
   }
 
   const tabs = [
     { id: 'profile', label: '👤 Profile', icon: '👤' },
-    { id: 'favorites', label: `❤️ Favorites (${favorites.stores.length + favorites.products.length + favorites.malls.length})`, icon: '❤️' },
+    { id: 'favorites', label: `❤️ Favorites (${(favSafe.stores || []).length + (favSafe.products || []).length + (favSafe.malls || []).length})`, icon: '❤️' },
     { id: 'notifications', label: '🔔 Notifications', icon: '🔔' },
     { id: 'history', label: '📜 History', icon: '📜' },
     { id: 'loyalty', label: '🎁 Loyalty', icon: '🎁' }
@@ -104,11 +135,11 @@ export default function UserProfilePage() {
         {/* Profile Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className={`p-4 rounded-xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-white/20 bg-white/90'} backdrop-blur-sm`}>
-            <div className="text-2xl font-bold text-purple-600">{favorites.stores.length}</div>
+            <div className="text-2xl font-bold text-purple-600">{(favSafe.stores || []).length}</div>
             <div className="text-sm text-gray-600">Favorite Stores</div>
           </div>
           <div className={`p-4 rounded-xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-white/20 bg-white/90'} backdrop-blur-sm`}>
-            <div className="text-2xl font-bold text-purple-600">{favorites.products.length}</div>
+            <div className="text-2xl font-bold text-purple-600">{(favSafe.products || []).length}</div>
             <div className="text-sm text-gray-600">Wishlist</div>
           </div>
           <div className={`p-4 rounded-xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-white/20 bg-white/90'} backdrop-blur-sm`}>
@@ -258,7 +289,7 @@ export default function UserProfilePage() {
                       <span className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Email notifications</span>
                       <input
                         type="checkbox"
-                        checked={profileData.notifications.email}
+                        checked={!!profileData.notifications.email}
                         onChange={() => toggleNotificationSetting('email')}
                         disabled={!isEditing}
                         className="rounded"
@@ -268,7 +299,7 @@ export default function UserProfilePage() {
                       <span className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Push notifications</span>
                       <input
                         type="checkbox"
-                        checked={profileData.notifications.push}
+                        checked={!!profileData.notifications.push}
                         onChange={() => toggleNotificationSetting('push')}
                         disabled={!isEditing}
                         className="rounded"
@@ -350,15 +381,15 @@ export default function UserProfilePage() {
                     <div className="space-y-3">
                       <label className="flex items-center justify-between">
                         <span>New stores in favorite malls</span>
-                        <input type="checkbox" className="rounded" defaultChecked />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.mallUpdates} onChange={() => toggleNotificationSetting('mallUpdates')} />
                       </label>
                       <label className="flex items-center justify-between">
                         <span>Store opening/closing changes</span>
-                        <input type="checkbox" className="rounded" />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.storeChanges} onChange={() => toggleNotificationSetting('storeChanges')} />
                       </label>
                       <label className="flex items-center justify-between">
                         <span>Mall events and promotions</span>
-                        <input type="checkbox" className="rounded" defaultChecked />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.mallEvents} onChange={() => toggleNotificationSetting('mallEvents')} />
                       </label>
                     </div>
                   </div>
@@ -368,19 +399,19 @@ export default function UserProfilePage() {
                     <div className="space-y-3">
                       <label className="flex items-center justify-between">
                         <span>Price drops on wishlist items</span>
-                        <input type="checkbox" className="rounded" defaultChecked />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.priceDrops} onChange={() => toggleNotificationSetting('priceDrops')} />
                       </label>
                       <label className="flex items-center justify-between">
                         <span>Back in stock notifications</span>
-                        <input type="checkbox" className="rounded" defaultChecked />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.backInStock} onChange={() => toggleNotificationSetting('backInStock')} />
                       </label>
                       <label className="flex items-center justify-between">
                         <span>Flash sales and limited offers</span>
-                        <input type="checkbox" className="rounded" />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.flashSales} onChange={() => toggleNotificationSetting('flashSales')} />
                       </label>
                       <label className="flex items-center justify-between">
                         <span>New arrivals in favorite stores</span>
-                        <input type="checkbox" className="rounded" defaultChecked />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.newArrivals} onChange={() => toggleNotificationSetting('newArrivals')} />
                       </label>
                     </div>
                   </div>
@@ -390,19 +421,19 @@ export default function UserProfilePage() {
                     <div className="space-y-3">
                       <label className="flex items-center justify-between">
                         <span>Points earned notifications</span>
-                        <input type="checkbox" className="rounded" defaultChecked />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.pointsEarned} onChange={() => toggleNotificationSetting('pointsEarned')} />
                       </label>
                       <label className="flex items-center justify-between">
                         <span>Reward available alerts</span>
-                        <input type="checkbox" className="rounded" />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.rewardAlerts} onChange={() => toggleNotificationSetting('rewardAlerts')} />
                       </label>
                       <label className="flex items-center justify-between">
                         <span>Tier upgrade notifications</span>
-                        <input type="checkbox" className="rounded" defaultChecked />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.tierUpgrade} onChange={() => toggleNotificationSetting('tierUpgrade')} />
                       </label>
                       <label className="flex items-center justify-between">
                         <span>Birthday rewards</span>
-                        <input type="checkbox" className="rounded" defaultChecked />
+                        <input type="checkbox" className="rounded" checked={!!profileData.notifications.birthdayRewards} onChange={() => toggleNotificationSetting('birthdayRewards')} />
                       </label>
                     </div>
                   </div>

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
-import { useLanguage } from '../contexts/LanguageContext'
 import Button3D from '../components/Button3D'
 import { motion } from 'framer-motion'
+
 
 const blogPosts = [
   {
@@ -84,7 +84,7 @@ Featured brands:
 • Samarqand Style - Modern fashion with traditional patterns
 • Silk Road Collection - Luxury textiles and home goods
 • Bukhara Crafts - Handcrafted jewelry and accessories
-• Chust Ceramics - Traditional pottery with modern designs`,
+• Ceramics - Traditional pottery with modern designs`,
     category: 'trends',
     author: 'Local Business Review',
     date: '2023-12-28',
@@ -105,7 +105,7 @@ Featured brands:
 **Taxi Services:**
 • Yandex Go and MyTaxi recommended
 • Designated pickup/drop-off zones at all malls
-• Average cost: 15,000-25,000 soum from city center
+• Average cost: 15,000-25,000 sum from city center
 
 **Driving:**
 • Free parking available at all locations
@@ -131,24 +131,18 @@ export default function BlogPage() {
   const { t } = useLanguage()
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [filteredPosts, setFilteredPosts] = useState(blogPosts)
 
-  useEffect(() => {
-    let posts = blogPosts
-    
-    if (selectedCategory !== 'all') {
-      posts = posts.filter(post => post.category === selectedCategory)
-    }
-    
-    if (searchQuery.trim()) {
-      posts = posts.filter(post => 
-        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.content.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPosts = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase()
+    return blogPosts.filter(post => {
+      if (selectedCategory !== 'all' && post.category !== selectedCategory) return false
+      if (!q) return true
+      return (
+        post.title.toLowerCase().includes(q) ||
+        post.excerpt.toLowerCase().includes(q) ||
+        post.content.toLowerCase().includes(q)
       )
-    }
-    
-    setFilteredPosts(posts)
+    })
   }, [selectedCategory, searchQuery])
 
   return (
@@ -172,6 +166,7 @@ export default function BlogPage() {
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <input
               type="text"
+              aria-label="Search articles"
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -217,6 +212,7 @@ export default function BlogPage() {
                 <img
                   src={post.image}
                   alt={post.title}
+                  loading="lazy"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -244,10 +240,10 @@ export default function BlogPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
-                      {post.author.charAt(0)}
+                      {post.author?.charAt(0) ?? '?'}
                     </div>
                     <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {post.author}
+                      {post.author || 'Unknown'}
                     </span>
                   </div>
                   
