@@ -8,6 +8,8 @@ import StoreCard from '../components/StoreCard'
 import StoriesCarousel from '../components/StoriesCarousel'
 import InteractiveFloorPlan from '../components/InteractiveFloorPlan'
 import Button3D from '../components/Button3D'
+import ReviewsSection from '../components/ReviewsSection'
+import SmartRecommendations from '../components/SmartRecommendations'
 
 export default function MallDetailsPage() {
   const { mallId } = useParams()
@@ -187,6 +189,24 @@ export default function MallDetailsPage() {
                 </Button3D>
              </Link>
           </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section className="max-w-7xl mx-auto px-4 lg:px-8 mb-12">
+        <ReviewsSection 
+          entityType="mall" 
+          entityId={mallId} 
+          entityName={mall.name} 
+        />
+      </section>
+
+      {/* Smart Recommendations */}
+      <section className="max-w-7xl mx-auto px-4 lg:px-8 mb-12">
+        <SmartRecommendations 
+          type="mall" 
+          id={mallId} 
+          limit={4} 
+        />
       </section>
     </div>
   )

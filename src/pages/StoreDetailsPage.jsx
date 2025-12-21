@@ -10,6 +10,8 @@ import StoreHeader from '../components/StoreHeader'
 import ProductFilterBar from '../components/ProductFilterBar'
 import ModernProductCard from '../components/ModernProductCard'
 import ProductQuickView from '../components/ProductQuickView'
+import ReviewsSection from '../components/ReviewsSection'
+import SmartRecommendations from '../components/SmartRecommendations'
 
 export default function StoreDetailsPage() {
   const { mallId, storeId } = useParams()
@@ -276,6 +278,25 @@ export default function StoreDetailsPage() {
           onClose={() => setSelectedProduct(null)}
         />
       )}
+
+      {/* Reviews Section */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 mb-12">
+        <ReviewsSection 
+          entityType="store" 
+          entityId={storeId} 
+          entityName={store.name} 
+        />
+      </div>
+
+      {/* Smart Recommendations */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 mb-12">
+        <SmartRecommendations 
+          type="store" 
+          id={storeId} 
+          category={store.category}
+          limit={4} 
+        />
+      </div>
     </div>
   )
 }
