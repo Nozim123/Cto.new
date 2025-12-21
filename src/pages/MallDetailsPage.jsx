@@ -32,7 +32,7 @@ export default function MallDetailsPage() {
     if (mallData) { // Always load stores if mall exists
       const mallStores = storesData.filter((s) => s.mallId === mallId)
       setAllStores(mallStores)
-      setStores(mallStores.slice(0, 6)) // Show more stores by default
+      setStores(mallStores.slice(0, 12)) // Show more stores by default for better navigation
     }
   }, [mallId])
 

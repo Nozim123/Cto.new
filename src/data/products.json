@@ -20,7 +20,8 @@
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=800&fit=crop",
       "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&h=800&fit=crop",
       "https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=800&h=800&fit=crop"
-    ]
+    ],
+    "sizes": ["6", "7", "8", "9", "10", "11", "12"]
   },
   {
     "id": "tp-002",
@@ -41,7 +42,8 @@
     "gallery": [
       "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&h=800&fit=crop",
       "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=800&fit=crop"
-    ]
+    ],
+    "sizes": ["XS", "S", "M", "L", "XL", "XXL"]
   },
   {
     "id": "tp-003",
@@ -81,7 +83,8 @@
     "image": "https://images.unsplash.com/photo-1599599810694-d3379baaaf4f?w=400&h=400&fit=crop",
     "category": "Apparel",
     "tag": "Health",
-    "description": "Medical-grade compression socks for improved circulation during and after workouts."
+    "description": "Medical-grade compression socks for improved circulation during and after workouts.",
+    "sizes": ["S", "M", "L", "XL"]
   },
   {
     "id": "tp-007",
@@ -91,7 +94,8 @@
     "image": "https://images.unsplash.com/photo-1613937357841-3e359bf1d318?w=400&h=400&fit=crop",
     "category": "Accessories",
     "tag": "New",
-    "description": "Premium training gloves with wrist support and anti-slip grip for weightlifting and gym training."
+    "description": "Premium training gloves with wrist support and anti-slip grip for weightlifting and gym training.",
+    "sizes": ["S", "M", "L", "XL"]
   },
   {
     "id": "tp-008",
