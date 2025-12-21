@@ -1,0 +1,10 @@
+[
+  {
+    "id": "admin1",
+    "telegramId": 123456789,
+    "role": "superadmin",
+    "name": "Super Admin",
+    "email": "admin@megatravelcenter.com",
+    "permissions": ["all"]
+  }
+]
