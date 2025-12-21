@@ -60,7 +60,7 @@ export default function StoreDetailsPage() {
     setProducts(storeProducts)
 
     window.scrollTo(0, 0)
-  }, [mallId, storeId, addRecentlyViewed, awardPoints, getProductsByStore])
+  }, [mallId, storeId, addRecentlyViewed, awardPoints])
 
   // Get unique categories from products
   const categories = useMemo(() => {
