@@ -7,6 +7,8 @@ import storesData from '../data/stores.json'
 import StoreCard from '../components/StoreCard'
 import StoriesCarousel from '../components/StoriesCarousel'
 import InteractiveFloorPlan from '../components/InteractiveFloorPlan'
+import InteractiveMap from '../components/InteractiveMap'
+import RealTimeHours from '../components/RealTimeHours'
 import Button3D from '../components/Button3D'
 import ReviewsSection from '../components/ReviewsSection'
 import SmartRecommendations from '../components/SmartRecommendations'
@@ -85,14 +87,18 @@ export default function MallDetailsPage() {
 
       {/* Quick Info Bar */}
       <div className="bg-white/10 backdrop-blur-md border-b border-white/10 relative z-20 -mt-20 max-w-6xl mx-auto rounded-t-2xl overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10 text-white">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10 text-white">
             <div className="p-6 text-center bg-black/40 backdrop-blur-md">
                 <span className="block text-gold text-xs font-bold uppercase tracking-wider mb-1">Hours</span>
-                <span className="text-lg font-medium">{mall.hours}</span>
+                <RealTimeHours mall={mall} />
             </div>
             <div className="p-6 text-center bg-black/40 backdrop-blur-md">
                 <span className="block text-gold text-xs font-bold uppercase tracking-wider mb-1">Address</span>
                 <span className="text-lg font-medium">{mall.address}</span>
+            </div>
+            <div className="p-6 text-center bg-black/40 backdrop-blur-md">
+                <span className="block text-gold text-xs font-bold uppercase tracking-wider mb-1">Contact</span>
+                <span className="text-lg font-medium">{mall.phone}</span>
             </div>
             <div className="p-6 text-center bg-black/40 backdrop-blur-md">
                 <span className="block text-gold text-xs font-bold uppercase tracking-wider mb-1">Stores</span>
@@ -129,7 +135,7 @@ export default function MallDetailsPage() {
         </div>
       )}
 
-      {/* Description & Map */}
+      {/* Interactive Map & Location */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 mb-20">
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -144,14 +150,39 @@ export default function MallDetailsPage() {
                         </span>
                     ))}
                 </div>
+                <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                        <span className="text-gold">📍</span>
+                        <div>
+                            <div className="font-medium dark:text-white">Address</div>
+                            <div className="text-gray-400">{mall.address}</div>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-gold">📞</span>
+                        <div>
+                            <div className="font-medium dark:text-white">Phone</div>
+                            <div className="text-gray-400">{mall.phone}</div>
+                        </div>
+                    </div>
+                    {mall.website && (
+                        <div className="flex items-center gap-3">
+                            <span className="text-gold">🌐</span>
+                            <div>
+                                <div className="font-medium dark:text-white">Website</div>
+                                <div className="text-gray-400">{mall.website}</div>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
-            <div className="h-80 rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-                 <iframe
-                    title="Location"
-                    className="w-full h-full grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-                    src={`https://maps.google.com/maps?q=${mall.coordinates[0]},${mall.coordinates[1]}&z=15&output=embed`}
-                    loading="lazy"
-                 />
+            <div>
+                <h3 className="text-xl font-bold mb-4 dark:text-white">Interactive Map</h3>
+                <InteractiveMap 
+                    selectedMallId={mallId} 
+                    showDirections={true}
+                    className="shadow-2xl"
+                />
             </div>
          </div>
       </section>

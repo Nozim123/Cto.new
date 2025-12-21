@@ -30,6 +30,7 @@ import CmsPage from './pages/CmsPage'
 import UserProfilePage from './pages/UserProfilePage'
 import BlogPage from './pages/BlogPage'
 import CompareBar from './components/CompareBar'
+import NotFoundPage from './components/NotFoundPage'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -113,6 +114,7 @@ function AppContent() {
                 <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
                 <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />
                 <Route path="/product/:productId" element={<ProductDetailPage />} />
+                <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </main>
             {!isAdminRoute && (
