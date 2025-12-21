@@ -205,6 +205,88 @@ export default function StoreDetailsPage() {
       {/* Sticky Store Header */}
       <StoreHeader store={store} mall={mall} scrolled={scrolled} />
 
+      {/* Store Information Section */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 bg-white dark:bg-gray-800 rounded-lg mx-4 lg:mx-8 mt-4 shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div>
+            <h2 className="text-2xl font-bold mb-4 dark:text-white">About {store.name}</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
+              {store.about || store.description}
+            </p>
+            
+            {/* Contact Information */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="text-xl">📞</span>
+                <div>
+                  <div className="font-medium dark:text-white">Phone</div>
+                  <div className="text-gray-600 dark:text-gray-300">{store.phone}</div>
+                </div>
+              </div>
+              
+              {store.email && (
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">✉️</span>
+                  <div>
+                    <div className="font-medium dark:text-white">Email</div>
+                    <div className="text-gray-600 dark:text-gray-300">{store.email}</div>
+                  </div>
+                </div>
+              )}
+              
+              <div className="flex items-center gap-3">
+                <span className="text-xl">📍</span>
+                <div>
+                  <div className="font-medium dark:text-white">Location</div>
+                  <div className="text-gray-600 dark:text-gray-300">{mall.name} - Floor {store.floor}</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <span className="text-xl">🕒</span>
+                <div>
+                  <div className="font-medium dark:text-white">Hours</div>
+                  <div className="text-gray-600 dark:text-gray-300">{store.hours}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Store Features */}
+          <div>
+            <h3 className="text-xl font-bold mb-4 dark:text-white">Store Features</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { icon: '🛍️', text: 'Latest Collections' },
+                { icon: '💳', text: 'Card Payments' },
+                { icon: '🚚', text: 'Delivery Available' },
+                { icon: '↩️', text: 'Easy Returns' },
+                { icon: '🎁', text: 'Gift Wrapping' },
+                { icon: '👥', text: 'Personal Shopping' },
+              ].map((feature, index) => (
+                <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <span className="text-lg">{feature.icon}</span>
+                  <span className="text-sm font-medium dark:text-white">{feature.text}</span>
+                </div>
+              ))}
+            </div>
+            
+            {/* Promotion Banner */}
+            {store.hasPromo && (
+              <div className="mt-6 p-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg text-white">
+                <h4 className="font-bold text-lg">{store.promoTitle}</h4>
+                <p className="text-sm opacity-90">{store.promoDescription}</p>
+                {store.promoDiscount && (
+                  <div className="mt-2 px-3 py-1 bg-white/20 rounded-full inline-block text-sm font-bold">
+                    {store.promoDiscount}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Filter Bar */}
       <ProductFilterBar
         categories={categories}
