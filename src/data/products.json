@@ -132,5 +132,800 @@
     "category": "Accessories",
     "tag": "New",
     "description": "Handcrafted leather handbag with elegant design. Spacious and durable for daily use."
+  },
+
+
+  {
+    "id": "ai-001",
+    "storeId": "ai-tech-store",
+    "name": "Smart AI Assistant",
+    "price": 399.99,
+    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=400&fit=crop",
+    "category": "AI Devices",
+    "tag": "New",
+    "description": "Advanced AI assistant with voice recognition and smart home integration. Natural conversation and learning capabilities.",
+    "brand": "AI Tech Pro",
+    "availability": "In Stock",
+    "specifications": {
+      "Connectivity": "WiFi, Bluetooth",
+      "Battery": "12 hours",
+      "Voice Recognition": "Multi-language"
+    }
+  },
+  {
+    "id": "ai-002",
+    "storeId": "ai-tech-store",
+    "name": "AI Drone Pro",
+    "price": 799.99,
+    "image": "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=400&h=400&fit=crop",
+    "category": "Drones",
+    "tag": "Premium",
+    "description": "AI-powered drone with autonomous flight, obstacle avoidance, and 4K camera for professional photography.",
+    "brand": "SkyVision",
+    "availability": "In Stock",
+    "specifications": {
+      "Camera": "4K 60fps",
+      "Flight Time": "30 minutes",
+      "Range": "5km"
+    }
+  },
+  {
+    "id": "ai-003",
+    "storeId": "ai-tech-store",
+    "name": "Smart Mirror",
+    "price": 299.99,
+    "image": "https://images.unsplash.com/photo-1588497859490-85d1c17db96d?w=400&h=400&fit=crop",
+    "category": "Smart Home",
+    "tag": "Best Seller",
+    "description": "Interactive smart mirror with weather, news, fitness tracking, and voice assistant integration.",
+    "brand": "MirrorTech",
+    "availability": "In Stock",
+    "specifications": {
+      "Display": "32-inch 4K",
+      "Sensors": "Motion, Light, Voice",
+      "Connectivity": "WiFi, Bluetooth, Zigbee"
+    }
+  },
+
+
+  {
+    "id": "eco-001",
+    "storeId": "eco-fashion",
+    "name": "Organic Cotton T-Shirt",
+    "price": 39.99,
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+    "category": "Sustainable Apparel",
+    "tag": "Eco-Friendly",
+    "description": "100% organic cotton t-shirt made from sustainable farming practices. Soft, breathable, and ethically produced.",
+    "brand": "Green Threads",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "100% Organic Cotton",
+      "Certifications": "GOTS, Fair Trade",
+      "Care": "Machine wash cold"
+    }
+  },
+  {
+    "id": "eco-002",
+    "storeId": "eco-fashion",
+    "name": "Recycled Denim Jacket",
+    "price": 89.99,
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop",
+    "category": "Sustainable Apparel",
+    "tag": "New",
+    "description": "Stylish denim jacket made from 80% recycled materials. Classic fit with modern sustainable design.",
+    "brand": "EcoDenim",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "80% Recycled Denim",
+      "Origin": "Made in USA",
+      "Care": "Machine wash"
+    }
+  },
+  {
+    "id": "eco-003",
+    "storeId": "eco-fashion",
+    "name": "Bamboo Fiber Dress",
+    "price": 69.99,
+    "image": "https://images.unsplash.com/photo-1595777707802-5b5f5bba4b0f?w=400&h=400&fit=crop",
+    "category": "Sustainable Apparel",
+    "tag": "Best Seller",
+    "description": "Elegant dress made from bamboo fiber. Naturally antimicrobial, moisture-wicking, and biodegradable.",
+    "brand": "Bamboo Luxe",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Bamboo Fiber",
+      "Features": "Anti-bacterial, UV protection",
+      "Care": "Hand wash or gentle cycle"
+    }
+  },
+
+
+  {
+    "id": "vr-001",
+    "storeId": "vr-entertainment",
+    "name": "VR Headset Pro",
+    "price": 599.99,
+    "image": "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=400&h=400&fit=crop",
+    "category": "VR Equipment",
+    "tag": "Premium",
+    "description": "High-resolution VR headset with 4K displays per eye, 120Hz refresh rate, and 6DOF tracking.",
+    "brand": "VirtualMax",
+    "availability": "In Stock",
+    "specifications": {
+      "Resolution": "4K per eye",
+      "Refresh Rate": "120Hz",
+      "Tracking": "6DOF Inside-out"
+    }
+  },
+  {
+    "id": "vr-002",
+    "storeId": "vr-entertainment",
+    "name": "VR Racing Simulator",
+    "price": 1299.99,
+    "image": "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=400&h=400&fit=crop",
+    "category": "VR Equipment",
+    "tag": "New",
+    "description": "Full-body VR racing simulator with force feedback steering wheel and motion platform.",
+    "brand": "RaceVR",
+    "availability": "In Stock",
+    "specifications": {
+      "Platform": "Motion platform",
+      "Force Feedback": "Yes",
+      "Compatibility": "All major VR headsets"
+    }
+  },
+  {
+    "id": "vr-003",
+    "storeId": "vr-entertainment",
+    "name": "VR Boxing Gloves",
+    "price": 149.99,
+    "image": "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=400&fit=crop",
+    "category": "VR Accessories",
+    "tag": "Best Seller",
+    "description": "Haptic feedback boxing gloves for immersive VR fitness and gaming experiences.",
+    "brand": "HapticFit",
+    "availability": "In Stock",
+    "specifications": {
+      "Feedback": "Vibration motors",
+      "Sensors": "Hand tracking",
+      "Battery": "8 hours"
+    }
+  },
+
+
+  {
+    "id": "sk-001",
+    "storeId": "smart-kitchen",
+    "name": "AI Recipe Assistant",
+    "price": 199.99,
+    "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
+    "category": "Smart Appliances",
+    "tag": "New",
+    "description": "AI-powered recipe assistant with meal planning, nutritional analysis, and cooking guidance.",
+    "brand": "ChefAI",
+    "availability": "In Stock",
+    "specifications": {
+      "Display": "10-inch touchscreen",
+      "Connectivity": "WiFi, Bluetooth",
+      "Voice Control": "Yes"
+    }
+  },
+  {
+    "id": "sk-002",
+    "storeId": "smart-kitchen",
+    "name": "Smart Sous Vide",
+    "price": 249.99,
+    "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
+    "category": "Smart Appliances",
+    "tag": "Best Seller",
+    "description": "Precision temperature control sous vide cooker with app control and recipe database.",
+    "brand": "PrecisionCook",
+    "availability": "In Stock",
+    "specifications": {
+      "Temperature Range": "32-210°F",
+      "Accuracy": "±0.1°F",
+      "Connectivity": "WiFi, App control"
+    }
+  },
+  {
+    "id": "sk-003",
+    "storeId": "smart-kitchen",
+    "name": "Smart Refrigerator",
+    "price": 1799.99,
+    "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
+    "category": "Smart Appliances",
+    "tag": "Premium",
+    "description": "32 cubic foot smart refrigerator with internal cameras, inventory tracking, and meal suggestions.",
+    "brand": "SmartCool",
+    "availability": "In Stock",
+    "specifications": {
+      "Capacity": "32 cubic feet",
+      "Cameras": "Internal food tracking",
+      "Connectivity": "WiFi, Alexa, Google"
+    }
+  },
+
+
+  {
+    "id": "mw-001",
+    "storeId": "music-world",
+    "name": "Electric Guitar Pro",
+    "price": 799.99,
+    "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+    "category": "Instruments",
+    "tag": "Premium",
+    "description": "Professional electric guitar with maple neck, dual humbuckers, and Floyd Rose tremolo system.",
+    "brand": "ThunderStrat",
+    "availability": "In Stock",
+    "specifications": {
+      "Body": "Alder",
+      "Neck": "Maple",
+      "Pickups": "Dual humbuckers"
+    }
+  },
+  {
+    "id": "mw-002",
+    "storeId": "music-world",
+    "name": "Wireless Headphones",
+    "price": 299.99,
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+    "category": "Audio Equipment",
+    "tag": "Best Seller",
+    "description": "High-fidelity wireless headphones with noise cancellation and 30-hour battery life.",
+    "brand": "SoundMax",
+    "availability": "In Stock",
+    "specifications": {
+      "Battery": "30 hours",
+      "Noise Cancellation": "Active ANC",
+      "Driver": "40mm dynamic"
+    }
+  },
+  {
+    "id": "mw-003",
+    "storeId": "music-world",
+    "name": "Digital Piano",
+    "price": 599.99,
+    "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+    "category": "Instruments",
+    "tag": "New",
+    "description": "88-key weighted digital piano with authentic piano sound and USB connectivity.",
+    "brand": "PianoMax",
+    "availability": "In Stock",
+    "specifications": {
+      "Keys": "88 weighted",
+      "Polyphony": "192 voices",
+      "Connectivity": "USB, MIDI"
+    }
+  },
+
+
+  {
+    "id": "sp-001",
+    "storeId": "sports-pro",
+    "name": "Professional Basketball",
+    "price": 89.99,
+    "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&h=400&fit=crop",
+    "category": "Sports Equipment",
+    "tag": "Pro",
+    "description": "Official size basketball used in professional leagues. Superior grip and durability.",
+    "brand": "ProBall",
+    "availability": "In Stock",
+    "specifications": {
+      "Size": "Official 29.5\"",
+      "Material": "Composite leather",
+      "Certification": "FIBA approved"
+    }
+  },
+  {
+    "id": "sp-002",
+    "storeId": "sports-pro",
+    "name": "Running Shoes Elite",
+    "price": 159.99,
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
+    "category": "Athletic Footwear",
+    "tag": "Best Seller",
+    "description": "Elite running shoes with carbon fiber plate and advanced cushioning for marathon performance.",
+    "brand": "VelocityRun",
+    "availability": "In Stock",
+    "specifications": {
+      "Weight": "210g (size 9)",
+      "Drop": "8mm",
+      "Plate": "Carbon fiber"
+    }
+  },
+  {
+    "id": "sp-003",
+    "storeId": "sports-pro",
+    "name": "Yoga Mat Premium",
+    "price": 79.99,
+    "image": "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&h=400&fit=crop",
+    "category": "Fitness Equipment",
+    "tag": "Premium",
+    "description": "Extra thick premium yoga mat with superior grip and joint support for all yoga styles.",
+    "brand": "ZenFlex",
+    "availability": "In Stock",
+    "specifications": {
+      "Thickness": "6mm",
+      "Material": "Natural rubber",
+      "Size": "72\" x 24\""
+    }
+  },
+
+
+  {
+    "id": "gz-001",
+    "storeId": "gaming-zone",
+    "name": "Gaming Console Pro",
+    "price": 499.99,
+    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=400&fit=crop",
+    "category": "Gaming Consoles",
+    "tag": "New",
+    "description": "Next-generation gaming console with 4K gaming, ray tracing, and ultra-fast SSD storage.",
+    "brand": "PowerPlay",
+    "availability": "In Stock",
+    "specifications": {
+      "Resolution": "4K 120fps",
+      "Storage": "1TB SSD",
+      "Ray Tracing": "Hardware accelerated"
+    }
+  },
+  {
+    "id": "gz-002",
+    "storeId": "gaming-zone",
+    "name": "Mechanical Keyboard RGB",
+    "price": 129.99,
+    "image": "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=400&fit=crop",
+    "category": "Gaming Accessories",
+    "tag": "Best Seller",
+    "description": "Mechanical gaming keyboard with tactile switches, RGB lighting, and programmable macros.",
+    "brand": "KeyMaster",
+    "availability": "In Stock",
+    "specifications": {
+      "Switches": "Cherry MX Blue",
+      "Backlight": "RGB per-key",
+      "Connectivity": "USB-C wired"
+    }
+  },
+  {
+    "id": "gz-003",
+    "storeId": "gaming-zone",
+    "name": "Gaming Headset Pro",
+    "price": 199.99,
+    "image": "https://images.unsplash.com/photo-1599669454699-248893623440?w=400&h=400&fit=crop",
+    "category": "Gaming Accessories",
+    "tag": "Premium",
+    "description": "Pro gaming headset with 7.1 surround sound, noise cancellation, and crystal-clear microphone.",
+    "brand": "AudioTech",
+    "availability": "In Stock",
+    "specifications": {
+      "Surround": "7.1 virtual",
+      "Microphone": "Noise cancelling",
+      "Battery": "40 hours"
+    }
+  },
+
+
+  {
+    "id": "fs-001",
+    "storeId": "fashionista",
+    "name": "Designer Blazer",
+    "price": 189.99,
+    "image": "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400&h=400&fit=crop",
+    "category": "Designer Clothing",
+    "tag": "Premium",
+    "description": "Elegant designer blazer with tailored fit and premium fabric. Perfect for business and casual occasions.",
+    "brand": "Elite Fashion",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Wool blend",
+      "Fit": "Slim tailored",
+      "Origin": "Made in Italy"
+    }
+  },
+  {
+    "id": "fs-002",
+    "storeId": "fashionista",
+    "name": "Evening Gown",
+    "price": 299.99,
+    "image": "https://images.unsplash.com/photo-1595777707802-5b5f5bba4b0f?w=400&h=400&fit=crop",
+    "category": "Formal Wear",
+    "tag": "New",
+    "description": "Stunning evening gown with elegant drape and sophisticated design for special occasions.",
+    "brand": "Gala Couture",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Silk blend",
+      "Length": "Full length",
+      "Care": "Dry clean only"
+    }
+  },
+  {
+    "id": "fs-003",
+    "storeId": "fashionista",
+    "name": "Designer Shoes",
+    "price": 249.99,
+    "image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&h=400&fit=crop",
+    "category": "Designer Footwear",
+    "tag": "Best Seller",
+    "description": "Luxurious designer shoes with premium leather and comfortable heel height for all-day wear.",
+    "brand": "Luxury Steps",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Italian leather",
+      "Heel": "3 inches",
+      "Size": "5-12 US"
+    }
+  },
+
+
+  {
+    "id": "ti-001",
+    "storeId": "tech-innovation",
+    "name": "Foldable Phone",
+    "price": 1299.99,
+    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop",
+    "category": "Mobile Devices",
+    "tag": "Innovation",
+    "description": "Revolutionary foldable smartphone with flexible OLED display and cutting-edge technology.",
+    "brand": "FlexTech",
+    "availability": "In Stock",
+    "specifications": {
+      "Display": "7.6\" foldable OLED",
+      "Storage": "256GB",
+      "Camera": "Triple 50MP system"
+    }
+  },
+  {
+    "id": "ti-002",
+    "storeId": "tech-innovation",
+    "name": "Smart Glasses AR",
+    "price": 899.99,
+    "image": "https://images.unsplash.com/photo-1592478411213-6153e4ebc696?w=400&h=400&fit=crop",
+    "category": "AR/VR",
+    "tag": "New",
+    "description": "Augmented reality smart glasses with voice control and heads-up display functionality.",
+    "brand": "VisionAR",
+    "availability": "In Stock",
+    "specifications": {
+      "Display": "See-through AR",
+      "Battery": "8 hours",
+      "Connectivity": "WiFi, Bluetooth"
+    }
+  },
+  {
+    "id": "ti-003",
+    "storeId": "tech-innovation",
+    "name": "Wireless Charging Pad",
+    "price": 79.99,
+    "image": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=400&fit=crop",
+    "category": "Accessories",
+    "tag": "Best Seller",
+    "description": "Fast wireless charging pad compatible with all Qi-enabled devices and latest smartphones.",
+    "brand": "ChargeMax",
+    "availability": "In Stock",
+    "specifications": {
+      "Power": "15W fast charging",
+      "Compatibility": "Qi-enabled devices",
+      "Safety": "Overheating protection"
+    }
+  },
+
+
+  {
+    "id": "src-001",
+    "storeId": "silk-road-crafts",
+    "name": "Handwoven Silk Carpet",
+    "price": 399.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Textiles",
+    "tag": "Handcrafted",
+    "description": "Authentic handwoven silk carpet featuring traditional Uzbek patterns and natural dyes.",
+    "brand": "Heritage Weavers",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "100% Silk",
+      "Size": "4' x 6'",
+      "Origin": "Samarkand"
+    }
+  },
+  {
+    "id": "src-002",
+    "storeId": "silk-road-crafts",
+    "name": "Ceramic Tea Set",
+    "price": 89.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Ceramics",
+    "tag": "Traditional",
+    "description": "Traditional ceramic tea set with intricate blue patterns inspired by ancient Silk Road designs.",
+    "brand": "Samarkand Pottery",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Hand-fired ceramic",
+      "Set": "6 cups + teapot",
+      "Care": "Hand wash recommended"
+    }
+  },
+  {
+    "id": "src-003",
+    "storeId": "silk-road-crafts",
+    "name": "Wooden Carved Box",
+    "price": 49.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Woodwork",
+    "tag": "Artisan",
+    "description": "Beautiful wooden box with intricate carved patterns. Perfect for jewelry or keepsakes.",
+    "brand": "Master Carvers",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Walnut wood",
+      "Dimensions": "8\" x 6\" x 3\"",
+      "Finish": "Natural oil"
+    }
+  },
+
+
+  {
+    "id": "srs-001",
+    "storeId": "silk-route-souvenirs",
+    "name": "Miniature Horse Figurine",
+    "price": 24.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Figurines",
+    "tag": "Traditional",
+    "description": "Hand-painted miniature horse figurine representing the noble steeds of the Silk Road.",
+    "brand": "Uzbek Artisans",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Clay",
+      "Height": "4 inches",
+      "Hand-painted": "Yes"
+    }
+  },
+  {
+    "id": "srs-002",
+    "storeId": "silk-route-souvenirs",
+    "name": "Traditional Scarf",
+    "price": 39.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Textiles",
+    "tag": "Cultural",
+    "description": "Beautiful traditional scarf with authentic Uzbek patterns and natural dyes.",
+    "brand": "Silk Road Textiles",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Silk blend",
+      "Size": "35\" x 35\"",
+      "Care": "Dry clean"
+    }
+  },
+  {
+    "id": "srs-003",
+    "storeId": "silk-route-souvenirs",
+    "name": "Carved Wooden Spoon Set",
+    "price": 19.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Kitchenware",
+    "tag": "Handcrafted",
+    "description": "Set of 3 hand-carved wooden spoons made from apricot wood, perfect for cooking or display.",
+    "brand": "WoodCraft Studio",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Apricot wood",
+      "Set": "3 spoons",
+      "Finish": "Food-safe oil"
+    }
+  },
+
+
+  {
+    "id": "nc-001",
+    "storeId": "nomad-cafe",
+    "name": "Traditional Tea Set",
+    "price": 29.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Tea",
+    "tag": "Traditional",
+    "description": "Premium traditional tea blend with herbs from Central Asia. Includes tea samples and recipe card.",
+    "brand": "Nomad Tea House",
+    "availability": "In Stock",
+    "specifications": {
+      "Weight": "100g",
+      "Blend": "Herbal tea",
+      "Origin": "Central Asia"
+    }
+  },
+  {
+    "id": "nc-002",
+    "storeId": "nomad-cafe",
+    "name": "Central Asian Spice Kit",
+    "price": 34.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Spices",
+    "tag": "Authentic",
+    "description": "Complete spice kit for cooking traditional Central Asian dishes. Includes recipe guide.",
+    "brand": "Nomad Kitchen",
+    "availability": "In Stock",
+    "specifications": {
+      "Contents": "6 spice jars",
+      "Total": "120g",
+      "Recipes": "Included"
+    }
+  },
+  {
+    "id": "nc-003",
+    "storeId": "nomad-cafe",
+    "name": "Honey Collection",
+    "price": 22.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Food",
+    "tag": "Natural",
+    "description": "Pure wildflower honey from local beekeepers. Perfect sweetener for traditional teas.",
+    "brand": "Local Apiaries",
+    "availability": "In Stock",
+    "specifications": {
+      "Weight": "500g",
+      "Type": "Wildflower honey",
+      "Processing": "Raw, unfiltered"
+    }
+  },
+
+
+  {
+    "id": "rb-001",
+    "storeId": "registan-books",
+    "name": "Silk Road History Book",
+    "price": 24.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "History",
+    "tag": "Educational",
+    "description": "Comprehensive history of the Silk Road trade routes with beautiful illustrations and maps.",
+    "brand": "Heritage Press",
+    "availability": "In Stock",
+    "specifications": {
+      "Pages": "320",
+      "Language": "English",
+      "Illustrations": "Full color"
+    }
+  },
+  {
+    "id": "rb-002",
+    "storeId": "registan-books",
+    "name": "Uzbekistan Culture Guide",
+    "price": 19.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Culture",
+    "tag": "Travel",
+    "description": "Complete guide to Uzbek culture, traditions, and customs for travelers and enthusiasts.",
+    "brand": "Travel Guides Ltd",
+    "availability": "In Stock",
+    "specifications": {
+      "Pages": "240",
+      "Maps": "Included",
+      "Photos": "Full color"
+    }
+  },
+  {
+    "id": "rb-003",
+    "storeId": "registan-books",
+    "name": "Persian Poetry Collection",
+    "price": 32.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Literature",
+    "tag": "Poetry",
+    "description": "Beautiful collection of Persian and Central Asian poetry with translations and commentary.",
+    "brand": "Literary Heritage",
+    "availability": "In Stock",
+    "specifications": {
+      "Pages": "280",
+      "Translation": "English",
+      "Format": "Hardcover"
+    }
+  },
+
+
+  {
+    "id": "ha-001",
+    "storeId": "historical-antiques",
+    "name": "Ancient Coin Replica",
+    "price": 149.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Coins",
+    "tag": "Replica",
+    "description": "Authentic replica of ancient Central Asian coins with detailed historical information.",
+    "brand": "Ancient Coins Co",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Bronze alloy",
+      "Diameter": "1.5 inches",
+      "Certificate": "Included"
+    }
+  },
+  {
+    "id": "ha-002",
+    "storeId": "historical-antiques",
+    "name": "Traditional Ceramic Vase",
+    "price": 89.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Ceramics",
+    "tag": "Antique Style",
+    "description": "Hand-thrown ceramic vase inspired by ancient pottery designs with aged finish.",
+    "brand": "Heritage Pottery",
+    "availability": "In Stock",
+    "specifications": {
+      "Height": "12 inches",
+      "Material": "Ceramic",
+      "Style": "Traditional"
+    }
+  },
+  {
+    "id": "ha-003",
+    "storeId": "historical-antiques",
+    "name": "Ornate Brass Bowl",
+    "price": 64.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Metalwork",
+    "tag": "Traditional",
+    "description": "Beautifully crafted brass bowl with traditional engravings and patina finish.",
+    "brand": "Master Metalworkers",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Solid brass",
+      "Diameter": "8 inches",
+      "Finish": "Antique patina"
+    }
+  },
+
+
+  {
+    "id": "tj-001",
+    "storeId": "traditional-jewelry",
+    "name": "Silver Filigree Necklace",
+    "price": 129.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Necklaces",
+    "tag": "Handcrafted",
+    "description": "Exquisite silver necklace with traditional filigree work and precious stone accents.",
+    "brand": "Heritage Goldsmiths",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Sterling silver",
+      "Gemstone": "Lapis lazuli",
+      "Length": "18 inches"
+    }
+  },
+  {
+    "id": "tj-002",
+    "storeId": "traditional-jewelry",
+    "name": "Gold-Plated Bracelet",
+    "price": 89.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Bracelets",
+    "tag": "Elegant",
+    "description": "Traditional Uzbek bracelet with intricate gold plating and decorative patterns.",
+    "brand": "Royal Goldsmiths",
+    "availability": "In Stock",
+    "specifications": {
+      "Material": "Brass with gold plating",
+      "Length": "7 inches",
+      "Closure": "Adjustable"
+    }
+  },
+  {
+    "id": "tj-003",
+    "storeId": "traditional-jewelry",
+    "name": "Turquoise Earrings",
+    "price": 74.99,
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "category": "Earrings",
+    "tag": "Natural Stone",
+    "description": "Beautiful turquoise earrings set in traditional silver settings with ethnic designs.",
+    "brand": "Stone Artisans",
+    "availability": "In Stock",
+    "specifications": {
+      "Stone": "Natural turquoise",
+      "Setting": "Sterling silver",
+      "Style": "Drop earrings"
+    }
   }
 ]

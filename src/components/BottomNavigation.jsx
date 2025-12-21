@@ -19,19 +19,19 @@ export default function BottomNavigation() {
       icon: '🏠'
     },
     {
-      label: 'About',
-      path: '#about',
-      icon: 'ℹ️'
-    },
-    {
       label: 'Malls',
-      path: '#malls',
-      icon: '🏢'
+      path: '/store-directory',
+      icon: '🏬'
     },
     {
-      label: 'Contact',
-      path: '#contact',
-      icon: '📞'
+      label: 'Stores',
+      path: '/stores',
+      icon: '🛍'
+    },
+    {
+      label: 'Favorites',
+      path: '/favorites',
+      icon: '❤️'
     }
   ]
 
