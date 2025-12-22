@@ -8,159 +8,168 @@ import MallCard from './MallCard'
 
 export default function SmartRecommendations({ type, id, category, limit = 8 }) {
   const { darkMode } = useTheme()
-  const { favorites } = useUser()
-  const { products, stores, malls, userBehavior, getProductsByStore } = useEcosystem()
+  const { favorites } = useUser() || {}
+  const { products, stores, malls, userBehavior } = useEcosystem() || {}
   const [recommendations, setRecommendations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    generateRecommendations()
-  }, [type, id, category, favorites, userBehavior])
+  // Safe versions of arrays
+  const productsArr = Array.isArray(products) ? products : []
+  const storesArr = Array.isArray(stores) ? stores : []
+  const mallsArr = Array.isArray(malls) ? malls : []
+  const favoritesSafe = favorites || { stores: [], products: [], malls: [] }
 
-  const generateRecommendations = () => {
-    setIsLoading(true)
-    let recs = []
-    
-    switch (type) {
-      case 'product':
-        recs = getProductRecommendations(id, category)
-        break
-      case 'store':
-        recs = getStoreRecommendations(id, category)
-        break
-      case 'mall':
-        recs = getMallRecommendations(id)
-        break
-      default:
-        recs = getGeneralRecommendations()
-    }
-    
-    setRecommendations(recs.slice(0, limit))
-    setIsLoading(false)
+  const removeDuplicates = (items, idKey = 'id') => {
+    const unique = []
+    const seen = new Set()
+    items.forEach(item => {
+      const id = item?.[idKey]
+      if (id === undefined) return
+      if (!seen.has(id)) {
+        seen.add(id)
+        unique.push(item)
+      }
+    })
+    return unique
   }
 
-  // Collaborative filtering based recommendations
-  const getProductRecommendations = (productId, category) => {
+  // PRODUCT recommendations
+  const getProductRecommendations = (productId, cat) => {
+    if (!productId) return []
     const recs = []
-    
+
     // 1. Similar products (same category)
-    const similarProducts = products.filter(p => 
-      p.category === category && p.id !== productId
-    )
-    recs.push(...similarProducts.map(p => ({ ...p, reason: 'Similar products' })))
-    
+    if (cat) {
+      const similarProducts = productsArr.filter(p => p?.category === cat && p?.id !== productId)
+      recs.push(...similarProducts.map(p => ({ ...p, reason: 'Similar products' })))
+    }
+
     // 2. Products from the same store
-    const product = products.find(p => p.id === productId)
+    const product = productsArr.find(p => p?.id === productId)
     if (product) {
-      const sameStoreProducts = products.filter(p => 
-        p.storeId === product.storeId && p.id !== productId
-      )
+      const sameStoreProducts = productsArr.filter(p => p?.storeId === product.storeId && p?.id !== productId)
       recs.push(...sameStoreProducts.map(p => ({ ...p, reason: 'From the same store' })))
     }
-    
-    // 3. Popular items (high rating or "Best Seller" tag)
-    const popularProducts = products.filter(p => 
-      p.rating >= 4.5 || p.tag === 'Best Seller'
-    )
+
+    // 3. Popular items
+    const popularProducts = productsArr.filter(p => (p?.rating || 0) >= 4.5 || p?.tag === 'Best Seller')
     recs.push(...popularProducts.map(p => ({ ...p, reason: 'Popular choice' })))
-    
+
     // 4. Based on user's favorite stores
-    if (favorites.stores.length > 0) {
-      const favoriteStoreProducts = products.filter(p => 
-        favorites.stores.includes(p.storeId) && p.id !== productId
-      )
+    if (Array.isArray(favoritesSafe.stores) && favoritesSafe.stores.length > 0) {
+      const favoriteStoreProducts = productsArr.filter(p => favoritesSafe.stores.includes(p?.storeId) && p?.id !== productId)
       recs.push(...favoriteStoreProducts.map(p => ({ ...p, reason: 'From your favorite stores' })))
     }
-    
-    // Remove duplicates and shuffle
+
     return removeDuplicates(recs, 'id').sort(() => Math.random() - 0.5)
   }
 
-  const getStoreRecommendations = (storeId, category) => {
+  // STORE recommendations
+  const getStoreRecommendations = (storeId, cat) => {
+    if (!storeId) return []
     const recs = []
-    
+
     // 1. Similar stores (same category)
-    const similarStores = stores.filter(s => 
-      s.category === category && s.id !== storeId
-    )
-    recs.push(...similarStores.map(s => ({ ...s, reason: 'Similar stores' })))
-    
+    if (cat) {
+      const similarStores = storesArr.filter(s => s?.category === cat && s?.id !== storeId)
+      recs.push(...similarStores.map(s => ({ ...s, reason: 'Similar stores' })))
+    }
+
     // 2. Stores in the same mall
-    const store = stores.find(s => s.id === storeId)
+    const store = storesArr.find(s => s?.id === storeId)
     if (store) {
-      const sameMallStores = stores.filter(s => 
-        s.mallId === store.mallId && s.id !== storeId
-      )
+      const sameMallStores = storesArr.filter(s => s?.mallId === store.mallId && s?.id !== storeId)
       recs.push(...sameMallStores.map(s => ({ ...s, reason: 'In the same mall' })))
     }
-    
-    // 3. Popular stores (high rating)
-    const popularStores = stores.filter(s => s.rating >= 4.5)
+
+    // 3. Popular stores
+    const popularStores = storesArr.filter(s => (s?.rating || 0) >= 4.5)
     recs.push(...popularStores.map(s => ({ ...s, reason: 'Popular choice' })))
-    
+
     return removeDuplicates(recs, 'id').sort(() => Math.random() - 0.5)
   }
 
+  // MALL recommendations
   const getMallRecommendations = (mallId) => {
+    if (!mallId) return []
+    if (!Array.isArray(mallsArr)) return []
+
     const recs = []
-    
-    // 1. Similar malls (based on features/characteristics)
-    const currentMall = malls.find(m => m.id === mallId)
+    const currentMall = mallsArr.find(m => String(m?.id) === String(mallId))
     if (currentMall) {
-      const similarMalls = malls.filter(m => {
-        if (m.id === mallId) return false
-        // Simple similarity: same category of features or size
-        return m.storeCount >= currentMall.storeCount * 0.7 && m.storeCount <= currentMall.storeCount * 1.3
+      const similarMalls = mallsArr.filter(m => {
+        if (!m) return false
+        if (String(m.id) === String(mallId)) return false
+        const sc = Number(m.storeCount) || 0
+        const cc = Number(currentMall.storeCount) || 0
+        return sc >= cc * 0.7 && sc <= cc * 1.3
       })
       recs.push(...similarMalls.map(m => ({ ...m, reason: 'Similar size malls' })))
     }
-    
-    // 2. Popular malls (high store count, good rating)
-    const popularMalls = malls.filter(m => m.rating >= 4.5 && m.storeCount >= 50)
+
+    const popularMalls = mallsArr.filter(m => (m?.rating || 0) >= 4.5 && (m?.storeCount || 0) >= 50)
     recs.push(...popularMalls.map(m => ({ ...m, reason: 'Popular choice' })))
-    
+
     return removeDuplicates(recs, 'id').sort(() => Math.random() - 0.5)
   }
 
   const getGeneralRecommendations = () => {
     const recs = []
-    
-    // Popular items across all categories
-    const popularProducts = products.filter(p => p.rating >= 4.5 || p.tag === 'Best Seller')
+
+    const popularProducts = productsArr.filter(p => (p?.rating || 0) >= 4.5 || p?.tag === 'Best Seller')
     recs.push(...popularProducts.map(p => ({ ...p, reason: 'Popular now' })))
-    
-    const popularStores = stores.filter(s => s.rating >= 4.5)
+
+    const popularStores = storesArr.filter(s => (s?.rating || 0) >= 4.5)
     recs.push(...popularStores.map(s => ({ ...s, reason: 'Top rated' })))
-    
-    // If user has favorites, prioritize those categories
-    if (favorites.stores.length > 0) {
-      const favoriteCategories = stores
-        .filter(s => favorites.stores.includes(s.id))
-        .map(s => s.category)
-        .filter((cat, idx, arr) => arr.indexOf(cat) === idx)
-      
+
+    if (Array.isArray(favoritesSafe.stores) && favoritesSafe.stores.length > 0) {
+      const favoriteCategories = storesArr
+        .filter(s => favoritesSafe.stores.includes(s?.id))
+        .map(s => s?.category)
+        .filter((cat, idx, arr) => cat && arr.indexOf(cat) === idx)
+
       favoriteCategories.forEach(cat => {
-        const categoryProducts = products.filter(p => p.category === cat)
+        const categoryProducts = productsArr.filter(p => p?.category === cat)
         recs.push(...categoryProducts.map(p => ({ ...p, reason: `Based on your ${cat} preference` })))
       })
     }
-    
+
     return removeDuplicates(recs, 'id').slice(0, limit)
   }
 
-  const removeDuplicates = (items, idKey) => {
-    const unique = []
-    const seen = new Set()
-    
-    items.forEach(item => {
-      if (!seen.has(item[idKey])) {
-        seen.add(item[idKey])
-        unique.push(item)
+  // generateRecommendations is declared before useEffect to avoid reference issues
+  const generateRecommendations = () => {
+    setIsLoading(true)
+    let recs = []
+
+    try {
+      switch (type) {
+        case 'product':
+          recs = getProductRecommendations(id, category)
+          break
+        case 'store':
+          recs = getStoreRecommendations(id, category)
+          break
+        case 'mall':
+          recs = getMallRecommendations(id)
+          break
+        default:
+          recs = getGeneralRecommendations()
       }
-    })
-    
-    return unique
+    } catch (err) {
+      console.warn('SmartRecommendations: error generating recommendations', err)
+      recs = []
+    }
+
+    setRecommendations(recs.slice(0, limit))
+    setIsLoading(false)
   }
+
+  // Recompute whenever relevant inputs change
+  useEffect(() => {
+    generateRecommendations()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type, id, category, JSON.stringify(favoritesSafe), JSON.stringify(userBehavior || {}), productsArr.length, storesArr.length, mallsArr.length])
 
   if (isLoading) {
     return (
@@ -170,12 +179,12 @@ export default function SmartRecommendations({ type, id, category, limit = 8 }) 
     )
   }
 
-  if (recommendations.length === 0) {
+  if (!Array.isArray(recommendations) || recommendations.length === 0) {
     return null
   }
 
-  const title = type === 'product' ? '👍 You might also like' : 
-                type === 'store' ? '🏬 Similar stores' : 
+  const title = type === 'product' ? '👍 You might also like' :
+                type === 'store' ? '🏬 Similar stores' :
                 '🎯 Recommended for you'
 
   return (
@@ -183,19 +192,23 @@ export default function SmartRecommendations({ type, id, category, limit = 8 }) 
       <h2 className={`text-2xl md:text-3xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
         {title}
       </h2>
-      
+
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         {recommendations.slice(0, limit).map((item) => {
-          // Product card
-          if (item.price) {
-            return <ModernProductCard key={item.id} product={item} />
+          if (item == null) return null
+
+          // Product card (heuristic: has price or stock)
+          if (item.price !== undefined) {
+            return <ModernProductCard key={`p-${item.id}`} product={item} />
           }
-          // Store card  
-          if (item.storeCount === undefined) {
-            return <StoreCard key={item.id} store={item} mallId={item.mallId} />
+
+          // Store card (heuristic: has storeCount undefined? stores have storeCount maybe undefined)
+          if (item.storeCount === undefined && item.mallId !== undefined) {
+            return <StoreCard key={`s-${item.id}`} store={item} mallId={item.mallId} />
           }
-          // Mall card
-          return <MallCard key={item.id} mall={item} />
+
+          // Mall card fallback
+          return <MallCard key={`m-${item.id}`} mall={item} />
         })}
       </div>
     </div>
