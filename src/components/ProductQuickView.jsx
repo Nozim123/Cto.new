@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
@@ -8,6 +8,15 @@ export default function ProductQuickView({ product, onClose }) {
   const { darkMode } = useTheme()
   const { t } = useLanguage()
   const [selectedImage, setSelectedImage] = useState(0)
+
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [])
 
   if (!product) return null
 

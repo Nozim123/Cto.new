@@ -7,6 +7,7 @@ import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useEcosystem } from '../contexts/EcosystemContext'
 import StoreHeader from '../components/StoreHeader'
+import StoreSubscribeSection from '../components/StoreSubscribeSection'
 import ProductFilterBar from '../components/ProductFilterBar'
 import ModernProductCard from '../components/ModernProductCard'
 import ProductQuickView from '../components/ProductQuickView'
@@ -60,7 +61,7 @@ export default function StoreDetailsPage() {
     setProducts(storeProducts)
 
     window.scrollTo(0, 0)
-  }, [mallId, storeId, addRecentlyViewed, awardPoints])
+  }, [mallId, storeId, addRecentlyViewed, awardPoints, getProductsByStore])
 
   // Get unique categories from products
   const categories = useMemo(() => {
@@ -303,6 +304,11 @@ export default function StoreDetailsPage() {
         </div>
       </div>
 
+      {/* Store Subscribe Section (Top) */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 mt-6 mx-4 lg:mx-8">
+        <StoreSubscribeSection storeId={storeId} storeName={store.name} />
+      </div>
+
       {/* Filter Bar */}
       <ProductFilterBar
         categories={categories}
@@ -367,6 +373,11 @@ export default function StoreDetailsPage() {
             </button>
           </div>
         )}
+      </div>
+
+      {/* Store Subscribe Section (Bottom) */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 mb-12">
+        <StoreSubscribeSection storeId={storeId} storeName={store.name} />
       </div>
 
       {/* Quick View Modal */}

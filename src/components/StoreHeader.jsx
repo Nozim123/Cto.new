@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useUser } from '../contexts/UserContext'
 import Button3D from './Button3D'
 
 export default function StoreHeader({ store, mall, scrolled = false }) {
   const { darkMode } = useTheme()
   const { t } = useLanguage()
+  const { isFavorite, toggleFavorite } = useUser()
+  const subscribed = store?.id ? isFavorite('stores', store.id) : false
 
   return (
     <div className={`sticky top-16 md:top-20 z-30 transition-all duration-300 ${
@@ -77,11 +80,12 @@ export default function StoreHeader({ store, mall, scrolled = false }) {
             </Link>
             
             {!scrolled && (
-              <Button3D 
-                variant="primary" 
+              <Button3D
+                variant={subscribed ? 'outline' : 'primary'}
                 className="hidden md:flex px-4 py-2 text-sm"
+                onClick={() => toggleFavorite('stores', store.id)}
               >
-                {t('buttons.follow')}
+                {subscribed ? (t('buttons.subscribed') || 'Subscribed') : (t('buttons.follow') || 'Subscribe')}
               </Button3D>
             )}
           </div>
