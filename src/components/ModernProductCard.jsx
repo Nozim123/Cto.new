@@ -1,165 +1,331 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
-import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
-import { useEcosystem } from '../contexts/EcosystemContext'
+import { useLanguage } from '../contexts/LanguageContext'
+import Button3D from './Button3D'
 
-export default function ModernProductCard({ product, onQuickView }) {
+export default function ReviewsSection({ entityType, entityId, entityName }) {
   const { darkMode } = useTheme()
+  const { user, isAuthenticated } = useUser()
   const { t } = useLanguage()
-  const { isFavorite, toggleFavorite } = useUser()
-  const { compareProductIds, toggleCompare } = useEcosystem()
-  const liked = isFavorite('products', product.id)
-  const compared = (compareProductIds || []).includes(product.id)
-  const [imageLoaded, setImageLoaded] = useState(false)
+  const [reviews, setReviews] = useState([])
+  const [userReview, setUserReview] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [showReviewForm, setShowReviewForm] = useState(false)
+  const [newRating, setNewRating] = useState(5)
+  const [newComment, setNewComment] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleLike = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    toggleFavorite('products', product.id)
-  }
+  const reviewsRef = useRef(null) // <- added ref for smooth scrolling to reviews
 
-  const handleQuickView = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (onQuickView) {
-      onQuickView(product)
+  useEffect(() => {
+    fetchReviews()
+  }, [entityType, entityId])
+
+  const fetchReviews = async () => {
+    try {
+      setIsLoading(true)
+      // In a real app, this would be an API call
+      const response = await fetch(`/api/reviews?entityType=${entityType}&entityId=${entityId}`)
+      const data = await response.json()
+      const revs = data?.reviews || []
+      setReviews(revs)
+      
+      // Check if current user has already reviewed
+      if (user) {
+        const existingReview = revs.find(r => r.userId === user.id)
+        setUserReview(existingReview || null)
+      } else {
+        setUserReview(null)
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error)
+      setReviews([])
+      setUserReview(null)
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const handleCompare = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    toggleCompare(product.id)
+  const handleSubmitReview = async () => {
+    if (!isAuthenticated) {
+      alert('Please login to leave a review')
+      return
+    }
+
+    if (!newComment.trim()) {
+      alert('Please write a review comment')
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      const reviewData = {
+        entityType,
+        entityId,
+        rating: newRating,
+        comment: newComment.trim(),
+        userId: user.id,
+        userName: user.name,
+        timestamp: new Date().toISOString()
+      }
+
+      // In a real app, this would be an API call
+      const response = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reviewData)
+      })
+
+      if (response.ok) {
+        // Refresh reviews
+        await fetchReviews()
+        setShowReviewForm(false)
+        setNewRating(5)
+        setNewComment('')
+      } else {
+        console.error('Failed to submit review', response.status)
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
+  const handleDeleteReview = async (reviewId) => {
+    if (!window.confirm('Are you sure you want to delete this review?')) return
+
+    try {
+      setIsSubmitting(true)
+      // Admin or review owner can delete
+      const response = await fetch(`/api/reviews/${reviewId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': user?.token }
+      })
+
+      if (response.ok) {
+        await fetchReviews()
+      } else {
+        console.error('Failed to delete review', response.status)
+      }
+    } catch (error) {
+      console.error('Error deleting review:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  // Pagination for reviews
+  const [page, setPage] = useState(1)
+  const reviewsPerPage = 5
+  const totalPages = Math.max(1, Math.ceil(reviews.length / reviewsPerPage))
+  const paginatedReviews = reviews.slice((page - 1) * reviewsPerPage, page * reviewsPerPage)
+
+  useEffect(() => {
+    // When page changes, scroll the reviews container into view instead of jumping to top
+    if (reviewsRef.current) {
+      reviewsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [page])
+
+  const averageRating = reviews.length > 0 
+    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+    : '0.0'
+
   return (
-    <div className={`group relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl ${
-      darkMode 
-        ? 'bg-gray-800 shadow-lg hover:shadow-purple-500/20' 
-        : 'bg-white shadow-md hover:shadow-xl'
-    }`}>
-      <Link to={`/product/${product.id}`} className="block">
-        {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-          {/* Skeleton Loader */}
-          {!imageLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse"></div>
-          )}
+    <div ref={reviewsRef} className={`rounded-2xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'} p-6`}>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
+            ⭐ Reviews & Ratings
+          </h3>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={`text-2xl ${star <= Math.round(averageRating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            <span className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              {averageRating} ({reviews.length} {reviews.length === 1 ? 'review' : 'reviews'})
+            </span>
+          </div>
+        </div>
+        
+        {!showReviewForm && !userReview && (
+          <Button3D onClick={() => setShowReviewForm(true)} variant="primary" size="sm">
+            Write Review
+          </Button3D>
+        )}
+      </div>
+
+      {/* Review Form */}
+      {showReviewForm && (
+        <div className={`mb-6 p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+          <h4 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4`}>
+            Rate {entityName}
+          </h4>
           
-          {/* Product Image */}
-          <img
-            src={product.image}
-            alt={product.name}
-            onLoad={() => setImageLoaded(true)}
-            className={`w-full h-full object-cover transition-all duration-700 ${
-              imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-            } group-hover:scale-110`}
-            loading="lazy"
-          />
-
-          {/* Discount Badge */}
-          {product.tag && (
-            <div className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shadow-lg animate-pulse-glow">
-              {product.tag}
+          <div className="mb-4">
+            <label className={`block text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+              Rating
+            </label>
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); setNewRating(star) }}
+                  className={`text-3xl transition-colors ${
+                    star <= newRating ? 'text-yellow-400' : 'text-gray-300'
+                  } hover:text-yellow-400`}
+                >
+                  ★
+                </button>
+              ))}
             </div>
-          )}
+          </div>
 
-          {/* Availability Badge */}
-          {product.availability === 'Out of Stock' && (
-            <div className="absolute top-3 right-3 bg-gray-900/80 text-white px-3 py-1.5 rounded-lg text-xs font-medium">
-              {t('common.outOfStock') || 'Out of Stock'}
-            </div>
-          )}
+          <div className="mb-4">
+            <label className={`block text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+              Your Review
+            </label>
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              rows={4}
+              className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                darkMode 
+                  ? 'bg-gray-900 border-gray-700 text-white' 
+                  : 'bg-white border-gray-300 text-gray-900'
+              }`}
+              placeholder={`Share your experience with ${entityName}...`}
+            />
+          </div>
 
-          {/* Like Button */}
-          <button
-            onClick={handleLike}
-            className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-lg transform hover:scale-110 ${
-              liked 
-                ? 'bg-white text-red-500' 
-                : 'bg-white/80 text-gray-400 hover:bg-white hover:text-red-400'
-            }`}
-          >
-            <span className="text-xl">{liked ? '❤️' : '♡'}</span>
-          </button>
-
-          {/* Compare Button */}
-          <button
-            onClick={handleCompare}
-            className={`absolute top-14 right-3 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 shadow-lg transform hover:scale-110 ${
-              compared
-                ? 'bg-purple-600 text-white'
-                : 'bg-white/80 text-gray-700 hover:bg-white'
-            }`}
-            aria-label="Compare"
-          >
-            <span className="text-sm font-bold">≡</span>
-          </button>
-
-          {/* Quick View Button - Appears on Hover */}
-          <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
-            <button
-              onClick={handleQuickView}
-              className="w-full bg-white text-gray-900 font-semibold py-3 rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg transform hover:scale-105"
+          <div className="flex gap-3">
+            <Button3D 
+              onClick={handleSubmitReview}
+              variant="primary" 
+              size="sm"
+              disabled={isSubmitting}
             >
-              👁️ {t('buttons.quickView') || 'Quick View'}
+              {isSubmitting ? 'Submitting...' : 'Submit Review'}
+            </Button3D>
+            <Button3D 
+              onClick={() => setShowReviewForm(false)}
+              variant="outline" 
+              size="sm"
+            >
+              Cancel
+            </Button3D>
+          </div>
+        </div>
+      )}
+
+      {/* User's Existing Review */}
+      {userReview && !showReviewForm && (
+        <div className={`mb-4 p-4 rounded-2xl border ${darkMode ? 'border-purple-500/30 bg-purple-900/20' : 'border-purple-200 bg-purple-50'}`}>
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="font-semibold text-purple-600">Your Review</span>
+                <div className="flex text-yellow-400">
+                  {[...Array(userReview.rating)].map((_, i) => (
+                    <span key={i}>★</span>
+                  ))}
+                </div>
+              </div>
+              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+                {userReview.comment}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleDeleteReview(userReview.id)}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Delete
             </button>
           </div>
         </div>
+      )}
 
-        {/* Product Info */}
-        <div className="p-4">
-          {/* Category */}
-          <div className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1">
-            {product.category}
-          </div>
-
-          {/* Product Name */}
-          <h3 className={`font-semibold text-base mb-2 line-clamp-2 h-12 transition-colors ${
-            darkMode ? 'text-white group-hover:text-purple-400' : 'text-gray-900 group-hover:text-purple-600'
-          }`}>
-            {product.name}
-          </h3>
-
-          {/* Brand (if available) */}
-          {product.brand && (
-            <p className="text-xs text-gray-500 mb-2">{product.brand}</p>
-          )}
-
-          {/* Price */}
-          <div className="flex items-baseline gap-2 mt-auto">
-            <span className={`text-xl font-bold ${
-              darkMode ? 'text-white' : 'text-gray-900'
-            }`}>
-              ${product.price.toFixed(2)}
-            </span>
-            {product.tag && (
-              <span className="text-sm text-gray-400 line-through">
-                ${(product.price * 1.2).toFixed(2)}
-              </span>
-            )}
-          </div>
-
-          {/* Additional Info */}
-          <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center gap-1">
-              <span className="text-yellow-500">⭐</span>
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                {product.rating || '4.5'}
-              </span>
-            </div>
-            <div className={`text-xs font-medium ${
-              product.availability === 'In Stock' 
-                ? 'text-green-600' 
-                : 'text-red-600'
-            }`}>
-              {product.availability || 'In Stock'}
-            </div>
-          </div>
+      {/* Reviews List */}
+      {isLoading ? (
+        <div className="flex items-center justify-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
         </div>
-      </Link>
+      ) : paginatedReviews.length > 0 ? (
+        <div className="space-y-4">
+          {paginatedReviews.map((review) => (!userReview || userReview.id !== review.id) && (
+            <div key={review.id} className={`p-4 rounded-xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}>
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <span className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                      {review.userName}
+                    </span>
+                    <div className="flex text-yellow-400">
+                      {[...Array(review.rating)].map((_, i) => (
+                        <span key={i} className="text-sm">★</span>
+                      ))}
+                    </div>
+                  </div>
+                  <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    {new Date(review.timestamp).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+              <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+                {review.comment}
+              </p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8">
+          <div className="text-4xl mb-2">📝</div>
+          <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+            No reviews yet. Be the first to review {entityName}!
+          </p>
+        </div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-6">
+          <button
+            type="button"
+            onClick={() => { setPage(Math.max(1, page - 1)) }}
+            disabled={page === 1}
+            className={`px-3 py-1 rounded-lg ${
+              darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+            } ${page === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            ←
+          </button>
+          <span className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
+            Page {page} of {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => { setPage(Math.min(totalPages, page + 1)) }}
+            disabled={page === totalPages}
+            className={`px-3 py-1 rounded-lg ${
+              darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+            } ${page === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            →
+          </button>
+        </div>
+      )}
     </div>
   )
 }
