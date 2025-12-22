@@ -5,7 +5,7 @@ import { trackBehavior } from '../services/behavior'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import StoreCard from '../components/StoreCard'
-import StoriesCarousel from '../components/StoriesCarousel'
+import InstagramStories from '../components/InstagramStories'
 import InteractiveFloorPlan from '../components/InteractiveFloorPlan'
 import InteractiveMap from '../components/InteractiveMap'
 import RealTimeHours from '../components/RealTimeHours'
@@ -18,6 +18,7 @@ export default function MallDetailsPage() {
   const [mall, setMall] = useState(null)
   const [stores, setStores] = useState([])
   const [allStores, setAllStores] = useState([])
+  const [stories, setStories] = useState([])
   const { darkMode } = useTheme()
 
   useEffect(() => {
@@ -33,8 +34,44 @@ export default function MallDetailsPage() {
       const mallStores = storesData.filter((s) => s.mallId === mallId)
       setAllStores(mallStores)
       setStores(mallStores.slice(0, 12)) // Show more stores by default for better navigation
+      
+      // Fetch stories from API
+      fetchStories(mallId)
     }
   }, [mallId])
+  
+  const fetchStories = async (mallId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/stories?mall_id=${mallId}`)
+      if (response.ok) {
+        const data = await response.json()
+        setStories(data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch stories:', error)
+      // Create fallback stories from stores
+      const fallbackStories = allStores.slice(0, 6).map(store => ({
+        id: store.id,
+        mall_id: mallId,
+        title: store.name,
+        thumbnail: store.logo,
+        media: store.image,
+        type: 'image',
+        content: {
+          title: store.promoTitle || 'Special Offer',
+          description: store.promoDescription || 'Visit us for exclusive deals!',
+          discount: store.promoDiscount || '20% OFF',
+          cta: 'Shop Now'
+        },
+        isPromoted: store.hasPromo || false,
+        hasNew: true,
+        viewed: false,
+        timestamp: '2h ago',
+        isActive: true
+      }))
+      setStories(fallbackStories)
+    }
+  }
 
   if (!mall) {
     return (
@@ -123,14 +160,15 @@ export default function MallDetailsPage() {
          </div>
       </div>
 
-      {/* Stories Section */}
-      {allStores.length > 0 && (
-        <div className="py-10 border-y border-white/5 bg-black/20 backdrop-blur-sm mb-16">
+      {/* Instagram Stories Section */}
+      {stories.length > 0 && (
+        <div className="py-10 border-y border-white/5 bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-yellow-900/20 backdrop-blur-sm mb-16">
           <div className="max-w-7xl mx-auto">
             <h3 className="px-4 lg:px-8 mb-6 font-display text-xl font-bold dark:text-white flex items-center gap-2">
-              <span className="text-gold">●</span> Live Stories
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-yellow-500">●</span> 
+              Live Stories
             </h3>
-            <StoriesCarousel stores={allStores} />
+            <InstagramStories stories={stories} />
           </div>
         </div>
       )}

@@ -15,7 +15,8 @@ import {
   FileText,
   MessageSquare,
   UserCheck,
-  Sparkles
+  Sparkles,
+  Instagram
 } from 'lucide-react';
 
 const AdminLayout = ({ children }) => {
@@ -30,6 +31,7 @@ const AdminLayout = ({ children }) => {
     { name: 'Do\'kon Boshqaruvi', href: '/admin/stores', icon: Store },
     { name: 'Mahsulot Boshqaruvi', href: '/admin/products', icon: Package },
     { name: 'Banner Boshqaruvi', href: '/admin/banners', icon: Image },
+    { name: 'Instagram Stories', href: '/admin/stories', icon: Instagram },
     { name: 'Seller Approvals', href: '/admin/sellers', icon: UserCheck },
     { name: 'Season Engine', href: '/admin/season', icon: Sparkles },
     { name: 'CMS Pages', href: '/admin/cms', icon: FileText },
