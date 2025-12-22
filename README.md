@@ -255,19 +255,197 @@ Automatic detection and visual adaptation:
 - Dynamic color schemes in background
 - Smooth transitions between seasons
 
-## 🔐 Admin Access
+## 🔐 Admin Panel - Complete Guide
 
-**URL**: `http://localhost:3000/admin/login`
+### Accessing the Admin Panel
 
-**Default Credentials**:
-- Email: `admin@samarkand.com`
-- Password: `admin123`
+1. **Start the backend server** (required for admin panel):
+```bash
+npm run server
+```
+The backend runs on `http://localhost:5000`
 
-**Features**:
-- Full CRUD operations
-- Media management
-- Real-time updates
-- Responsive dashboard
+2. **Access the admin login page**:
+Navigate to: `http://localhost:3000/admin/login`
+
+3. **Login with default credentials**:
+- **Email**: `admin@samarkand.com`
+- **Password**: `admin123`
+
+### Admin Panel Features
+
+#### 📊 Dashboard
+- **Real-time statistics**: View total malls, stores, products, banners, and stories
+- **Recent activities**: Track latest changes and additions
+- **Quick actions**: Fast access to create new items
+- **System status**: Monitor server and database health
+
+#### 🏢 Mall Management (`/admin/malls`)
+- **Create/Edit/Delete** malls
+- **Upload** mall images and galleries
+- **Set** opening hours, location, and contact info
+- **Manage** mall features and amenities
+- Changes reflect **immediately** on the main website
+
+#### 🏪 Store Management (`/admin/stores`)
+- **Add stores** to specific malls
+- **Configure** store details, categories, and working hours
+- **Upload** store logos, banners, and interior photos
+- **Set** contact information and social media links
+- All updates are **live** on the website instantly
+
+#### 📦 Product Management (`/admin/products`)
+- **Add products** to stores
+- **Set** prices, categories, and availability
+- **Upload** product images and galleries
+- **Define** specifications and variations
+- Products appear **immediately** in store listings
+
+#### 🖼️ Banner Management (`/admin/banners`)
+- **Create promotional banners** for homepage
+- **Schedule** banner display dates
+- **Set** banner positions and links
+- **Toggle** active/inactive status
+- Banners show **instantly** when activated
+
+#### 📱 Instagram Stories (`/admin/stories`)
+**NEW FEATURE** - Full Instagram-style stories management!
+
+- **Create engaging stories** for mall promotions
+- **Upload images or videos** with full customization
+- **Add content overlays**: titles, descriptions, CTAs, discounts
+- **Promote stories** with special badges (⚡ Promoted, 🆕 New)
+- **Schedule stories** with start/end dates
+- **Assign to specific malls** for targeted marketing
+- Stories appear in **Instagram-style carousel** on mall pages
+
+**Story Features**:
+- Instagram-style ring indicators (gradient for new, gray for viewed)
+- Full-screen immersive viewer with swipe navigation
+- Progress bars showing story duration
+- Auto-advance to next story
+- Interactive elements (like, share, bookmark icons)
+- Pause on touch/click
+- Mobile-optimized gestures
+
+#### ⚙️ Settings (`/admin/settings`)
+- **Configure** site-wide settings
+- **Update** theme colors and branding
+- **Manage** company information
+- **Set** contact details
+
+#### 👥 Seller Approvals (`/admin/sellers`)
+- Review and approve seller applications
+- Manage seller permissions
+
+#### 🎨 Season Engine (`/admin/season`)
+- Control seasonal themes and decorations
+- Activate New Year animations
+
+#### 📄 CMS Pages (`/admin/cms`)
+- Create and edit static pages
+- Manage site content
+
+#### 💬 Feedback (`/admin/feedback`)
+- View customer feedback and reviews
+- Respond to user inquiries
+
+### How Admin Changes Affect the Website
+
+**All changes are real-time and immediate:**
+
+1. **Stories created in admin** → Appear instantly in Instagram Stories carousel on mall pages
+2. **Malls added** → Show up immediately on homepage and map
+3. **Stores created** → Visible in mall store directories right away
+4. **Products added** → Listed in store pages immediately
+5. **Banners activated** → Display on homepage instantly
+6. **Settings updated** → Applied site-wide immediately
+
+### Creating Your First Story
+
+1. Go to **Instagram Stories** section (`/admin/stories`)
+2. Click **"Yangi Hikoya"** (New Story)
+3. Fill in the form:
+   - **Mall**: Select the mall
+   - **Title**: Store or brand name
+   - **Type**: Image or Video
+   - **Thumbnail URL**: Square image for story ring
+   - **Media URL**: Full-size image/video for story viewer
+   - **Content**: Add title, description, discount, and CTA
+   - **Settings**: Mark as promoted or new, set dates
+4. Click **"Yaratish"** (Create)
+5. **View on website**: Navigate to the mall page to see your story!
+
+### API Endpoints
+
+The admin panel connects to these backend APIs:
+
+```
+POST   /api/auth/login          - Admin authentication
+GET    /api/auth/me             - Get current user
+
+GET    /api/malls               - List all malls
+POST   /api/malls               - Create mall
+PUT    /api/malls/:id           - Update mall
+DELETE /api/malls/:id           - Delete mall
+
+GET    /api/stores              - List all stores
+POST   /api/stores              - Create store
+PUT    /api/stores/:id          - Update store
+DELETE /api/stores/:id          - Delete store
+
+GET    /api/products            - List all products
+POST   /api/products            - Create product
+PUT    /api/products/:id        - Update product
+DELETE /api/products/:id        - Delete product
+
+GET    /api/banners             - List all banners
+POST   /api/banners             - Create banner
+PUT    /api/banners/:id         - Update banner
+DELETE /api/banners/:id         - Delete banner
+
+GET    /api/stories             - List all stories (public)
+GET    /api/stories?mall_id=X   - Get stories for specific mall
+POST   /api/stories             - Create story (admin)
+PUT    /api/stories/:id         - Update story (admin)
+DELETE /api/stories/:id         - Delete story (admin)
+```
+
+### Security
+
+- **JWT Authentication**: All admin endpoints require valid JWT token
+- **Token Storage**: Stored in localStorage after login
+- **Auto-redirect**: Unauthenticated users redirected to login
+- **Session Management**: Tokens expire after 24 hours
+- **Protected Routes**: All admin pages protected with `ProtectedRoute` component
+
+### Admin Panel Tech Stack
+
+- **Frontend**: React + React Router
+- **State**: Local state with hooks
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Backend**: Express.js
+- **Auth**: JWT (jsonwebtoken + bcryptjs)
+- **Storage**: In-memory database (server.js)
+
+### Troubleshooting
+
+**Can't log in?**
+- Make sure backend server is running (`npm run server`)
+- Check console for error messages
+- Verify credentials: `admin@samarkand.com` / `admin123`
+
+**Changes not showing?**
+- Hard refresh the website (`Ctrl+Shift+R`)
+- Check if backend is running
+- Verify item is marked as active/published
+
+**Stories not appearing?**
+- Ensure story is marked as "Active" (isActive checkbox)
+- Check story dates (start/end date)
+- Verify correct mall_id is selected
+- Check browser console for API errors
 
 ## 📊 Performance
 

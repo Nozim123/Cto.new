@@ -118,7 +118,7 @@ export default function StoreDetailsPage() {
     setSelectedProduct(product)
   }
 
-  if (!mall || !store) {
+  if (!store) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${
         darkMode ? 'bg-gray-900' : 'bg-gray-50'
@@ -127,11 +127,27 @@ export default function StoreDetailsPage() {
           <h1 className={`text-2xl font-bold mb-4 ${
             darkMode ? 'text-white' : 'text-gray-900'
           }`}>
-            {t('errors.storeNotFound') || 'Store Not Found'}
+            Store Not Found
           </h1>
-          <Link to="/" className="text-purple-600 hover:text-purple-700 hover:underline">
-            {t('buttons.backToHome') || 'Back to Home'}
+          <p className={`mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            The store you're looking for doesn't exist or has been removed.
+          </p>
+          <Link to="/" className="inline-block px-6 py-3 bg-gold text-navy rounded-lg hover:bg-gold/90 transition-colors">
+            Back to Home
           </Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (!mall) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${
+        darkMode ? 'bg-gray-900' : 'bg-gray-50'
+      }`}>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold mx-auto mb-4"></div>
+          <p className={darkMode ? 'text-white' : 'text-gray-900'}>Loading store details...</p>
         </div>
       </div>
     )

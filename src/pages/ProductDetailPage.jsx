@@ -51,12 +51,26 @@ export default function ProductDetailPage() {
     trackBehavior({ type: 'product', id: productId, category: productData.category })
   }, [productId, addRecentlyViewed, awardPoints, getProductById, getProductsByStore])
 
-  if (!product || !store || !mall) {
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-primary-dark text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
+          <p className="text-gray-400 mb-6">The product you're looking for doesn't exist.</p>
+          <Link to="/" className="inline-block px-6 py-3 bg-gold text-navy rounded-lg hover:bg-gold/90">
+            Go to Home
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (!store || !mall) {
     return (
       <div className="min-h-screen bg-primary-dark text-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold mx-auto mb-4"></div>
-          <p>Loading product...</p>
+          <p>Loading product details...</p>
         </div>
       </div>
     )
@@ -68,12 +82,6 @@ export default function ProductDetailPage() {
 
   return (
     <div className="relative min-h-screen bg-primary-dark text-white font-sans selection:bg-gold selection:text-primary-dark">
-      {/* InteractiveBackground is already in App.jsx but we want to force winter theme or parameters if needed. 
-          However, App.jsx includes it globally. Double inclusion might be bad for performance or visuals.
-          The requirement says "Add a high-end winter background animation across inner pages".
-          App.jsx has <InteractiveBackground />. I will assume it handles theme.
-      */}
-      
       <main className="relative z-10 pt-24 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
         {/* Breadcrumbs */}
         <nav className="flex items-center text-sm text-gray-400 mb-8 overflow-x-auto whitespace-nowrap pb-2">

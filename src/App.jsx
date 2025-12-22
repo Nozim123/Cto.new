@@ -31,6 +31,7 @@ import UserProfilePage from './pages/UserProfilePage'
 import BlogPage from './pages/BlogPage'
 import CompareBar from './components/CompareBar'
 import NotFoundPage from './components/NotFoundPage'
+import NewYearAnimations from './components/NewYearAnimations'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -43,6 +44,8 @@ import ProductListPage from './admin/pages/ProductListPage'
 import ProductFormPage from './admin/pages/ProductFormPage'
 import BannerListPage from './admin/pages/BannerListPage'
 import BannerFormPage from './admin/pages/BannerFormPage'
+import StoryListPage from './admin/pages/StoryListPage'
+import StoryFormPage from './admin/pages/StoryFormPage'
 import SettingsPage from './admin/pages/SettingsPage'
 import CmsPagesPage from './admin/pages/CmsPagesPage'
 import FeedbackAdminPage from './admin/pages/FeedbackAdminPage'
@@ -58,6 +61,7 @@ function AppContent() {
   return (
     <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
       <SeasonalBackground />
+      {!isAdminRoute && <NewYearAnimations />}
       
       {/* Public routes */}
       <Routes>
@@ -79,6 +83,9 @@ function AppContent() {
               <Route path="/admin/banners" element={<BannerListPage />} />
               <Route path="/admin/banners/new" element={<BannerFormPage />} />
               <Route path="/admin/banners/:id/edit" element={<BannerFormPage />} />
+              <Route path="/admin/stories" element={<StoryListPage />} />
+              <Route path="/admin/stories/new" element={<StoryFormPage />} />
+              <Route path="/admin/stories/:id/edit" element={<StoryFormPage />} />
               <Route path="/admin/sellers" element={<SellerApprovalsPage />} />
               <Route path="/admin/season" element={<SeasonEnginePage />} />
               <Route path="/admin/cms" element={<CmsPagesPage />} />

@@ -107,6 +107,31 @@ let database = {
       updatedAt: new Date().toISOString()
     }
   ],
+  stories: [
+    {
+      id: '1',
+      mall_id: '1',
+      title: 'Nike Store',
+      thumbnail: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200',
+      media: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800',
+      type: 'image',
+      content: {
+        title: 'New Collection',
+        description: 'Check out our latest arrivals!',
+        discount: '30% OFF',
+        cta: 'Shop Now'
+      },
+      isPromoted: true,
+      hasNew: true,
+      viewed: false,
+      timestamp: '2h ago',
+      isActive: true,
+      startDate: '2024-01-01',
+      endDate: '2024-12-31',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+  ],
   settings: {
     theme: 'light',
     primaryColor: '#D4AF37',
@@ -486,6 +511,83 @@ app.put('/api/settings', authenticateToken, async (req, res) => {
     res.json(database.settings);
   } catch (error) {
     res.status(500).json({ message: 'Error updating settings', error: error.message });
+  }
+});
+
+// ==================== STORIES ROUTES ====================
+app.get('/api/stories', (req, res) => {
+  const { mall_id } = req.query;
+  let stories = database.stories || [];
+  
+  if (mall_id) {
+    stories = stories.filter(s => s.mall_id === mall_id && s.isActive);
+  }
+  
+  res.json(stories);
+});
+
+app.get('/api/stories/:id', authenticateToken, (req, res) => {
+  const story = database.stories.find(s => s.id === req.params.id);
+  if (!story) {
+    return res.status(404).json({ message: 'Story not found' });
+  }
+  res.json(story);
+});
+
+app.post('/api/stories', authenticateToken, async (req, res) => {
+  try {
+    const story = {
+      id: generateId(),
+      ...req.body,
+      viewed: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    if (!database.stories) {
+      database.stories = [];
+    }
+    
+    database.stories.push(story);
+    await saveDatabase();
+    res.status(201).json(story);
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating story', error: error.message });
+  }
+});
+
+app.put('/api/stories/:id', authenticateToken, async (req, res) => {
+  try {
+    const storyIndex = database.stories.findIndex(s => s.id === req.params.id);
+    if (storyIndex === -1) {
+      return res.status(404).json({ message: 'Story not found' });
+    }
+
+    database.stories[storyIndex] = {
+      ...database.stories[storyIndex],
+      ...req.body,
+      updatedAt: new Date().toISOString()
+    };
+    
+    await saveDatabase();
+    res.json(database.stories[storyIndex]);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating story', error: error.message });
+  }
+});
+
+app.delete('/api/stories/:id', authenticateToken, async (req, res) => {
+  try {
+    const storyIndex = database.stories.findIndex(s => s.id === req.params.id);
+    if (storyIndex === -1) {
+      return res.status(404).json({ message: 'Story not found' });
+    }
+
+    database.stories.splice(storyIndex, 1);
+    await saveDatabase();
+    res.json({ message: 'Story deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting story', error: error.message });
   }
 });
 
