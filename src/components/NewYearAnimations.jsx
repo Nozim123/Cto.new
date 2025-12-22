@@ -1,100 +1,77 @@
 import { useEffect, useState } from 'react'
 import './NewYearAnimations.css'
 
+const ORNAMENT_COLORS = ['#F6C453', '#E87979', '#60A5FA', '#34D399']
+
 export default function NewYearAnimations() {
-  const [fireworks, setFireworks] = useState([])
-  const [confetti, setConfetti] = useState([])
   const [showCountdown, setShowCountdown] = useState(false)
+  const [ornaments, setOrnaments] = useState([])
 
   useEffect(() => {
-    // Create fireworks
-    const fireworksArray = Array.from({ length: 10 }, (_, i) => ({
+    const ornamentsArray = Array.from({ length: 10 }, (_, i) => ({
       id: i,
-      left: Math.random() * 100,
-      delay: Math.random() * 5
+      left: 18 + Math.random() * 64,
+      top: 18 + Math.random() * 62,
+      size: 5 + Math.random() * 6,
+      delay: Math.random() * 2.5,
+      color: ORNAMENT_COLORS[i % ORNAMENT_COLORS.length]
     }))
-    setFireworks(fireworksArray)
+    setOrnaments(ornamentsArray)
 
-    // Create confetti
-    const confettiArray = Array.from({ length: 50 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      delay: Math.random() * 3,
-      duration: 3 + Math.random() * 2,
-      color: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'][Math.floor(Math.random() * 5)]
-    }))
-    setConfetti(confettiArray)
-
-    // Check if we should show countdown (if close to New Year)
     const now = new Date()
     const newYear = new Date(now.getFullYear() + 1, 0, 1)
     const daysUntilNewYear = Math.ceil((newYear - now) / (1000 * 60 * 60 * 24))
-    
-    if (daysUntilNewYear <= 30) {
-      setShowCountdown(true)
-    }
+    if (daysUntilNewYear <= 30) setShowCountdown(true)
   }, [])
 
   return (
     <>
-      {/* Fireworks */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {fireworks.map((fw) => (
-          <div
-            key={fw.id}
-            className="firework"
-            style={{
-              left: `${fw.left}%`,
-              animationDelay: `${fw.delay}s`
-            }}
-          >
-            <div className="firework-explosion"></div>
-          </div>
-        ))}
+      <div className="fixed bottom-20 md:bottom-4 left-4 pointer-events-none z-20">
+        <ChristmasTree ornaments={ornaments} />
       </div>
 
-      {/* Confetti */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {confetti.map((conf) => (
-          <div
-            key={conf.id}
-            className="confetti"
-            style={{
-              left: `${conf.left}%`,
-              animationDelay: `${conf.delay}s`,
-              animationDuration: `${conf.duration}s`,
-              backgroundColor: conf.color
-            }}
-          ></div>
-        ))}
-      </div>
-
-      {/* Floating ornaments */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="ornament ornament-1">🎄</div>
-        <div className="ornament ornament-2">⭐</div>
-        <div className="ornament ornament-3">🎁</div>
-        <div className="ornament ornament-4">❄️</div>
-        <div className="ornament ornament-5">🎊</div>
-        <div className="ornament ornament-6">🎉</div>
-      </div>
-
-      {/* New Year Badge */}
-      <div className="fixed top-20 right-4 z-50 animate-bounce-slow">
-        <div className="bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 text-white px-6 py-3 rounded-full shadow-2xl border-2 border-white">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🎆</span>
-            <div>
-              <div className="text-xs font-bold uppercase">Happy New Year</div>
-              <div className="text-lg font-black">{new Date().getFullYear() + 1}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Countdown Timer (if close to New Year) */}
-      {showCountdown && <NewYearCountdown />}
+      {showCountdown ? <NewYearCountdown /> : null}
     </>
+  )
+}
+
+function ChristmasTree({ ornaments }) {
+  return (
+    <div className="nye-tree" aria-hidden="true">
+      <div className="nye-tree-label">Happy New Year</div>
+      <div className="nye-tree-emoji">🎄</div>
+
+      <div className="nye-tree-ornaments">
+        {ornaments.map((o) => (
+          <span
+            key={o.id}
+            className="nye-tree-ornament"
+            style={{
+              left: `${o.left}%`,
+              top: `${o.top}%`,
+              width: `${o.size}px`,
+              height: `${o.size}px`,
+              backgroundColor: o.color,
+              animationDelay: `${o.delay}s`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="nye-tree-sparkles" aria-hidden="true">
+        {[...Array(6)].map((_, i) => (
+          <span
+            key={`sparkle-${i}`}
+            className="nye-sparkle"
+            style={{
+              left: `${10 + Math.random() * 80}%`,
+              top: `${5 + Math.random() * 80}%`,
+              animationDelay: `${Math.random() * 4}s`
+            }}
+          />
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -115,45 +92,38 @@ function NewYearCountdown() {
   }
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const timer = window.setInterval(() => {
       setTimeLeft(getTimeUntilNewYear())
     }, 1000)
 
-    return () => clearInterval(timer)
+    return () => window.clearInterval(timer)
   }, [])
 
   if (timeLeft.days > 30) return null
 
   return (
-    <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 animate-pulse-slow">
-      <div className="bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 backdrop-blur-xl rounded-2xl shadow-2xl border-2 border-gold p-6">
-        <div className="text-center text-white">
-          <div className="text-xs font-bold uppercase tracking-wider mb-2 text-gold">
-            🎊 New Year Countdown 🎊
-          </div>
-          <div className="flex gap-4 justify-center">
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-black text-gold">{timeLeft.days}</div>
-              <div className="text-xs uppercase">Days</div>
-            </div>
-            <div className="text-3xl font-black text-gold">:</div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-black text-gold">{timeLeft.hours}</div>
-              <div className="text-xs uppercase">Hours</div>
-            </div>
-            <div className="text-3xl font-black text-gold">:</div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-black text-gold">{timeLeft.minutes}</div>
-              <div className="text-xs uppercase">Min</div>
-            </div>
-            <div className="text-3xl font-black text-gold">:</div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-black text-gold">{timeLeft.seconds}</div>
-              <div className="text-xs uppercase">Sec</div>
-            </div>
-          </div>
+    <div className="fixed bottom-20 md:bottom-4 right-4 z-30 pointer-events-none">
+      <div className="nye-countdown">
+        <div className="nye-countdown-title">New Year</div>
+        <div className="nye-countdown-grid">
+          <TimePill value={timeLeft.days} label="D" />
+          <span className="nye-countdown-sep">:</span>
+          <TimePill value={timeLeft.hours} label="H" />
+          <span className="nye-countdown-sep">:</span>
+          <TimePill value={timeLeft.minutes} label="M" />
+          <span className="nye-countdown-sep">:</span>
+          <TimePill value={timeLeft.seconds} label="S" />
         </div>
       </div>
+    </div>
+  )
+}
+
+function TimePill({ value, label }) {
+  return (
+    <div className="nye-time">
+      <div className="nye-time-value">{String(value).padStart(2, '0')}</div>
+      <div className="nye-time-label">{label}</div>
     </div>
   )
 }
