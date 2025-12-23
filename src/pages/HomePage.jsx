@@ -19,11 +19,12 @@ export default function HomePage() {
   useEffect(() => {
     // Simulate real-time data loading with staggered effect
     const timer1 = setTimeout(() => {
-      const allMalls = mallsData
+      const allMalls = mallsData.filter(mall => mall.status === 'open') // Show only open malls
       setMalls(allMalls)
       
       const timer2 = setTimeout(() => {
-        setFeaturedMalls(allMalls.filter(mall => mall.featured).slice(0, 6))
+        // Show all open malls instead of just featured ones
+        setFeaturedMalls(allMalls.slice(0, 6))
         setLoading(false)
       }, 400)
       
@@ -156,8 +157,8 @@ export default function HomePage() {
           {/* Enhanced Real-time Stats */}
           <div className="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { label: t('home.activeMalls'), value: mallsData.filter((m) => m.status === 'open').length, icon: '🏢' },
-              { label: t('home.totalStores'), value: mallsData.filter((m) => m.status === 'open').reduce((acc, m) => acc + (Number(m.storeCount) || 0), 0), suffix: '+', icon: '🏪' },
+              { label: t('home.activeMalls'), value: malls.length, icon: '🏢' },
+              { label: t('home.totalStores'), value: malls.reduce((acc, m) => acc + (Number(m.storeCount) || 0), 0), suffix: '+', icon: '🏪' },
               { label: t('home.comingSoon'), value: mallsData.filter((m) => m.status === 'coming_soon').length, icon: '🚧' },
               { label: t('home.happyVisitors'), value: 50, suffix: 'K+', icon: '😊' }
             ].map((stat, index) => (

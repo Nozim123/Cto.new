@@ -32,6 +32,8 @@ import BlogPage from './pages/BlogPage'
 import CompareBar from './components/CompareBar'
 import NotFoundPage from './components/NotFoundPage'
 import NewYearAnimations from './components/NewYearAnimations'
+import ChristmasTree3D from './components/ChristmasTree3D'
+import RealTimeStatusIndicator from './components/RealTimeStatusIndicator'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -61,7 +63,12 @@ function AppContent() {
   return (
     <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
       <SeasonalBackground />
-      {!isAdminRoute && <NewYearAnimations />}
+      {!isAdminRoute && (
+        <>
+          <NewYearAnimations />
+          <ChristmasTree3D />
+        </>
+      )}
       
       {/* Public routes */}
       <Routes>
@@ -129,6 +136,7 @@ function AppContent() {
                <Footer />
                <BottomNavigation />
                <CompareBar />
+               <RealTimeStatusIndicator />
              </>
             )}
           </>

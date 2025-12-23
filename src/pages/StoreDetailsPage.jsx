@@ -8,6 +8,7 @@ import { useLanguage } from '../contexts/LanguageContext'
 import { useEcosystem } from '../contexts/EcosystemContext'
 import StoreHeader from '../components/StoreHeader'
 import StoreSubscribeSection from '../components/StoreSubscribeSection'
+import StoreShareButton from '../components/StoreShareButton'
 import ProductFilterBar from '../components/ProductFilterBar'
 import ModernProductCard from '../components/ModernProductCard'
 import ProductQuickView from '../components/ProductQuickView'
@@ -221,6 +222,13 @@ export default function StoreDetailsPage() {
 
       {/* Sticky Store Header */}
       <StoreHeader store={store} mall={mall} scrolled={scrolled} />
+      
+      {/* Store Share Button */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 mt-4">
+        <div className="flex justify-end">
+          <StoreShareButton storeId={storeId} storeName={store.name} />
+        </div>
+      </div>
 
       {/* Store Information Section */}
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 bg-white dark:bg-gray-800 rounded-lg mx-4 lg:mx-8 mt-4 shadow-lg">
@@ -337,16 +345,18 @@ export default function StoreDetailsPage() {
           </h2>
         </div>
 
-        {/* Product Grid */}
+        {/* Product Grid - Fixed Scrolling */}
         {filteredAndSortedProducts.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {filteredAndSortedProducts.map((product) => (
-              <ModernProductCard
-                key={product.id}
-                product={product}
-                onQuickView={handleQuickView}
-              />
-            ))}
+          <div className="overflow-x-auto pb-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 min-w-full">
+              {filteredAndSortedProducts.map((product) => (
+                <ModernProductCard
+                  key={product.id}
+                  product={product}
+                  onQuickView={handleQuickView}
+                />
+              ))}
+            </div>
           </div>
         ) : (
           <div className={`text-center py-20 rounded-2xl ${
