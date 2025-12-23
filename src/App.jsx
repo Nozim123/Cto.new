@@ -63,12 +63,7 @@ function AppContent() {
   return (
     <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
       <SeasonalBackground />
-      {!isAdminRoute && (
-        <>
-          <NewYearAnimations />
-          <ChristmasTree3D />
-        </>
-      )}
+      {/* Decorations removed per request */}
       
       {/* Public routes */}
       <Routes>
