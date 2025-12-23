@@ -1,0 +1,446 @@
+/* Christmas Tree 3D CSS */
+.christmas-tree-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #0c1445 0%, #1a237e 50%, #3949ab 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+/* Snowflakes Animation */
+.snowflakes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.snowflake {
+  position: absolute;
+  color: white;
+  animation: snowfall linear infinite;
+  user-select: none;
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Tree Scene */
+.tree-scene {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  z-index: 10;
+}
+
+/* Tree Pot */
+.tree-pot {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 40px;
+  background: linear-gradient(to bottom, #8d6e63, #5d4037);
+  border-radius: 10px 10px 20px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 5;
+}
+
+.tree-pot::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  height: 15px;
+  background: linear-gradient(to bottom, #a1887f, #795548);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Tree Trunk */
+.tree-trunk {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 40px;
+  background: linear-gradient(to bottom, #6d4c41, #4e342e);
+  border-radius: 10px;
+  z-index: 4;
+}
+
+/* Tree Layers with 3D Effect */
+.tree-layer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+  box-shadow: 
+    0 0 20px rgba(46, 125, 50, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  animation: treeGlow 3s ease-in-out infinite alternate;
+}
+
+.tree-layer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    transparent 30%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    transparent 70%);
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes treeGlow {
+  0% {
+    box-shadow: 
+      0 0 20px rgba(46, 125, 50, 0.3),
+      inset 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  100% {
+    box-shadow: 
+      0 0 30px rgba(46, 125, 50, 0.5),
+      inset 0 0 30px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+.layer-1 {
+  bottom: 80px;
+  width: 160px;
+  height: 80px;
+  z-index: 3;
+}
+
+.layer-2 {
+  bottom: 140px;
+  width: 200px;
+  height: 100px;
+  z-index: 2;
+}
+
+.layer-3 {
+  bottom: 210px;
+  width: 240px;
+  height: 120px;
+  z-index: 1;
+}
+
+.layer-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Ornaments */
+.ornament {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: ornamentFloat 2s ease-in-out infinite;
+}
+
+.ornament.red {
+  background: radial-gradient(circle, #ff5252, #d32f2f);
+  box-shadow: 0 0 10px rgba(255, 82, 82, 0.6);
+}
+
+.ornament.gold {
+  background: radial-gradient(circle, #ffd54f, #f57c00);
+  box-shadow: 0 0 10px rgba(255, 213, 79, 0.6);
+}
+
+.ornament.blue {
+  background: radial-gradient(circle, #42a5f5, #1976d2);
+  box-shadow: 0 0 10px rgba(66, 165, 245, 0.6);
+}
+
+@keyframes ornamentFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Tree Top */
+.tree-top {
+  position: absolute;
+  bottom: 310px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 40px solid #2e7d32;
+  z-index: 6;
+}
+
+.star {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  color: #ffd54f;
+  text-shadow: 0 0 10px rgba(255, 213, 79, 0.8);
+  animation: starTwinkle 2s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Christmas Lights */
+.lights-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.light {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: lightBlink 1.5s ease-in-out infinite;
+}
+
+.light.red {
+  background: radial-gradient(circle, #ff5252, #d32f2f);
+  box-shadow: 0 0 10px rgba(255, 82, 82, 0.8);
+}
+
+.light.green {
+  background: radial-gradient(circle, #4caf50, #388e3c);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
+}
+
+.light.blue {
+  background: radial-gradient(circle, #2196f3, #1976d2);
+  box-shadow: 0 0 10px rgba(33, 150, 243, 0.8);
+}
+
+.light.yellow {
+  background: radial-gradient(circle, #ffeb3b, #fbc02d);
+  box-shadow: 0 0 10px rgba(255, 235, 59, 0.8);
+}
+
+.light.on {
+  animation: lightBlink 1.5s ease-in-out infinite;
+}
+
+.light.off {
+  opacity: 0.2;
+  box-shadow: none;
+}
+
+@keyframes lightBlink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+/* Gift Boxes */
+.gifts {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  z-index: 7;
+}
+
+.gift {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  animation: giftBounce 3s ease-in-out infinite;
+}
+
+.gift-1 {
+  left: 20%;
+  background: linear-gradient(135deg, #e91e63, #ad1457);
+  animation-delay: 0s;
+}
+
+.gift-2 {
+  right: 25%;
+  background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+  animation-delay: 1s;
+}
+
+.gift-3 {
+  left: 45%;
+  background: linear-gradient(135deg, #673ab7, #4527a0);
+  animation-delay: 2s;
+}
+
+.ribbon {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.ribbon-vertical {
+  width: 4px;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ribbon-horizontal {
+  height: 4px;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@keyframes giftBounce {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Tree Info */
+.tree-info {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: white;
+  z-index: 20;
+}
+
+.tree-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.tree-info p {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+  opacity: 0.9;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.lights-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.lights-button.on {
+  background: linear-gradient(45deg, #4caf50, #388e3c);
+  color: white;
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.lights-button.off {
+  background: linear-gradient(45deg, #757575, #424242);
+  color: white;
+  box-shadow: 0 4px 8px rgba(117, 117, 117, 0.3);
+}
+
+.lights-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode adjustments */
+.dark .christmas-tree-container {
+  background: linear-gradient(to bottom, #0a0e1a 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .tree-scene {
+    width: 250px;
+    height: 350px;
+  }
+  
+  .layer-1 {
+    width: 130px;
+    height: 65px;
+  }
+  
+  .layer-2 {
+    width: 160px;
+    height: 80px;
+  }
+  
+  .layer-3 {
+    width: 190px;
+    height: 95px;
+  }
+  
+  .tree-info h3 {
+    font-size: 20px;
+  }
+  
+  .tree-info p {
+    font-size: 12px;
+  }
+}

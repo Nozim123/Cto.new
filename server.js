@@ -30,23 +30,116 @@ let database = {
   malls: [
     {
       id: '1',
-      name: 'Family Park',
+      name: 'Family Park Mall',
       description_short: 'Zamonaviy savdo markazi',
       description_full: 'Family Park - bu zamonaviy savdo markazi bo\'lib, unda barcha turdagi do\'konlar joylashgan.',
-      address: 'Samarkand shahri, Amir Temur ko\'chasi 123-uy',
-      work_time: '08:00 - 22:00',
-      opened_date: '2023-01-15',
-      location: { lat: 39.6270, lng: 66.9750 },
-      banner: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800',
+      address: 'Mirzo Ulugbek Street 1, Samarkand 140100, Uzbekistan',
+      work_time: '10:00 AM - 10:00 PM',
+      opened_date: '2018-01-15',
+      location: { lat: 39.6542, lng: 66.9597 },
+      banner: 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=800',
       gallery: [
-        'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400',
+        'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400',
         'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=400'
       ],
-      phone: '+998 94 123 45 67',
+      phone: '+998 (66) 233-30-30',
       social: {
         instagram: 'https://instagram.com/familypark',
         telegram: 'https://t.me/familypark',
-        website: 'https://familypark.uz'
+        website: 'https://familyparkmal.uz'
+      },
+      status: 'open',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '2',
+      name: 'Silk Road Mall',
+      description_short: 'Shaharlararo savdo markazi',
+      description_full: 'Silk Road Mall - bu tarixiy savdo yo\'llari nomi bilan atalgan zamonaviy savdo markazi.',
+      address: 'Registan Street 45, Samarkand 140100, Uzbekistan',
+      work_time: '10:00 AM - 11:00 PM',
+      opened_date: '2022-06-01',
+      location: { lat: 39.6434, lng: 66.9689 },
+      banner: 'https://images.unsplash.com/photo-1555636222-cae846585b47?w=800',
+      gallery: [
+        'https://images.unsplash.com/photo-1555636222-cae846585b47?w=400',
+        'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400'
+      ],
+      phone: '+998 (66) 277-80-80',
+      social: {
+        instagram: 'https://instagram.com/silkroadmall',
+        website: 'https://silkroadmall.uz'
+      },
+      status: 'open',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '3',
+      name: 'Registan Tower Mall',
+      description_short: 'Tarixiy joydagi savdo markazi',
+      description_full: 'Registan Tower Mall - tarixiy Registan maydoni yonida joylashgan savdo markazi.',
+      address: 'Registan Street 2, Samarkand 140100, Uzbekistan',
+      work_time: '9:00 AM - 10:00 PM',
+      opened_date: '2021-03-15',
+      location: { lat: 39.6542, lng: 66.9747 },
+      banner: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800',
+      gallery: [
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
+        'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400'
+      ],
+      phone: '+998 (66) 288-90-90',
+      social: {
+        instagram: 'https://instagram.com/registantower',
+        telegram: 'https://t.me/registantower'
+      },
+      status: 'open',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '4',
+      name: 'Makon Mall',
+      description_short: 'Kelajak texnologiyalari savdo markazi',
+      description_full: 'Makon Mall - zamonaviy texnologiyalar va ekologik dizayn bilan qurilgan savdo markazi.',
+      address: 'Amir Temur Street 15, Samarkand 140100, Uzbekistan',
+      work_time: '10:00 AM - 10:00 PM',
+      opened_date: '2024-01-01',
+      location: { lat: 39.6598, lng: 66.9856 },
+      banner: 'https://images.unsplash.com/photo-1555636222-cae846585b47?w=800',
+      gallery: [
+        'https://images.unsplash.com/photo-1555636222-cae846585b47?w=400',
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400'
+      ],
+      phone: '+998 (66) 299-10-10',
+      social: {
+        instagram: 'https://instagram.com/makonmall',
+        website: 'https://makonmall.uz'
+      },
+      status: 'open',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '5',
+      name: 'Festival Mall',
+      description_short: 'O\'yin-kulgi va savdo markazi',
+      description_full: 'Festival Mall - o\'yin-kulgi, konsertlar va savdoni birlashtirgan yirik majmua.',
+      address: 'Shohruh Mirzo Street 28, Samarkand 140100, Uzbekistan',
+      work_time: '10:00 AM - 12:00 AM',
+      opened_date: '2024-06-01',
+      location: { lat: 39.6523, lng: 66.9767 },
+      banner: 'https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=800',
+      gallery: [
+        'https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=400',
+        'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400'
+      ],
+      phone: '+998 (66) 300-20-20',
+      social: {
+        instagram: 'https://instagram.com/festivalmall',
+        telegram: 'https://t.me/festivalmall',
+        website: 'https://festivalmall.uz'
       },
       status: 'open',
       createdAt: new Date().toISOString(),
@@ -54,6 +147,7 @@ let database = {
     }
   ],
   stores: [
+    // Family Park Mall stores
     {
       id: '1',
       mall_id: '1',
@@ -76,6 +170,240 @@ let database = {
       ],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
+    },
+    {
+      id: '2',
+      mall_id: '1',
+      name: 'Zara',
+      logo: 'https://images.unsplash.com/photo-1592878849121-10e2c0841183?w=200',
+      banner: 'https://images.unsplash.com/photo-1592878849121-10e2c0841183?w=800',
+      category: 'Fashion',
+      description_short: 'Zara zamonaviy moda',
+      description_full: 'Zara - bu zamonaviy moda va kiyim-kechaklar do\'koni.',
+      work_time: '10:00 - 22:00',
+      opened_date: '2023-03-01',
+      phone: '+998 94 123 45 69',
+      social: {
+        instagram: 'https://instagram.com/zara',
+        website: 'https://zara.com'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1592878849121-10e2c0841183?w=400',
+        'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '3',
+      mall_id: '1',
+      name: 'Adidas',
+      logo: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200',
+      banner: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800',
+      category: 'Sport',
+      description_short: 'Adidas sport mollari',
+      description_full: 'Adidas - barcha turdagi sport kiyim va ayaq kiyimlari.',
+      work_time: '09:00 - 21:00',
+      opened_date: '2023-04-01',
+      phone: '+998 94 123 45 70',
+      social: {
+        instagram: 'https://instagram.com/adidas',
+        website: 'https://adidas.com'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
+        'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    // Silk Road Mall stores
+    {
+      id: '4',
+      mall_id: '2',
+      name: 'Apple Store',
+      logo: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=200',
+      banner: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=800',
+      category: 'Electronics',
+      description_short: 'Apple texnologiya do\'koni',
+      description_full: 'Apple rasmiy dileri - iPhone, iPad, Mac va boshqa Apple mahsulotlari.',
+      work_time: '10:00 - 22:00',
+      opened_date: '2022-07-01',
+      phone: '+998 94 123 45 71',
+      social: {
+        instagram: 'https://instagram.com/applesamarkand',
+        website: 'https://apple.com'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=400',
+        'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '5',
+      mall_id: '2',
+      name: 'Samsung',
+      logo: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=200',
+      banner: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=800',
+      category: 'Electronics',
+      description_short: 'Samsung elektronika',
+      description_full: 'Samsung rasmiy dileri - smartfonlar, televizorlar va boshqa elektronika.',
+      work_time: '10:00 - 22:00',
+      opened_date: '2022-08-01',
+      phone: '+998 94 123 45 72',
+      social: {
+        instagram: 'https://instagram.com/samsung',
+        website: 'https://samsung.com'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=400',
+        'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    // Registan Tower Mall stores
+    {
+      id: '6',
+      mall_id: '3',
+      name: 'Local Crafts',
+      logo: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=200',
+      banner: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800',
+      category: 'Handmade',
+      description_short: 'An\'anaviy hunarmandlik',
+      description_full: 'O\'zbekiston an\'anaviy hunarmandlik buyumlari va sovg\'alar.',
+      work_time: '09:00 - 20:00',
+      opened_date: '2021-04-01',
+      phone: '+998 94 123 45 73',
+      social: {
+        instagram: 'https://instagram.com/localcrafts',
+        telegram: 'https://t.me/localcrafts'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400',
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '7',
+      mall_id: '3',
+      name: 'Silk Road Boutique',
+      logo: 'https://images.unsplash.com/photo-1592878849121-10e2c0841183?w=200',
+      banner: 'https://images.unsplash.com/photo-1592878849121-10e2c0841183?w=800',
+      category: 'Fashion',
+      description_short: 'Ipak yo\'li an\'anaviy kiyimlar',
+      description_full: 'An\'anaviy o\'zbek kiyimlari va zamonaviy dizaynlar.',
+      work_time: '10:00 - 21:00',
+      opened_date: '2021-05-01',
+      phone: '+998 94 123 45 74',
+      social: {
+        instagram: 'https://instagram.com/silkroadboutique',
+        website: 'https://silkroadboutique.uz'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1592878849121-10e2c0841183?w=400',
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    // Makon Mall stores
+    {
+      id: '8',
+      mall_id: '4',
+      name: 'Tech World',
+      logo: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=200',
+      banner: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=800',
+      category: 'Electronics',
+      description_short: 'Kelajak texnologiyalari',
+      description_full: 'Eng so\'nggi texnologiya mahsulotlari va gadgetlar.',
+      work_time: '10:00 - 22:00',
+      opened_date: '2024-01-15',
+      phone: '+998 94 123 45 75',
+      social: {
+        instagram: 'https://instagram.com/techworldsamarkand',
+        website: 'https://techworld.uz'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=400',
+        'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '9',
+      mall_id: '4',
+      name: 'Gaming Zone',
+      logo: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200',
+      banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800',
+      category: 'Gaming',
+      description_short: 'O\'yin va Entertainment',
+      description_full: 'Gaming jihozlari, konsollar va o\'yinlar.',
+      work_time: '10:00 - 23:00',
+      opened_date: '2024-02-01',
+      phone: '+998 94 123 45 76',
+      social: {
+        instagram: 'https://instagram.com/gamingzonesamarkand',
+        telegram: 'https://t.me/gamingzone'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400',
+        'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    // Festival Mall stores
+    {
+      id: '10',
+      mall_id: '5',
+      name: 'Entertainment Store',
+      logo: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200',
+      banner: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
+      category: 'Entertainment',
+      description_short: 'O\'yin-kulgi mollari',
+      description_full: 'Filmlar, konsertlar va boshqa o\'yin-kulgi mahsulotlari.',
+      work_time: '10:00 - 24:00',
+      opened_date: '2024-06-15',
+      phone: '+998 94 123 45 77',
+      social: {
+        instagram: 'https://instagram.com/entertainmentstore',
+        website: 'https://entertainmentstore.uz'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400',
+        'https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '11',
+      mall_id: '5',
+      name: 'Food Court Central',
+      logo: 'https://images.unsplash.com/photo-1514516870926-205989d3d2b3?w=200',
+      banner: 'https://images.unsplash.com/photo-1514516870926-205989d3d2b3?w=800',
+      category: 'Food',
+      description_short: 'Oziq-ovqat va ichimliklar',
+      description_full: 'Turli xil milliy va xorijiy taomlar.',
+      work_time: '10:00 - 24:00',
+      opened_date: '2024-06-20',
+      phone: '+998 94 123 45 78',
+      social: {
+        instagram: 'https://instagram.com/foodcourtcentral',
+        telegram: 'https://t.me/foodcourtcentral'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1514516870926-205989d3d2b3?w=400',
+        'https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=400'
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     }
   ],
   products: [
@@ -87,6 +415,114 @@ let database = {
       category: 'Footwear',
       price: '450,000',
       gallery: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'],
+      stock: 'available',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '2',
+      store_id: '1',
+      name: 'Nike Air Max 270',
+      description: 'Zamonaviy sport tuflilar',
+      category: 'Footwear',
+      price: '320,000',
+      gallery: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'],
+      stock: 'available',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '3',
+      store_id: '2',
+      name: 'Zara Women Dress',
+      description: 'Zamonaviy ayollar ko\'ylagi',
+      category: 'Clothing',
+      price: '180,000',
+      gallery: ['https://images.unsplash.com/photo-1592878849121-10e2c0841183?w=400'],
+      stock: 'available',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '4',
+      store_id: '2',
+      name: 'Zara Men Jacket',
+      description: 'Erkaklar pidjagi',
+      category: 'Clothing',
+      price: '280,000',
+      gallery: ['https://images.unsplash.com/photo-1592878849121-10e2c0841183?w=400'],
+      stock: 'available',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '5',
+      store_id: '3',
+      name: 'Adidas Ultraboost',
+      description: 'Adidas qo\'shimcha qulay tuflilar',
+      category: 'Footwear',
+      price: '380,000',
+      gallery: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'],
+      stock: 'available',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '6',
+      store_id: '4',
+      name: 'iPhone 15 Pro',
+      description: 'Apple iPhone 15 Pro',
+      category: 'Smartphone',
+      price: '2,500,000',
+      gallery: ['https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=400'],
+      stock: 'available',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '7',
+      store_id: '4',
+      name: 'MacBook Air M2',
+      description: 'Apple MacBook Air M2',
+      category: 'Laptop',
+      price: '4,200,000',
+      gallery: ['https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=400'],
+      stock: 'available',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '8',
+      store_id: '5',
+      name: 'Samsung Galaxy S24',
+      description: 'Samsung Galaxy S24 Ultra',
+      category: 'Smartphone',
+      price: '2,200,000',
+      gallery: ['https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=400'],
+      stock: 'available',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '9',
+      store_id: '8',
+      name: 'Gaming Laptop',
+      description: 'O\'yin uchun yuqori unumli noutbuk',
+      category: 'Electronics',
+      price: '5,800,000',
+      gallery: ['https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=400'],
+      stock: 'available',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '10',
+      store_id: '8',
+      name: 'Smart Watch',
+      description: 'Aqlli soat',
+      category: 'Electronics',
+      price: '800,000',
+      gallery: ['https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=400'],
       stock: 'available',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -125,6 +561,98 @@ let database = {
       hasNew: true,
       viewed: false,
       timestamp: '2h ago',
+      isActive: true,
+      startDate: '2024-01-01',
+      endDate: '2024-12-31',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '2',
+      mall_id: '2',
+      title: 'Apple Store',
+      thumbnail: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=200',
+      media: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=800',
+      type: 'image',
+      content: {
+        title: 'iPhone 15 Series',
+        description: 'The latest iPhone is here!',
+        discount: '15% OFF',
+        cta: 'Learn More'
+      },
+      isPromoted: true,
+      hasNew: true,
+      viewed: false,
+      timestamp: '4h ago',
+      isActive: true,
+      startDate: '2024-01-01',
+      endDate: '2024-12-31',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '3',
+      mall_id: '3',
+      title: 'Local Crafts',
+      thumbnail: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=200',
+      media: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800',
+      type: 'image',
+      content: {
+        title: 'Handmade Treasures',
+        description: 'Unique local crafts and souvenirs',
+        discount: '20% OFF',
+        cta: 'Explore'
+      },
+      isPromoted: false,
+      hasNew: false,
+      viewed: false,
+      timestamp: '6h ago',
+      isActive: true,
+      startDate: '2024-01-01',
+      endDate: '2024-12-31',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '4',
+      mall_id: '4',
+      title: 'Tech World',
+      thumbnail: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=200',
+      media: 'https://images.unsplash.com/photo-1611498549006-f79e35f62a8e?w=800',
+      type: 'image',
+      content: {
+        title: 'Future Tech',
+        description: 'Latest gadgets and innovations',
+        discount: '25% OFF',
+        cta: 'Discover'
+      },
+      isPromoted: true,
+      hasNew: true,
+      viewed: false,
+      timestamp: '8h ago',
+      isActive: true,
+      startDate: '2024-01-01',
+      endDate: '2024-12-31',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '5',
+      mall_id: '5',
+      title: 'Festival Mall',
+      thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200',
+      media: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
+      type: 'image',
+      content: {
+        title: 'Entertainment Hub',
+        description: 'Movies, games and more!',
+        discount: 'Family Special',
+        cta: 'Visit Now'
+      },
+      isPromoted: false,
+      hasNew: true,
+      viewed: false,
+      timestamp: '10h ago',
       isActive: true,
       startDate: '2024-01-01',
       endDate: '2024-12-31',
