@@ -4,7 +4,6 @@ import { useLanguage } from '../contexts/LanguageContext'
 import HeroSection from '../components/HeroSection'
 import MallCard from '../components/MallCard'
 import { SkeletonMallCard } from '../components/SkeletonCard'
-import SponsoredContentSection from '../components/SponsoredContentSection'
 import RecentlyViewedSection from '../components/RecentlyViewedSection'
 import TrustSection from '../components/TrustSection'
 import mallsData from '../data/malls.json'
@@ -114,7 +113,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <SponsoredContentSection />
       <RecentlyViewedSection />
 
       {/* Featured Malls Section - Mobile Optimized */}
