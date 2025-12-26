@@ -1,7 +1,7 @@
 {
-  "name": "samarkand-mall-directory",
-  "version": "1.0.0",
-  "description": "Samarkand Mall Directory - Your gateway to premium shopping destinations",
+  "name": "mega-travel-center-mtc",
+  "version": "2.0.0",
+  "description": "Mega Travel Center (MTC) - Ultra-Premium Digital Mall Platform",
   "private": true,
   "dependencies": {
     "@types/three": "^0.182.0",

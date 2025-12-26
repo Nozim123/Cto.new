@@ -144,6 +144,357 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
+/* ============================================
+   MTC Ultra-Premium Design System Styles
+   ============================================ */
+
+/* MTC Primary Background */
+.mtc-background {
+  background-color: rgba(37, 40, 54, 1);
+}
+
+/* MTC Glassmorphism Premium */
+.mtc-glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.mtc-glass-light {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* MTC Premium Card Styles */
+.mtc-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+.mtc-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25), 0 0 20px rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.mtc-card-3d {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.mtc-card-3d-inner {
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.mtc-card-3d:hover .mtc-card-3d-inner {
+  transform: rotateX(5deg) rotateY(5deg);
+}
+
+/* MTC Premium Button Styles */
+.mtc-button-primary {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.mtc-button-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.mtc-button-primary:hover::before {
+  left: 100%;
+}
+
+.mtc-button-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.6), 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.mtc-button-primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+.mtc-button-secondary {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border: 2px solid rgba(59, 130, 246, 0.5);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mtc-button-secondary:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+}
+
+.mtc-button-ghost {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.625rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+}
+
+.mtc-button-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* MTC Gradient Text */
+.mtc-gradient-text {
+  background: linear-gradient(135deg, #3B82F6 0%, #A855F7 50%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
+  animation: gradient 4s ease infinite;
+}
+
+.mtc-gradient-text-gold {
+  background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #F59E0B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
+  animation: gradient 3s ease infinite;
+}
+
+/* MTC Premium Input Styles */
+.mtc-input {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9375rem;
+  transition: all 0.3s ease;
+}
+
+.mtc-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.mtc-input:focus {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), 0 0 20px rgba(59, 130, 246, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* MTC Badge Styles */
+.mtc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.mtc-badge-primary {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.mtc-badge-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.mtc-badge-warning {
+  background: rgba(245, 158, 11, 0.2);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.mtc-badge-danger {
+  background: rgba(239, 68, 68, 0.2);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* MTC Premium Card Image Hover */
+.mtc-card-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem 1.5rem 0 0;
+}
+
+.mtc-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mtc-card:hover .mtc-card-image {
+  transform: scale(1.08);
+}
+
+.mtc-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 50%,
+    rgba(37, 40, 54, 0.3) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mtc-card:hover .mtc-card-overlay {
+  opacity: 1;
+}
+
+/* MTC Shimmer Loading Effect */
+.mtc-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: mtcShimmer 1.5s linear infinite;
+}
+
+/* MTC Premium Scrollbar */
+.mtc-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.mtc-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.mtc-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.mtc-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* MTC Premium Typography */
+.mtc-heading-xl {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 1);
+}
+
+.mtc-heading-lg {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 1);
+}
+
+.mtc-heading-md {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 1);
+}
+
+.mtc-heading-sm {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  color: rgba(255, 255, 255, 1);
+}
+
+.mtc-body-lg {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0;
+}
+
+.mtc-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0;
+}
+
+.mtc-body-sm {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.01em;
+}
+
+.mtc-caption {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
 /* Enhanced Animation Keyframes */
 @keyframes fadeIn {
   from {
@@ -312,6 +663,60 @@ h1, h2, h3, h4, h5, h6 {
   }
   50% {
     background-position: 100% 50%;
+  }
+}
+
+/* ============================================
+   MTC Premium Animation Keyframes
+   ============================================ */
+
+@keyframes mtcFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes mtcPulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3);
+  }
+}
+
+@keyframes mtcShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes mtcSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mtcScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes mtcSnowfall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
   }
 }
 
@@ -662,4 +1067,121 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   MTC Premium Grid & Layout
+   ============================================ */
+
+.mtc-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.mtc-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.mtc-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.mtc-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.mtc-grid-responsive {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+@media (max-width: 768px) {
+  .mtc-grid-3,
+  .mtc-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .mtc-grid-2,
+  .mtc-grid-3,
+  .mtc-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mtc-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .mtc-container {
+    padding: 0 1rem;
+  }
+}
+
+.mtc-section {
+  padding: 5rem 0;
+}
+
+@media (max-width: 768px) {
+  .mtc-section {
+    padding: 3rem 0;
+  }
+}
+
+.mtc-gap-sm { gap: 0.75rem; }
+.mtc-gap-md { gap: 1.5rem; }
+.mtc-gap-lg { gap: 2.5rem; }
+.mtc-gap-xl { gap: 4rem; }
+
+/* MTC Premium Hover Effects */
+.mtc-hover-lift {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mtc-hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.mtc-hover-glow {
+  transition: box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mtc-hover-glow:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2);
+}
+
+.mtc-hover-scale {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mtc-hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* MTC Premium Border Radius */
+.mtc-radius-xl { border-radius: 1rem; }
+.mtc-radius-2xl { border-radius: 1.25rem; }
+.mtc-radius-3xl { border-radius: 1.5rem; }
+.mtc-radius-full { border-radius: 9999px; }
+
+/* MTC Animation Classes */
+.animate-mtc-float {
+  animation: mtcFloat 8s ease-in-out infinite;
+}
+
+.animate-mtc-pulse-glow {
+  animation: mtcPulseGlow 3s ease-in-out infinite;
+}
+
+.animate-mtc-slide-up {
+  animation: mtcSlideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.animate-mtc-scale-in {
+  animation: mtcScaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }

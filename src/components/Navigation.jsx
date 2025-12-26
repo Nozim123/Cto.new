@@ -30,24 +30,19 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 shadow-lg backdrop-blur-xl transition-all duration-500 ${
-        darkMode
-          ? 'bg-gray-900/95 text-cream border-b border-purple-500/20'
-          : 'bg-white/95 text-navy border-b border-purple-200/50'
-      }`}
+      className={`sticky top-0 z-50 shadow-lg backdrop-blur-xl transition-all duration-500 mtc-glass`}
     >
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2 group">
             <div className="relative">
-              <span className="font-display text-xl lg:text-2xl font-bold bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:via-purple-500 group-hover:to-purple-700 transition-all duration-500 transform group-hover:scale-105">
+              <span className="font-display text-xl lg:text-2xl font-bold mtc-gradient-text group-hover:scale-105 transition-transform duration-300">
                 MTC
               </span>
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-purple-600 group-hover:w-full transition-all duration-500"></div>
+              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-600 group-hover:w-full transition-all duration-500"></div>
             </div>
             <span
-              className="font-display text-sm lg:text-base font-semibold hidden sm:inline transition-all duration-300 hover:scale-110 opacity-70"
-              style={{ color: seasonalColors.primary }}
+              className="font-display text-sm lg:text-base font-semibold hidden sm:inline transition-all duration-300 hover:scale-110 opacity-70 text-white/80"
             >
               Mega Travel Center
             </span>

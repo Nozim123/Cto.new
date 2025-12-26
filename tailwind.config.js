@@ -13,7 +13,37 @@ export default {
         cream: '#F4EFE7',
         sage: '#8FA89A',
         accent: '#E8B4B8',
-        primary: 'rgb(37, 40, 54)',
+        primary: 'rgba(37, 40, 54, 1)',
+        
+        // MTC Design System Colors
+        mtc: {
+          bg: 'rgba(37, 40, 54, 1)',
+          text: {
+            primary: '#FFFFFF',
+            secondary: 'rgba(255, 255, 255, 0.7)',
+            tertiary: 'rgba(255, 255, 255, 0.5)',
+          },
+          electric: {
+            blue: '#3B82F6',
+            blueDark: '#2563EB',
+          },
+          emerald: {
+            400: '#34D399',
+            500: '#10B981',
+            600: '#059669',
+          },
+          gold: {
+            400: '#FBBF24',
+            500: '#F59E0B',
+            600: '#D97706',
+          },
+          glass: {
+            bg: 'rgba(255, 255, 255, 0.08)',
+            border: 'rgba(255, 255, 255, 0.1)',
+            shadow: 'rgba(0, 0, 0, 0.3)',
+          },
+        },
+        
         purple: {
           50: '#faf5ff',
           100: '#f3e8ff',
@@ -57,6 +87,14 @@ export default {
         'morph': 'morph 8s ease-in-out infinite',
         'glow': 'glow 2s ease-in-out infinite alternate',
         'tilt': 'tilt 10s ease-in-out infinite',
+        
+        // MTC Premium Animations
+        'mtc-float': 'mtcFloat 8s ease-in-out infinite',
+        'mtc-pulse-glow': 'mtcPulseGlow 3s ease-in-out infinite',
+        'mtc-shimmer': 'mtcShimmer 2s linear infinite',
+        'mtc-slide-up': 'mtcSlideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        'mtc-scale-in': 'mtcScaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        'mtc-snowfall': 'mtcSnowfall 15s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -132,6 +170,36 @@ export default {
           '50%': { transform: 'rotate(0deg)' },
           '75%': { transform: 'rotate(-2deg)' },
         },
+        
+        // MTC Premium Animation Keyframes
+        mtcFloat: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-15px)' },
+        },
+        mtcPulseGlow: {
+          '0%, 100%': { 
+            'box-shadow': '0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.2)' 
+          },
+          '50%': { 
+            'box-shadow': '0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3)' 
+          },
+        },
+        mtcShimmer: {
+          '0%': { 'background-position': '-200% 0' },
+          '100%': { 'background-position': '200% 0' },
+        },
+        mtcSlideUp: {
+          '0%': { opacity: '0', transform: 'translateY(40px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        mtcScaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.9)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        mtcSnowfall: {
+          '0%': { transform: 'translateY(-100vh) rotate(0deg)' },
+          '100%': { transform: 'translateY(100vh) rotate(360deg)' },
+        },
       },
       boxShadow: {
         'purple-glow': '0 0 20px rgba(168, 85, 247, 0.4)',
@@ -141,6 +209,15 @@ export default {
         '3d-lg': '6px 6px 12px rgba(0, 0, 0, 0.3)',
         '3d-xl': '8px 8px 16px rgba(0, 0, 0, 0.3)',
         'inner-3d': 'inset 2px 2px 4px rgba(0, 0, 0, 0.3)',
+        
+        // MTC Premium Shadows
+        'mtc-card': '0 4px 24px rgba(0, 0, 0, 0.15)',
+        'mtc-card-hover': '0 12px 48px rgba(0, 0, 0, 0.25)',
+        'mtc-glow': '0 0 20px rgba(59, 130, 246, 0.3)',
+        'mtc-glow-lg': '0 0 40px rgba(59, 130, 246, 0.5)',
+        'mtc-gold-glow': '0 0 20px rgba(245, 158, 11, 0.3)',
+        'mtc-emerald-glow': '0 0 20px rgba(16, 185, 129, 0.3)',
+        'mtc-glass': '0 8px 32px rgba(0, 0, 0, 0.3)',
       },
     },
   },

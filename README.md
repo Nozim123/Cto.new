@@ -1,74 +1,77 @@
 # Mega Travel Center (MTC) 🌟
 
-> A world-class, ultra-modern digital platform combining premium UI/UX, advanced animations, and interactive 3D elements.
+> Ultra-Premium Digital Mall Platform for Samarkand — Apple-level minimalism meets Amazon usability.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 ![React](https://img.shields.io/badge/React-18.2.0-61dafb.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 ## ✨ Features
 
-### 🎨 Premium Design Language
-- **Ultra-modern UI/UX** with dark luxury theme
-- **Glassmorphism** effects throughout
-- **Premium color palette** with purple gradients and gold accents
-- **Responsive design** optimized for all devices
+### 🎨 MTC Ultra-Premium Design System
+- **Cinematic Dark Theme**: Primary background `rgba(37, 40, 54, 1)`
+- **Apple-level Minimalism**: Clean, uncluttered interfaces with intentional white space
+- **Amazon/Uzum Usability**: Intuitive navigation, powerful search, smart recommendations
+- **Electric Blue & Purple Gradients**: Modern, vibrant accent colors
+- **Gold Premium Accents**: Luxury highlights and details
+- **Glassmorphism Effects**: Subtle backdrop blur with elegant borders
+- **Premium Typography**: Playfair Display (headings) + Inter (body)
+- **Smooth Micro-animations**: Cubic-bezier easing, realistic motion
+- **Mobile-First Design**: Large touch targets, one-hand navigation
 
-### 🌌 Interactive Background System
-- **GPU-accelerated** canvas-based particle animation
-- **Mouse-responsive** parallax effects
-- **Seasonal variations** with dynamic color schemes
-- **Performance-optimized** with low CPU usage
-- Depth-layered particles with connection lines
+### 🌌 MTC Premium Background Animation
+- **Subtle Particle System**: Glowing orbs with mouse parallax
+- **Winter Snow Effect**: Soft, delicate snowflakes with natural motion
+- **Canvas-Based**: GPU-accelerated for 60fps performance
+- **Non-Intrusive**: Low opacity, refined aesthetics
+- **Mouse Interaction**: Particles respond to cursor movement
 
-### 🎯 3D Interactive Elements
-- **Button3D component** with mouse-based tilt interaction
-- **Perspective transforms** on hover
-- **Multiple button variants**: primary, secondary, accent, outline, ghost
-- **Shine effect** animations
-- Tactile and luxurious feel
+### 🎯 Premium Card System
+- **3D Hover Effects**: Perspective transforms with rotation
+- **Smooth Lift**: Elevation on hover with shadow bloom
+- **Image Zoom**: Cinematic scale effect on hover
+- **Glassmorphism Overlay**: Premium depth and elegance
+- **Interactive Elements**: Wishlist hearts, rating badges, status indicators
 
-### 🎭 Seasonal Visual Transformations
-Automatic seasonal adaptations with smooth transitions:
-- 🌸 **Spring**: Soft pastels, floating blossoms
-- ☀️ **Summer**: Warm glows, sun-inspired effects
-- 🍁 **Autumn**: Falling leaves, amber tones
-- ❄️ **Winter**: Snow particles, frosted glass, cool blues
+### ⚡ MTC Button System
+- **Primary**: Electric blue gradient with glow effect
+- **Secondary**: Outlined style with hover fill
+- **Ghost**: Minimal style with subtle borders
+- **Shimmer Animation**: Elegant shine sweep effect
+- **Scale Feedback**: Active state with slight reduction
 
-### ⚡ Micro-interactions
-- **AnimatedCounter** with scroll-triggered animations
-- **Scroll reveal** effects with intersection observer
-- **Parallax scrolling** for depth
-- **Hover-activated reveals**
-- **Page transitions** with smooth animations
+### 🏬 Mall Showcase
+- **Cinematic Hero**: Full-width parallax with gradient overlay
+- **3D Mall Cards**: Premium hover effects with detailed information
+- **Real-time Status**: Open/Closed/Coming Soon badges
+- **Rating System**: Star ratings with review counts
+- **Interactive Stats**: Shop count, visitors, ratings
 
-### 🌍 Multi-language Support
-- Uzbek (default)
-- Russian
-- English
-- Persistent language selection
+### 📦 Product System
+- **Uzum/Amazon Style Grid**: Clean, organized product listings
+- **Premium Product Cards**: Image zoom, wishlist, rating badges
+- **Discount Badges**: Strikethrough prices, percentage savings
+- **Quick Actions**: Add to cart, wishlist, quick view
+- **Filter System**: Category, price, rating, availability
 
-### 🌓 Dark Mode
-- Premium dark background: `rgba(37, 40, 54, 1)`
-- Smooth transitions between modes
-- Persistent user preference
+### 📱 Mobile UX (Critical)
+- **Sticky Bottom Navigation**: Home | Malls | Search | Wishlist | Profile
+- **Large Touch Targets**: Minimum 48x48px for buttons
+- **Thumb-Zone Optimization**: One-hand friendly interactions
+- **Smooth Scrolling**: Native scroll behavior with momentum
+- **Pull-to-Refresh**: Standard mobile patterns
 
 ### 🔐 Admin Panel
 Fully functional enterprise-grade admin system:
-- Mall management (CRUD)
-- Store management
-- Product management
-- Banner management
-- Media library
-- User roles & permissions
-- JWT authentication
+- Mall management (CRUD with floor plans)
+- Store management (locations, hours, categories)
+- Product management (inventory, pricing, discounts)
+- Promotion management (flash sales, time-limited offers)
+- Event management (calendar, tickets, capacity)
+- User roles & permissions (RBAC)
+- JWT authentication (secure token-based)
+- Real-time analytics dashboard
 - **Hidden from public** - accessible only via `/admin/login`
-
-### 📱 Mobile Optimization
-- Touch-friendly interface
-- Bottom navigation bar
-- Responsive breakpoints
-- Optimized performance
 
 ### 🤖 Telegram Bot Integration
 - **Full feature parity** with website

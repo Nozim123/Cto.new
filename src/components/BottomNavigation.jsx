@@ -37,9 +37,7 @@ export default function BottomNavigation() {
   ]
 
   return (
-    <nav className={`md:hidden fixed bottom-0 left-0 right-0 z-50
-                    ${darkMode ? 'bg-gray-900/95 backdrop-blur-lg border-gray-700' : 'bg-white/95 backdrop-blur-lg border-gray-200'}
-                    border-t shadow-2xl safe-area-inset`}>
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 mtc-glass border-t border-white/10 safe-area-inset">
       <div className="grid grid-cols-4 h-[70px]">
         {navItems.map((item) => {
           const active = isActive(item.path)
@@ -50,10 +48,8 @@ export default function BottomNavigation() {
               href={item.path}
               className={`flex flex-col items-center justify-center gap-1 transition-all duration-300
                         ${active
-                          ? 'text-purple-600 dark:text-purple-400'
-                          : darkMode
-                            ? 'text-gray-400 hover:text-purple-400'
-                            : 'text-gray-500 hover:text-purple-600'
+                          ? 'text-blue-400'
+                          : 'text-white/60 hover:text-white/90'
                         }`}
             >
               <Icon size={22} strokeWidth={active ? 2.5 : 2} />
@@ -65,10 +61,8 @@ export default function BottomNavigation() {
               to={item.path}
               className={`flex flex-col items-center justify-center gap-1 transition-all duration-300
                         ${active
-                          ? 'text-purple-600 dark:text-purple-400'
-                          : darkMode
-                            ? 'text-gray-400 hover:text-purple-400'
-                            : 'text-gray-500 hover:text-purple-600'
+                          ? 'text-blue-400'
+                          : 'text-white/60 hover:text-white/90'
                         }`}
             >
               <Icon size={22} strokeWidth={active ? 2.5 : 2} />

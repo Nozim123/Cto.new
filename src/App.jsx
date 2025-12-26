@@ -8,7 +8,8 @@ import Navigation from './components/Navigation'
 import Footer from './components/Footer'
 import BottomNavigation from './components/BottomNavigation'
 import SeasonalBackground from './components/SeasonalBackground'
-import HomePage from './pages/HomePage'
+import MTCHomePage from './pages/MTCHomePage'
+import MTCBackground from './components/MTCBackground'
 import MallDetailsPage from './pages/MallDetailsPage'
 import StoreDirectoryPage from './pages/StoreDirectoryPage'
 import StoreDetailsPage from './pages/StoreDetailsPage'
@@ -64,9 +65,10 @@ function AppContent() {
   const isAdminRoute = location.pathname.startsWith('/admin')
 
   return (
-    <div className="flex flex-col min-h-screen bg-cream dark:bg-primary transition-colors duration-300 relative">
+    <div className="flex flex-col min-h-screen mtc-background transition-colors duration-300 relative">
       <SeasonalBackground />
-      {/* Decorations removed per request */}
+      <MTCBackground />
+      {/* MTC Premium Design System Applied */}
       
       {/* Public routes */}
       <Routes>
@@ -108,7 +110,7 @@ function AppContent() {
             {!isAdminRoute && <Navigation />}
             <main className={`flex-grow relative z-10 ${!isAdminRoute ? 'pb-24 md:pb-0' : ''}`}>
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<MTCHomePage />} />
                 <Route path="/search" element={<SearchResultsPage />} />
                 <Route path="/promotions" element={<PromotionsPage />} />
                 <Route path="/events" element={<EventsPage />} />
