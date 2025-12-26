@@ -74,6 +74,21 @@ export const bannerAPI = {
   delete: (id) => api.delete(`/banners/${id}`),
 };
 
+// Events API
+export const eventAPI = {
+  getAll: (mallId, type) => api.get('/events', { params: { mall_id: mallId, type } }),
+  getById: (id) => api.get(`/events/${id}`),
+  create: (data) => api.post('/events', data),
+  update: (id, data) => api.put(`/events/${id}`, data),
+  delete: (id) => api.delete(`/events/${id}`),
+};
+
+// Bookings API (admin)
+export const bookingAPI = {
+  getAll: (params) => api.get('/bookings', { params }),
+  update: (id, data) => api.put(`/bookings/${id}`, data),
+};
+
 // Settings API
 export const settingsAPI = {
   get: () => api.get('/settings'),

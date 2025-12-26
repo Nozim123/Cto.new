@@ -29,6 +29,7 @@ import SellerDashboardPage from './pages/SellerDashboardPage'
 import CmsPage from './pages/CmsPage'
 import UserProfilePage from './pages/UserProfilePage'
 import BlogPage from './pages/BlogPage'
+import EventsPage from './pages/EventsPage'
 import CompareBar from './components/CompareBar'
 import NotFoundPage from './components/NotFoundPage'
 import NewYearAnimations from './components/NewYearAnimations'
@@ -53,6 +54,9 @@ import CmsPagesPage from './admin/pages/CmsPagesPage'
 import FeedbackAdminPage from './admin/pages/FeedbackAdminPage'
 import SellerApprovalsPage from './admin/pages/SellerApprovalsPage'
 import SeasonEnginePage from './admin/pages/SeasonEnginePage'
+import EventListPage from './admin/pages/EventListPage'
+import EventFormPage from './admin/pages/EventFormPage'
+import BookingListPage from './admin/pages/BookingListPage'
 import { ProtectedRoute } from './admin/hooks/useAuth'
 
 // Component to handle route-based navigation
@@ -88,6 +92,10 @@ function AppContent() {
               <Route path="/admin/stories" element={<StoryListPage />} />
               <Route path="/admin/stories/new" element={<StoryFormPage />} />
               <Route path="/admin/stories/:id/edit" element={<StoryFormPage />} />
+              <Route path="/admin/events" element={<EventListPage />} />
+              <Route path="/admin/events/new" element={<EventFormPage />} />
+              <Route path="/admin/events/:id/edit" element={<EventFormPage />} />
+              <Route path="/admin/bookings" element={<BookingListPage />} />
               <Route path="/admin/sellers" element={<SellerApprovalsPage />} />
               <Route path="/admin/season" element={<SeasonEnginePage />} />
               <Route path="/admin/cms" element={<CmsPagesPage />} />
@@ -104,6 +112,7 @@ function AppContent() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/search" element={<SearchResultsPage />} />
                 <Route path="/promotions" element={<PromotionsPage />} />
+                <Route path="/events" element={<EventsPage />} />
                 <Route path="/stores" element={<StoresPage />} />
                 <Route path="/account" element={<AccountPage />} />
                 <Route path="/compare" element={<ComparePage />} />

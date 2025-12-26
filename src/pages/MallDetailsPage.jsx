@@ -12,6 +12,7 @@ import RealTimeHours from '../components/RealTimeHours'
 import Button3D from '../components/Button3D'
 import ReviewsSection from '../components/ReviewsSection'
 import SmartRecommendations from '../components/SmartRecommendations'
+import TicketsEventsHub from '../components/TicketsEventsHub'
 
 export default function MallDetailsPage() {
   const { mallId } = useParams()
@@ -165,7 +166,7 @@ export default function MallDetailsPage() {
         <div className="py-10 border-y border-white/5 bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-yellow-900/20 backdrop-blur-sm mb-16">
           <div className="max-w-7xl mx-auto">
             <h3 className="px-4 lg:px-8 mb-6 font-display text-xl font-bold dark:text-white flex items-center gap-2">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-yellow-500">●</span> 
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-yellow-500">●</span>
               Live Stories
             </h3>
             <InstagramStories stories={stories} />
@@ -173,8 +174,13 @@ export default function MallDetailsPage() {
         </div>
       )}
 
-      {/* Interactive Map & Location */}
+      {/* Tickets & Events Hub */}
       <section className="max-w-7xl mx-auto px-4 lg:px-8 mb-20">
+        <TicketsEventsHub mallId={mallId} mallName={mall.name} />
+      </section>
+
+      {/* Interactive Map & Location */}
+
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
                 <h2 className="text-3xl font-display font-bold mb-6 dark:text-white">About {mall.name}</h2>
