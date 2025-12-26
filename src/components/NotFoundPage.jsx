@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
+import { Home, Building2, ShoppingBag, Map, Compass, AlertCircle } from 'lucide-react'
 
 export default function NotFoundPage() {
   const { darkMode } = useTheme()
@@ -11,14 +12,14 @@ export default function NotFoundPage() {
   }, [])
 
   const popularPages = [
-    { name: 'Home', path: '/', icon: '🏠' },
-    { name: 'Malls', path: '/mall/family-park', icon: '🏢' },
-    { name: 'Stores', path: '/stores', icon: '🛍️' },
-    { name: 'Map', path: '/map', icon: '🗺️' },
+    { name: 'Home', path: '/', icon: Home },
+    { name: 'Malls', path: '/mall/family-park', icon: Building2 },
+    { name: 'Stores', path: '/stores', icon: ShoppingBag },
+    { name: 'Map', path: '/map', icon: Map },
   ]
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 ${
+    <div className={`min-h-screen flex items-center justify-center p-4 pb-24 md:pb-0 ${
       darkMode ? 'bg-gray-900' : 'bg-gray-50'
     }`}>
       <div className="max-w-2xl mx-auto text-center">
@@ -31,19 +32,19 @@ export default function NotFoundPage() {
               404
             </span>
           </div>
-          
-          {/* Floating elements */}
-          <div className="absolute -top-4 -left-4 text-4xl animate-bounce" style={{ animationDelay: '0.2s' }}>
-            🎯
+
+          {/* Floating elements - using icons */}
+          <div className="absolute -top-4 -left-4 text-4xl animate-bounce text-purple-400" style={{ animationDelay: '0.2s' }}>
+            <Compass size={32} />
           </div>
-          <div className="absolute -top-2 -right-6 text-3xl animate-bounce" style={{ animationDelay: '0.5s' }}>
-            📦
+          <div className="absolute -top-2 -right-6 text-3xl animate-bounce text-blue-400" style={{ animationDelay: '0.5s' }}>
+            <Building2 size={28} />
           </div>
-          <div className="absolute -bottom-4 -left-2 text-3xl animate-bounce" style={{ animationDelay: '0.8s' }}>
-            🛍️
+          <div className="absolute -bottom-4 -left-2 text-3xl animate-bounce text-pink-400" style={{ animationDelay: '0.8s' }}>
+            <ShoppingBag size={28} />
           </div>
-          <div className="absolute -bottom-2 -right-4 text-4xl animate-bounce" style={{ animationDelay: '1.1s' }}>
-            🏪
+          <div className="absolute -bottom-2 -right-4 text-4xl animate-bounce text-emerald-400" style={{ animationDelay: '1.1s' }}>
+            <AlertCircle size={32} />
           </div>
         </div>
 
@@ -56,17 +57,18 @@ export default function NotFoundPage() {
           }`}>
             Oops! Page Not Found
           </h1>
-          
+
           <p className={`text-lg mb-6 ${
             darkMode ? 'text-gray-300' : 'text-gray-600'
           }`}>
-            The page you're looking for doesn't exist or has been moved. 
+            The page you're looking for doesn't exist or has been moved.
             Don't worry, we'll help you find what you're looking for!
           </p>
 
           {/* Coming Soon Animation */}
-          <div className={`inline-block px-6 py-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold mb-8 animate-pulse`}>
-            🚧 Coming Soon - We're adding more awesome features!
+          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold mb-8 animate-pulse">
+            <AlertCircle size={18} />
+            <span>Coming Soon - We're adding more awesome features!</span>
           </div>
         </div>
 
@@ -74,18 +76,20 @@ export default function NotFoundPage() {
         <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-12 transition-all duration-1000 delay-500 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          <Link 
+          <Link
             to="/"
-            className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+            className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-semibold flex items-center justify-center gap-2"
           >
-            🏠 Back to Home
+            <Home size={20} />
+            <span>Back to Home</span>
           </Link>
-          
-          <Link 
+
+          <Link
             to="/map"
-            className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
+            className="px-8 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors font-semibold flex items-center justify-center gap-2"
           >
-            🗺️ View Map
+            <Map size={20} />
+            <span>View Map</span>
           </Link>
         </div>
 
@@ -98,27 +102,32 @@ export default function NotFoundPage() {
           }`}>
             Or try these popular pages:
           </h2>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {popularPages.map((page, index) => (
-              <Link
-                key={page.path}
-                to={page.path}
-                className={`p-4 rounded-xl border transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                  darkMode 
-                    ? 'bg-gray-800 border-gray-700 hover:border-blue-500' 
-                    : 'bg-white border-gray-200 hover:border-blue-500'
-                }`}
-                style={{ animationDelay: `${0.9 + index * 0.1}s` }}
-              >
-                <div className="text-3xl mb-2">{page.icon}</div>
-                <div className={`font-medium ${
-                  darkMode ? 'text-white' : 'text-gray-900'
-                }`}>
-                  {page.name}
-                </div>
-              </Link>
-            ))}
+            {popularPages.map((page, index) => {
+              const Icon = page.icon
+              return (
+                <Link
+                  key={page.path}
+                  to={page.path}
+                  className={`p-4 rounded-xl border transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                    darkMode
+                      ? 'bg-gray-800 border-gray-700 hover:border-purple-500'
+                      : 'bg-white border-gray-200 hover:border-purple-500'
+                  }`}
+                  style={{ animationDelay: `${0.9 + index * 0.1}s` }}
+                >
+                  <div className="text-3xl mb-2 flex items-center justify-center">
+                    <Icon size={32} className="text-purple-500" />
+                  </div>
+                  <div className={`font-medium ${
+                    darkMode ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    {page.name}
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
 
@@ -135,11 +144,11 @@ export default function NotFoundPage() {
               />
             ))}
           </div>
-          
+
           <p className={`text-sm mt-4 ${
             darkMode ? 'text-gray-400' : 'text-gray-500'
           }`}>
-            While you're here, why not explore our amazing malls? 🏢✨
+            While you're here, why not explore our amazing malls?
           </p>
         </div>
       </div>
