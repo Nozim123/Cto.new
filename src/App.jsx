@@ -34,7 +34,6 @@ import CompareBar from './components/CompareBar'
 import NotFoundPage from './components/NotFoundPage'
 import NewYearAnimations from './components/NewYearAnimations'
 import ChristmasTree3D from './components/ChristmasTree3D'
-import RealTimeStatusIndicator from './components/RealTimeStatusIndicator'
 
 // Admin pages
 import LoginPage from './admin/pages/LoginPage'
@@ -107,7 +106,7 @@ function AppContent() {
         <Route path="/*" element={
           <>
             {!isAdminRoute && <Navigation />}
-            <main className={`flex-grow relative z-10 ${!isAdminRoute ? 'pb-16 md:pb-0' : ''}`}>
+            <main className={`flex-grow relative z-10 ${!isAdminRoute ? 'pb-24 md:pb-0' : ''}`}>
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/search" element={<SearchResultsPage />} />
@@ -136,12 +135,11 @@ function AppContent() {
               </Routes>
             </main>
             {!isAdminRoute && (
-             <>
-               <Footer />
-               <BottomNavigation />
-               <CompareBar />
-               <RealTimeStatusIndicator />
-             </>
+              <>
+                <Footer />
+                <BottomNavigation />
+                <CompareBar />
+              </>
             )}
           </>
         } />

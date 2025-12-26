@@ -8,6 +8,7 @@ import LanguageSwitcher from './LanguageSwitcher'
 import UserProfile from './UserProfile'
 import GlobalSearch from './GlobalSearch'
 import AuthModal from './AuthModal'
+import { Menu, X, Home, ShoppingBag, Gift, Calendar, MapPin, User, Info, Mail } from 'lucide-react'
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -16,6 +17,16 @@ export default function Navigation() {
   const { darkMode, seasonalColors } = useTheme()
   const { t } = useLanguage()
   const { isAuthenticated, user } = useUser()
+
+  const navLinks = [
+    { to: '/', label: t('nav.home'), icon: Home },
+    { to: '/stores', label: t('stores.title'), icon: ShoppingBag },
+    { to: '/promotions', label: t('nav.promotions') || t('home.promotions') || 'Promotions', icon: Gift },
+    { to: '/events', label: t('home.events') || 'Events', icon: Calendar },
+    { to: '/map', label: t('map.title'), icon: MapPin },
+    { href: '#about', label: t('nav.about'), icon: Info },
+    { href: '#contact', label: t('nav.contact'), icon: Mail },
+  ]
 
   return (
     <nav
@@ -43,51 +54,22 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex gap-8 items-center">
-            <Link to="/" className="relative overflow-hidden group">
-              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
-                {t('nav.home')}
-              </span>
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
-            </Link>
-            <Link to="/stores" className="relative overflow-hidden group">
-              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
-                {t('stores.title')}
-              </span>
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
-            </Link>
-            <Link to="/promotions" className="relative overflow-hidden group">
-              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
-                {t('nav.promotions') || t('home.promotions') || 'Promotions'}
-              </span>
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
-            </Link>
-            <Link to="/events" className="relative overflow-hidden group">
-              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
-                {t('home.events') || 'Events'}
-              </span>
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
-            </Link>
-            <Link to="/map" className="relative overflow-hidden group">
-              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
-                {t('map.title')}
-              </span>
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
-            </Link>
-            <a href="#about" className="relative overflow-hidden group">
-              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
-                {t('nav.about')}
-              </span>
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
-            </a>
-            <a href="#contact" className="relative overflow-hidden group">
-              <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block">
-                {t('nav.contact')}
-              </span>
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
-            </a>
+          <div className="hidden md:flex gap-6 items-center">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                to={link.to}
+                href={link.href}
+                className="relative overflow-hidden group flex items-center gap-1.5"
+              >
+                <span className="hover:text-purple-500 transition-all duration-300 transform hover:scale-110 block text-sm font-medium">
+                  {link.label}
+                </span>
+                <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 group-hover:w-full transition-all duration-300"></div>
+              </Link>
+            ))}
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-gray-700">
               <LanguageSwitcher />
               <DarkModeToggle />
 
@@ -97,22 +79,23 @@ export default function Navigation() {
                   className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold text-sm hover:from-purple-300 hover:to-purple-500 transition-all duration-300 transform hover:scale-110 shadow-lg hover:shadow-purple-500/25"
                   aria-label={t('nav.profile') || 'Profile'}
                 >
-                  {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  <User size={18} />
                 </button>
               ) : (
                 <button
                   type="button"
                   onClick={() => setAuthOpen(true)}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-purple-700 text-white text-sm font-semibold hover:from-purple-400 hover:to-purple-600 transition-all shadow-lg"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-purple-700 text-white text-sm font-semibold hover:from-purple-400 hover:to-purple-600 transition-all shadow-lg flex items-center gap-2"
                 >
-                  {t('common.login') || 'Sign in'}
+                  <User size={16} />
+                  <span>{t('common.login') || 'Sign in'}</span>
                 </button>
               )}
 
               {isAuthenticated && user ? (
                 <Link
                   to="/account"
-                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-sm font-semibold text-white"
+                  className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-sm font-semibold text-white"
                 >
                   {t('account.title') || 'Account'}
                 </Link>
@@ -121,37 +104,21 @@ export default function Navigation() {
           </div>
 
           {/* Mobile Menu Button & Controls */}
-          <div className="md:hidden flex items-center gap-3">
+          <div className="md:hidden flex items-center gap-2">
             <LanguageSwitcher />
             <DarkModeToggle />
             <button
-              className="text-purple-600 text-2xl p-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all duration-300"
+              className={`text-purple-600 p-2.5 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all duration-300`}
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
-              <div className="w-6 h-6 flex flex-col justify-center items-center">
-                <div
-                  className={`w-5 h-0.5 bg-current transition-all duration-300 ${
-                    menuOpen ? 'rotate-45 translate-y-1.5' : ''
-                  }`}
-                ></div>
-                <div
-                  className={`w-5 h-0.5 bg-current transition-all duration-300 mt-1 ${
-                    menuOpen ? 'opacity-0' : ''
-                  }`}
-                ></div>
-                <div
-                  className={`w-5 h-0.5 bg-current transition-all duration-300 mt-1 ${
-                    menuOpen ? '-rotate-45 -translate-y-1.5' : ''
-                  }`}
-                ></div>
-              </div>
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
 
         {/* Global Smart Search */}
-        <div className="mt-4">
+        <div className="mt-3">
           <GlobalSearch />
         </div>
 
@@ -162,73 +129,41 @@ export default function Navigation() {
               darkMode ? 'border-purple-500/30' : 'border-purple-200/50'
             } animate-slide-down`}
           >
-            <Link
-              to="/"
-              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              {t('nav.home')}
-            </Link>
-            <Link
-              to="/stores"
-              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              {t('stores.title')}
-            </Link>
-            <Link
-              to="/promotions"
-              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              {t('nav.promotions') || t('home.promotions') || 'Promotions'}
-            </Link>
-            <Link
-              to="/events"
-              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              {t('home.events') || 'Events'}
-            </Link>
-            <Link
-              to="/map"
-              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              {t('map.title')}
-            </Link>
-            <a
-              href="#about"
-              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              {t('nav.about')}
-            </a>
-            <a
-              href="#contact"
-              className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              {t('nav.contact')}
-            </a>
+            {navLinks.map((link) => {
+              const Icon = link.icon
+              return (
+                <Link
+                  key={link.label}
+                  to={link.to}
+                  href={link.href}
+                  className="flex items-center gap-3 py-3.5 px-4 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <Icon size={20} className="flex-shrink-0" />
+                  <span className="font-medium">{link.label}</span>
+                </Link>
+              )
+            })}
 
             {isAuthenticated && user ? (
               <>
                 <Link
                   to="/account"
-                  className="block py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
+                  className="flex items-center gap-3 py-3.5 px-4 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
                   onClick={() => setMenuOpen(false)}
                 >
-                  {t('account.title') || 'Account'}
+                  <User size={20} className="flex-shrink-0" />
+                  <span className="font-medium">{t('account.title') || 'Account'}</span>
                 </Link>
                 <button
                   onClick={() => {
                     setProfileOpen(!profileOpen)
                     setMenuOpen(false)
                   }}
-                  className="block w-full text-left py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
+                  className="flex items-center gap-3 w-full text-left py-3.5 px-4 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
                 >
-                  {t('nav.profile')}
+                  <User size={20} className="flex-shrink-0" />
+                  <span className="font-medium">{t('nav.profile')}</span>
                 </button>
               </>
             ) : (
@@ -238,9 +173,10 @@ export default function Navigation() {
                   setAuthOpen(true)
                   setMenuOpen(false)
                 }}
-                className="block w-full text-left py-3 px-4 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
+                className="flex items-center gap-3 w-full text-left py-3.5 px-4 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition-all duration-300 transform hover:translate-x-2"
               >
-                {t('common.login') || 'Sign in'}
+                <User size={20} className="flex-shrink-0" />
+                <span className="font-medium">{t('common.login') || 'Sign in'}</span>
               </button>
             )}
           </div>

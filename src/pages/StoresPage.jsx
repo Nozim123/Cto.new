@@ -5,6 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext'
 import mallsData from '../data/malls.json'
 import storesData from '../data/stores.json'
 import StoreCard from '../components/StoreCard'
+import { Search, Store } from 'lucide-react'
 
 export default function StoresPage() {
   const { darkMode } = useTheme()
@@ -34,9 +35,9 @@ export default function StoresPage() {
   }, [query, category])
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-primary'} text-white`}>
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-20">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+    <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-primary'} text-white pb-24 md:pb-0`}>
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-10">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
               {t('stores.title') || 'Stores'}
@@ -55,7 +56,10 @@ export default function StoresPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <label className="text-xs font-semibold text-white/70">{t('search.search') || 'Search'}</label>
+            <label className="text-xs font-semibold text-white/70 flex items-center gap-2">
+              <Search size={16} />
+              {t('search.search') || 'Search'}
+            </label>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -64,7 +68,10 @@ export default function StoresPage() {
             />
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <label className="text-xs font-semibold text-white/70">{t('stores.categories') || 'Categories'}</label>
+            <label className="text-xs font-semibold text-white/70 flex items-center gap-2">
+              <Store size={16} />
+              {t('stores.categories') || 'Categories'}
+            </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -87,7 +94,9 @@ export default function StoresPage() {
           </div>
         ) : (
           <div className="text-center py-20 rounded-3xl border border-white/10 bg-white/5">
-            <div className="text-6xl mb-4">🏪</div>
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/10 flex items-center justify-center">
+              <Store size={40} className="text-white/50" />
+            </div>
             <h2 className="text-xl font-semibold mb-2">{t('stores.noStores') || 'No stores found'}</h2>
             <p className="text-white/70">{t('search.tryDifferent') || 'Try a different keyword.'}</p>
           </div>

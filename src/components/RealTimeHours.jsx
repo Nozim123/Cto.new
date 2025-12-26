@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import { Clock, Circle } from 'lucide-react'
 
 export default function RealTimeHours({ mall }) {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -11,30 +12,30 @@ export default function RealTimeHours({ mall }) {
     const timer = setInterval(() => {
       const now = new Date()
       setCurrentTime(now)
-      
+
       if (mall) {
         const { openTime, closeTime } = mall
         const today = now.getDay()
-        
+
         // Simple time parsing (assuming 24h format)
         const openHour = parseInt(openTime?.split(':')[0] || 10)
         const openMinute = parseInt(openTime?.split(':')[1] || 0)
         const closeHour = parseInt(closeTime?.split(':')[0] || 22)
         const closeMinute = parseInt(closeTime?.split(':')[1] || 0)
-        
+
         const openTimeMinutes = openHour * 60 + openMinute
         const closeTimeMinutes = closeHour * 60 + closeMinute
         const currentTimeMinutes = now.getHours() * 60 + now.getMinutes()
-        
+
         let mallStatus = 'closed'
         let remainingTime = ''
-        
+
         if (currentTimeMinutes >= openTimeMinutes && currentTimeMinutes < closeTimeMinutes) {
           mallStatus = 'open'
           const minutesLeft = closeTimeMinutes - currentTimeMinutes
           const hoursLeft = Math.floor(minutesLeft / 60)
           const minsLeft = minutesLeft % 60
-          
+
           if (hoursLeft > 0) {
             remainingTime = `${hoursLeft}h ${minsLeft}m until closing`
           } else {
@@ -45,14 +46,14 @@ export default function RealTimeHours({ mall }) {
           const minutesUntilOpen = openTimeMinutes - currentTimeMinutes
           const hoursUntil = Math.floor(minutesUntilOpen / 60)
           const minsUntil = minutesUntilOpen % 60
-          
+
           if (hoursUntil > 0) {
             remainingTime = `${hoursUntil}h ${minsUntil}m until opening`
           } else {
             remainingTime = `${minsUntil}m until opening`
           }
         }
-        
+
         setStatus(mallStatus)
         setTimeRemaining(remainingTime)
       }
@@ -64,22 +65,22 @@ export default function RealTimeHours({ mall }) {
   const getStatusColor = () => {
     switch (status) {
       case 'open':
-        return 'text-green-500'
+        return 'text-emerald-500'
       case 'closed':
-        return 'text-red-500'
+        return 'text-rose-500'
       default:
         return darkMode ? 'text-gray-400' : 'text-gray-600'
     }
   }
 
-  const getStatusIcon = () => {
+  const getStatusIconColor = () => {
     switch (status) {
       case 'open':
-        return '🟢'
+        return 'text-emerald-500'
       case 'closed':
-        return '🔴'
+        return 'text-rose-500'
       default:
-        return '⚪'
+        return 'text-gray-400'
     }
   }
 
@@ -100,31 +101,37 @@ export default function RealTimeHours({ mall }) {
     } shadow-lg`}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="text-2xl">{getStatusIcon()}</div>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+            {status === 'open' ? (
+              <Clock size={20} className="text-emerald-500" />
+            ) : (
+              <Circle size={20} className={getStatusIconColor()} fill="currentColor" />
+            )}
+          </div>
           <div>
-            <h3 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+            <h3 className={`text-base md:text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               {getStatusText()}
             </h3>
-            <p className={`text-sm ${getStatusColor()}`}>
+            <p className={`text-xs md:text-sm ${getStatusColor()}`}>
               {timeRemaining}
             </p>
           </div>
         </div>
-        
+
         <div className="text-right">
-          <div className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+          <div className={`text-xs md:text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             Current Time
           </div>
-          <div className={`text-lg font-mono ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-            {currentTime.toLocaleTimeString([], { 
-              hour: '2-digit', 
+          <div className={`text-sm md:text-lg font-mono ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+            {currentTime.toLocaleTimeString([], {
+              hour: '2-digit',
               minute: '2-digit',
               second: '2-digit'
             })}
           </div>
         </div>
       </div>
-      
+
       {mall && (
         <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
           <div className="flex justify-between text-sm">
@@ -137,7 +144,7 @@ export default function RealTimeHours({ mall }) {
           </div>
         </div>
       )}
-      
+
       {/* Progress bar for closing time */}
       {status === 'open' && mall && (
         <div className="mt-3">
@@ -145,10 +152,10 @@ export default function RealTimeHours({ mall }) {
             Time until closing
           </div>
           <div className={`w-full h-2 rounded-full ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
-            <div 
-              className="h-2 bg-gradient-to-r from-green-400 to-green-600 rounded-full transition-all duration-1000"
-              style={{ 
-                width: timeRemaining ? 
+            <div
+              className="h-2 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full transition-all duration-1000"
+              style={{
+                width: timeRemaining ?
                   `${Math.max(0, 100 - (parseInt(timeRemaining) || 0) * 2)}%` : '100%'
               }}
             />
