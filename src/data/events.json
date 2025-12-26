@@ -1,0 +1,62 @@
+[
+  {
+    "id": "e1",
+    "mall_id": "1",
+    "type": "movie",
+    "title": "Cinema: Dune Part Two",
+    "description": "Experience the epic continuation on the big screen.",
+    "image": "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=1200",
+    "location": "Cinema Hall 3",
+    "startDateTime": "2026-01-05T17:00:00.000Z",
+    "endDateTime": "2026-01-05T19:40:00.000Z",
+    "price": 60000,
+    "currency": "UZS",
+    "isBookable": true,
+    "isActive": true
+  },
+  {
+    "id": "e2",
+    "mall_id": "5",
+    "type": "concert",
+    "title": "New Year Live Concert",
+    "description": "Celebrate with live music, lights and a festive atmosphere.",
+    "image": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200",
+    "location": "Main Stage (2F)",
+    "startDateTime": "2025-12-31T19:00:00.000Z",
+    "endDateTime": "2025-12-31T22:00:00.000Z",
+    "price": 50000,
+    "currency": "UZS",
+    "isBookable": true,
+    "isActive": true
+  },
+  {
+    "id": "e3",
+    "mall_id": "4",
+    "type": "attraction",
+    "title": "VR Adventure Zone",
+    "description": "Immersive VR experiences for friends and families.",
+    "image": "https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?w=1200",
+    "location": "Entertainment Area",
+    "startDateTime": "2026-01-03T10:00:00.000Z",
+    "endDateTime": "2026-01-03T22:00:00.000Z",
+    "price": 40000,
+    "currency": "UZS",
+    "isBookable": true,
+    "isActive": true
+  },
+  {
+    "id": "e4",
+    "mall_id": "2",
+    "type": "playground",
+    "title": "Kids Playground",
+    "description": "Safe and fun play zone for kids.",
+    "image": "https://images.unsplash.com/photo-1503455637927-730bce8583c0?w=1200",
+    "location": "Family Zone (1F)",
+    "startDateTime": "2026-01-02T09:00:00.000Z",
+    "endDateTime": "2026-01-02T21:00:00.000Z",
+    "price": 0,
+    "currency": "UZS",
+    "isBookable": false,
+    "isActive": true
+  }
+]

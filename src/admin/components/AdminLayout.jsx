@@ -16,7 +16,9 @@ import {
   MessageSquare,
   UserCheck,
   Sparkles,
-  Instagram
+  Instagram,
+  CalendarDays,
+  Ticket
 } from 'lucide-react';
 
 const AdminLayout = ({ children }) => {
@@ -32,6 +34,8 @@ const AdminLayout = ({ children }) => {
     { name: 'Mahsulot Boshqaruvi', href: '/admin/products', icon: Package },
     { name: 'Banner Boshqaruvi', href: '/admin/banners', icon: Image },
     { name: 'Instagram Stories', href: '/admin/stories', icon: Instagram },
+    { name: 'Events & Tickets', href: '/admin/events', icon: CalendarDays },
+    { name: 'Bookings', href: '/admin/bookings', icon: Ticket },
     { name: 'Seller Approvals', href: '/admin/sellers', icon: UserCheck },
     { name: 'Season Engine', href: '/admin/season', icon: Sparkles },
     { name: 'CMS Pages', href: '/admin/cms', icon: FileText },

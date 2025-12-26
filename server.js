@@ -660,6 +660,77 @@ let database = {
       updatedAt: new Date().toISOString()
     }
   ],
+  events: [
+    {
+      id: '1',
+      mall_id: '5',
+      type: 'concert',
+      title: 'New Year Live Concert',
+      description: 'Celebrate with live music, lights and a festive atmosphere.',
+      image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200',
+      location: 'Main Stage (2F)',
+      startDateTime: '2025-12-31T19:00:00.000Z',
+      endDateTime: '2025-12-31T22:00:00.000Z',
+      price: 50000,
+      currency: 'UZS',
+      isBookable: true,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '2',
+      mall_id: '1',
+      type: 'movie',
+      title: 'Cinema: Dune Part Two',
+      description: 'Experience the epic continuation on the big screen.',
+      image: 'https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=1200',
+      location: 'Cinema Hall 3',
+      startDateTime: '2026-01-05T17:00:00.000Z',
+      endDateTime: '2026-01-05T19:40:00.000Z',
+      price: 60000,
+      currency: 'UZS',
+      isBookable: true,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '3',
+      mall_id: '4',
+      type: 'attraction',
+      title: 'VR Adventure Zone',
+      description: 'Immersive VR experiences for friends and families.',
+      image: 'https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?w=1200',
+      location: 'Entertainment Area',
+      startDateTime: '2026-01-03T10:00:00.000Z',
+      endDateTime: '2026-01-03T22:00:00.000Z',
+      price: 40000,
+      currency: 'UZS',
+      isBookable: true,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: '4',
+      mall_id: '2',
+      type: 'playground',
+      title: 'Kids Playground',
+      description: 'Safe and fun play zone for kids.',
+      image: 'https://images.unsplash.com/photo-1503455637927-730bce8583c0?w=1200',
+      location: 'Family Zone (1F)',
+      startDateTime: '2026-01-02T09:00:00.000Z',
+      endDateTime: '2026-01-02T21:00:00.000Z',
+      price: 0,
+      currency: 'UZS',
+      isBookable: false,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+  ],
+  bookings: [],
   settings: {
     theme: 'light',
     primaryColor: '#D4AF37',
@@ -808,8 +879,21 @@ app.delete('/api/malls/:id', authenticateToken, async (req, res) => {
     }
 
     database.malls.splice(mallIndex, 1);
-    // Also delete related stores
+    // Also delete related entities
     database.stores = database.stores.filter(s => s.mall_id !== req.params.id);
+    database.products = database.products.filter(p => {
+      const store = database.stores.find(s => s.id === p.store_id);
+      return !!store;
+    });
+    if (database.stories) {
+      database.stories = database.stories.filter(s => s.mall_id !== req.params.id);
+    }
+    if (database.events) {
+      database.events = database.events.filter(e => e.mall_id !== req.params.id);
+    }
+    if (database.bookings) {
+      database.bookings = database.bookings.filter(b => b.mall_id !== req.params.id);
+    }
     
     await saveDatabase();
     res.json({ message: 'Mall deleted successfully' });
@@ -1116,6 +1200,175 @@ app.delete('/api/stories/:id', authenticateToken, async (req, res) => {
     res.json({ message: 'Story deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting story', error: error.message });
+  }
+});
+
+// ==================== EVENTS ROUTES ====================
+app.get('/api/events', (req, res) => {
+  const { mall_id, type } = req.query;
+  let events = database.events || [];
+
+  if (mall_id) {
+    events = events.filter(e => e.mall_id === mall_id && e.isActive);
+  }
+
+  if (type) {
+    events = events.filter(e => e.type === type);
+  }
+
+  res.json(events);
+});
+
+app.get('/api/events/:id', (req, res) => {
+  const event = (database.events || []).find(e => e.id === req.params.id);
+  if (!event) {
+    return res.status(404).json({ message: 'Event not found' });
+  }
+  res.json(event);
+});
+
+app.post('/api/events', authenticateToken, async (req, res) => {
+  try {
+    const { mall_id, title } = req.body;
+    if (!mall_id || !title) {
+      return res.status(400).json({ message: 'mall_id and title are required' });
+    }
+
+    const event = {
+      id: generateId(),
+      ...req.body,
+      isActive: req.body.isActive !== false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (!database.events) {
+      database.events = [];
+    }
+
+    database.events.push(event);
+    await saveDatabase();
+    res.status(201).json(event);
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating event', error: error.message });
+  }
+});
+
+app.put('/api/events/:id', authenticateToken, async (req, res) => {
+  try {
+    const eventIndex = (database.events || []).findIndex(e => e.id === req.params.id);
+    if (eventIndex === -1) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    database.events[eventIndex] = {
+      ...database.events[eventIndex],
+      ...req.body,
+      updatedAt: new Date().toISOString()
+    };
+
+    await saveDatabase();
+    res.json(database.events[eventIndex]);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating event', error: error.message });
+  }
+});
+
+app.delete('/api/events/:id', authenticateToken, async (req, res) => {
+  try {
+    const eventIndex = (database.events || []).findIndex(e => e.id === req.params.id);
+    if (eventIndex === -1) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    const [removed] = database.events.splice(eventIndex, 1);
+
+    if (database.bookings) {
+      database.bookings = database.bookings.filter(b => b.event_id !== removed.id);
+    }
+
+    await saveDatabase();
+    res.json({ message: 'Event deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting event', error: error.message });
+  }
+});
+
+// ==================== BOOKINGS ROUTES ====================
+app.get('/api/bookings', authenticateToken, (req, res) => {
+  const { mall_id, event_id, status } = req.query;
+  let bookings = database.bookings || [];
+
+  if (mall_id) {
+    bookings = bookings.filter(b => b.mall_id === mall_id);
+  }
+
+  if (event_id) {
+    bookings = bookings.filter(b => b.event_id === event_id);
+  }
+
+  if (status) {
+    bookings = bookings.filter(b => b.status === status);
+  }
+
+  res.json(bookings);
+});
+
+app.post('/api/bookings', async (req, res) => {
+  try {
+    const { event_id, mall_id, name, phone, email, quantity } = req.body;
+
+    if (!event_id || !name || !phone) {
+      return res.status(400).json({ message: 'event_id, name and phone are required' });
+    }
+
+    const event = (database.events || []).find(e => e.id === event_id);
+    if (!event || event.isActive === false) {
+      return res.status(400).json({ message: 'Event is not available' });
+    }
+
+    const booking = {
+      id: generateId(),
+      event_id,
+      mall_id: mall_id || event.mall_id,
+      name,
+      phone,
+      email: email || null,
+      quantity: Math.max(1, Number(quantity || 1)),
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (!database.bookings) {
+      database.bookings = [];
+    }
+
+    database.bookings.push(booking);
+    await saveDatabase();
+    res.status(201).json(booking);
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating booking', error: error.message });
+  }
+});
+
+app.put('/api/bookings/:id', authenticateToken, async (req, res) => {
+  try {
+    const bookingIndex = (database.bookings || []).findIndex(b => b.id === req.params.id);
+    if (bookingIndex === -1) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    database.bookings[bookingIndex] = {
+      ...database.bookings[bookingIndex],
+      ...req.body,
+      updatedAt: new Date().toISOString()
+    };
+
+    await saveDatabase();
+    res.json(database.bookings[bookingIndex]);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating booking', error: error.message });
   }
 });
 
