@@ -501,8 +501,8 @@ Contributions are welcome! Please follow these steps:
 ## 📧 Contact
 
 For questions or support:
-- Email: info@megatravelcenter.com
-- Phone: +998 (66) 233-30-30
+- Email: info: roziyevnozin@gmail.com
+- Phone: +998 (99) 689-24-80
 
 ---
 
