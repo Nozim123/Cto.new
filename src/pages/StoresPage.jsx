@@ -1,107 +1,157 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useTheme } from '../contexts/ThemeContext'
-import { useLanguage } from '../contexts/LanguageContext'
-import mallsData from '../data/malls.json'
+import { useMemo, useState, useEffect } from 'react'
+import { Search, Store, Filter, TrendingUp, Clock, Tag, ChevronDown } from 'lucide-react'
 import storesData from '../data/stores.json'
-import StoreCard from '../components/StoreCard'
-import { Search, Store } from 'lucide-react'
+import mallsData from '../data/malls.json'
+import MTCStoreCard from '../components/MTCStoreCard'
 
 export default function StoresPage() {
-  const { darkMode } = useTheme()
-  const { t } = useLanguage()
-
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('all')
+  const [sortBy, setSortBy] = useState('popular')
+  const [loading, setLoading] = useState(true)
 
-  const categories = useMemo(() => {
-    return ['all', ...new Set(storesData.map((s) => s.category)).values()]
+  useEffect(() => {
+    // Simulate loading
+    const timer = setTimeout(() => setLoading(false), 500)
+    return () => clearTimeout(timer)
   }, [])
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase()
+  const categories = useMemo(() => {
+    return ['all', ...new Set(storesData.map((s) => s.category))]
+  }, [])
 
-    return storesData
-      .filter((s) => (category === 'all' ? true : s.category === category))
-      .filter((s) => {
-        if (!q) return true
-        const mall = mallsData.find((m) => m.id === s.mallId)
-        return (
-          s.name.toLowerCase().includes(q) ||
-          s.category.toLowerCase().includes(q) ||
-          (mall?.name || '').toLowerCase().includes(q)
-        )
-      })
-  }, [query, category])
+  const filteredStores = useMemo(() => {
+    let result = storesData.filter((s) => (category === 'all' ? true : s.category === category))
+    
+    if (query.trim()) {
+      const q = query.toLowerCase()
+      result = result.filter(s => 
+        s.name.toLowerCase().includes(q) || 
+        s.category.toLowerCase().includes(q)
+      )
+    }
+
+    if (sortBy === 'new') {
+      result = [...result].sort((a, b) => (b.isNew ? 1 : -1))
+    } else if (sortBy === 'popular') {
+      result = [...result].sort((a, b) => (b.rating || 0) - (a.rating || 0))
+    } else if (sortBy === 'discount') {
+      result = result.filter(s => s.hasPromo)
+    }
+
+    return result
+  }, [query, category, sortBy])
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-primary'} text-white pb-24 md:pb-0`}>
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-10">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">
-              {t('stores.title') || 'Stores'}
-            </h1>
-            <p className="text-white/70">
-              {t('stores.featured') || 'Browse stores across all malls'}
-            </p>
-          </div>
-          <Link
-            to="/"
-            className="text-sm text-purple-200 hover:text-purple-100 hover:underline"
-          >
-            {t('buttons.backToHome') || 'Back to Home'}
-          </Link>
+    <div className="min-h-screen bg-mtc-bg text-white pb-24">
+      {/* Header Section */}
+      <div className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 via-transparent to-transparent" />
+        <div className="mtc-container relative z-10">
+          <h1 className="mtc-heading-xl mb-4 animate-mtc-slide-up">Shop Directory</h1>
+          <p className="mtc-body-lg text-white/60 max-w-2xl animate-mtc-slide-up" style={{ animationDelay: '0.1s' }}>
+            Discover hundreds of premium brands and local boutiques across all our malls. 
+            From luxury fashion to the latest electronics.
+          </p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <label className="text-xs font-semibold text-white/70 flex items-center gap-2">
-              <Search size={16} />
-              {t('search.search') || 'Search'}
-            </label>
+      {/* Filters & Search Bar */}
+      <section className="mtc-container mb-12 animate-mtc-slide-up" style={{ animationDelay: '0.2s' }}>
+        <div className="mtc-glass p-4 rounded-3xl flex flex-col lg:flex-row gap-4 items-center">
+          {/* Search */}
+          <div className="relative flex-grow w-full lg:w-auto">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
             <input
+              type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder={t('stores.searchPlaceholder') || 'Search stores…'}
-              className="mt-2 w-full bg-transparent border border-white/10 rounded-xl px-4 py-3 outline-none placeholder:text-white/50"
+              placeholder="Search stores, brands, categories..."
+              className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 outline-none focus:border-blue-500 transition-all"
             />
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <label className="text-xs font-semibold text-white/70 flex items-center gap-2">
-              <Store size={16} />
-              {t('stores.categories') || 'Categories'}
-            </label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="mt-2 w-full bg-transparent border border-white/10 rounded-xl px-4 py-3 outline-none"
-            >
-              {categories.map((c) => (
-                <option key={c} value={c} className="text-gray-900">
-                  {c === 'all' ? t('stores.allCategories') || 'All categories' : c}
-                </option>
-              ))}
-            </select>
+
+          {/* Category Filter */}
+          <div className="flex flex-wrap gap-2 w-full lg:w-auto">
+            {['all', 'Fashion', 'Electronics', 'Food', 'Entertainment'].map(cat => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  category === cat 
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-white/5 text-white/60 hover:bg-white/10'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <div className="h-8 w-px bg-white/10 hidden lg:block" />
+
+          {/* Sort By */}
+          <div className="flex gap-2 w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0">
+            <SortButton 
+              active={sortBy === 'popular'} 
+              onClick={() => setSortBy('popular')} 
+              icon={<TrendingUp size={16} />} 
+              label="Popular" 
+            />
+            <SortButton 
+              active={sortBy === 'new'} 
+              onClick={() => setSortBy('new')} 
+              icon={<Clock size={16} />} 
+              label="New" 
+            />
+            <SortButton 
+              active={sortBy === 'discount'} 
+              onClick={() => setSortBy('discount')} 
+              icon={<Tag size={16} />} 
+              label="Discounts" 
+            />
           </div>
         </div>
+      </section>
 
-        {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((store) => (
-              <StoreCard key={store.id} store={store} mallId={store.mallId} />
+      {/* Results Grid */}
+      <section className="mtc-container">
+        {filteredStores.length > 0 ? (
+          <div className="mtc-grid mtc-grid-3 lg:mtc-grid-4 gap-6">
+            {filteredStores.map((store, index) => (
+              <MTCStoreCard key={store.id} store={store} delay={index * 0.02} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 rounded-3xl border border-white/10 bg-white/5">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/10 flex items-center justify-center">
-              <Store size={40} className="text-white/50" />
-            </div>
-            <h2 className="text-xl font-semibold mb-2">{t('stores.noStores') || 'No stores found'}</h2>
-            <p className="text-white/70">{t('search.tryDifferent') || 'Try a different keyword.'}</p>
+          <div className="text-center py-32 mtc-glass rounded-[3rem]">
+            <Store size={64} className="mx-auto mb-6 text-white/10" />
+            <h2 className="mtc-heading-md mb-2">No Stores Found</h2>
+            <p className="mtc-body text-white/50">Try adjusting your filters or search terms.</p>
+            <button 
+              onClick={() => {setQuery(''); setCategory('all'); setSortBy('popular');}}
+              className="mtc-button-primary mt-8"
+            >
+              Reset All Filters
+            </button>
           </div>
         )}
-      </div>
+      </section>
     </div>
+  )
+}
+
+function SortButton({ active, onClick, icon, label }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
+        active 
+          ? 'bg-white/20 text-white' 
+          : 'bg-white/5 text-white/40 hover:bg-white/10'
+      }`}
+    >
+      {icon}
+      {label}
+    </button>
   )
 }

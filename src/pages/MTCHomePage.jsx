@@ -220,7 +220,7 @@ export default function MTCHomePage() {
       </section>
 
       {/* Featured Malls Grid */}
-      <section className="mtc-container mtc-section">
+      <section id="featured-malls" className="mtc-container mtc-section">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="mtc-heading-lg mb-2">Featured Malls</h2>

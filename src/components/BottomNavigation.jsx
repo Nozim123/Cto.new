@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
-import { Home, Store, ShoppingBag, Heart, Map, Search } from 'lucide-react'
+import { Home, Store, ShoppingBag, Heart, Map, Search, User } from 'lucide-react'
 
 export default function BottomNavigation() {
   const location = useLocation()
@@ -21,24 +21,29 @@ export default function BottomNavigation() {
     },
     {
       label: 'Malls',
-      path: '/store-directory',
+      path: '#featured-malls',
       icon: Store
     },
     {
-      label: 'Stores',
-      path: '/stores',
-      icon: ShoppingBag
+      label: 'Search',
+      path: '/search',
+      icon: Search
     },
     {
-      label: 'Favorites',
-      path: '/favorites',
+      label: 'Wishlist',
+      path: '/account',
       icon: Heart
+    },
+    {
+      label: 'Profile',
+      path: '/profile',
+      icon: User
     }
   ]
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 mtc-glass border-t border-white/10 safe-area-inset">
-      <div className="grid grid-cols-4 h-[70px]">
+      <div className="grid grid-cols-5 h-[70px]">
         {navItems.map((item) => {
           const active = isActive(item.path)
           const Icon = item.icon
