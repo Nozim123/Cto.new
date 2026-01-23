@@ -98,7 +98,10 @@ export default function MTCHeroSection() {
           style={{ animationDelay: '0.4s' }}
         >
           {/* Primary CTA - Browse Malls */}
-          <button className="mtc-button-primary flex items-center gap-2 group">
+          <button 
+            className="mtc-button-primary flex items-center gap-2 group"
+            onClick={() => window.location.href = '#featured-malls'}
+          >
             <Store size={20} />
             Browse Malls
             <ChevronRight 
@@ -107,23 +110,30 @@ export default function MTCHeroSection() {
             />
           </button>
 
-          {/* Secondary CTA - Virtual Tour */}
-          <button className="mtc-button-secondary flex items-center gap-2 group">
-            <Navigation size={20} />
-            Virtual Tour
+          {/* Secondary CTA - Events & Deals */}
+          <button 
+            className="mtc-button-secondary flex items-center gap-2 group"
+            onClick={() => window.location.href = '/promotions'}
+          >
+            <Sparkles size={20} />
+            Events & Deals
             <ChevronRight 
               size={18} 
               className="group-hover:translate-x-1 transition-transform"
             />
           </button>
 
-          {/* Tertiary CTA - Map */}
+          {/* Tertiary CTA - Virtual Tour */}
           <button 
-            className="mtc-button-ghost flex items-center gap-2"
-            onClick={() => window.location.href = '/map'}
+            className="mtc-button-ghost flex items-center gap-2 group"
+            onClick={() => window.location.href = '/virtual-tour'}
           >
-            <MapPin size={18} />
-            Open Map
+            <Navigation size={20} />
+            Virtual Tour
+            <ChevronRight 
+              size={18} 
+              className="group-hover:translate-x-1 transition-transform"
+            />
           </button>
         </div>
 

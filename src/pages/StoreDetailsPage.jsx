@@ -1,421 +1,244 @@
 import { useParams, Link } from 'react-router-dom'
-import { useState, useEffect, useMemo } from 'react'
-import { trackBehavior } from '../services/behavior'
-import mallsData from '../data/malls.json'
+import { useState, useEffect } from 'react'
+import { MapPin, Phone, Clock, Navigation, Star, Heart, Share2, Tag, ChevronRight, ShoppingBag, Info, Grid, List } from 'lucide-react'
 import storesData from '../data/stores.json'
-import { useTheme } from '../contexts/ThemeContext'
-import { useLanguage } from '../contexts/LanguageContext'
-import { useEcosystem } from '../contexts/EcosystemContext'
-import StoreHeader from '../components/StoreHeader'
-import StoreSubscribeSection from '../components/StoreSubscribeSection'
-import StoreShareButton from '../components/StoreShareButton'
-import ProductFilterBar from '../components/ProductFilterBar'
-import ModernProductCard from '../components/ModernProductCard'
-import ProductQuickView from '../components/ProductQuickView'
+import mallsData from '../data/malls.json'
+import productsData from '../data/products.json'
+import MTCProductCard from '../components/MTCProductCard'
 import ReviewsSection from '../components/ReviewsSection'
 import SmartRecommendations from '../components/SmartRecommendations'
 
 export default function StoreDetailsPage() {
-  const { mallId, storeId } = useParams()
-  const [mall, setMall] = useState(null)
+  const { storeId, mallId } = useParams()
   const [store, setStore] = useState(null)
+  const [mall, setMall] = useState(null)
   const [products, setProducts] = useState([])
-  const [selectedProduct, setSelectedProduct] = useState(null)
-  const [scrolled, setScrolled] = useState(false)
-  const { darkMode } = useTheme()
-  const { t } = useLanguage()
-  const { addRecentlyViewed, awardPoints, getProductsByStore } = useEcosystem()
-
-  // Filter and Sort States
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [sortOption, setSortOption] = useState('featured')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 })
+  const [isWishlisted, setIsWishlisted] = useState(false)
+  const [viewMode, setViewMode] = useState('grid')
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 100)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    let currentMallId = mallId
-    let currentStore = storesData.find((s) => s.id === storeId)
-    
-    if (currentStore && !currentMallId) {
-      currentMallId = currentStore.mallId
-    }
-
-    const mallData = mallsData.find((m) => m.id === currentMallId)
-    setMall(mallData)
-    setStore(currentStore)
-
-    if (currentStore) {
-      trackBehavior({ type: 'store', id: storeId, category: currentStore.category })
-      addRecentlyViewed('stores', storeId)
-      awardPoints(2, 'view_store')
-    }
-
-    const storeProducts = getProductsByStore(storeId)
-    setProducts(storeProducts)
-
     window.scrollTo(0, 0)
-  }, [mallId, storeId, addRecentlyViewed, awardPoints, getProductsByStore])
-
-  // Get unique categories from products
-  const categories = useMemo(() => {
-    const cats = [...new Set(products.map(p => p.category))]
-    return cats.filter(Boolean)
-  }, [products])
-
-  // Filter and Sort Products
-  const filteredAndSortedProducts = useMemo(() => {
-    let result = [...products]
-
-    // Filter by category
-    if (selectedCategory !== 'all') {
-      result = result.filter(p => p.category === selectedCategory)
+    const storeData = storesData.find(s => s.id === storeId)
+    setStore(storeData)
+    
+    if (storeData) {
+      const mallData = mallsData.find(m => m.id === storeData.mallId || m.id === mallId)
+      setMall(mallData)
+      
+      const storeProducts = productsData.filter(p => p.storeId === storeId)
+      setProducts(storeProducts)
     }
-
-    // Filter by search query
-    if (searchQuery) {
-      result = result.filter(p => 
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()))
-      )
-    }
-
-    // Filter by price range
-    result = result.filter(p => p.price >= priceRange.min && p.price <= priceRange.max)
-
-    // Sort products
-    switch (sortOption) {
-      case 'price-low':
-        result.sort((a, b) => a.price - b.price)
-        break
-      case 'price-high':
-        result.sort((a, b) => b.price - a.price)
-        break
-      case 'new':
-        result.sort((a, b) => (b.tag === 'New' ? 1 : 0) - (a.tag === 'New' ? 1 : 0))
-        break
-      case 'popular':
-        result.sort((a, b) => (b.tag === 'Best Seller' ? 1 : 0) - (a.tag === 'Best Seller' ? 1 : 0))
-        break
-      default:
-        // featured - keep original order
-        break
-    }
-
-    return result
-  }, [products, selectedCategory, searchQuery, priceRange, sortOption])
-
-  const handleQuickView = (product) => {
-    trackBehavior({ type: 'product_quick_view', id: product.id, category: product.category })
-    addRecentlyViewed('products', product.id)
-    awardPoints(1, 'quick_view')
-    setSelectedProduct(product)
-  }
+  }, [storeId, mallId])
 
   if (!store) {
     return (
-      <div className={`min-h-screen flex items-center justify-center ${
-        darkMode ? 'bg-gray-900' : 'bg-gray-50'
-      }`}>
+      <div className="min-h-screen flex items-center justify-center bg-mtc-bg">
         <div className="text-center">
-          <h1 className={`text-2xl font-bold mb-4 ${
-            darkMode ? 'text-white' : 'text-gray-900'
-          }`}>
-            Store Not Found
-          </h1>
-          <p className={`mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            The store you're looking for doesn't exist or has been removed.
-          </p>
-          <Link to="/" className="inline-block px-6 py-3 bg-gold text-navy rounded-lg hover:bg-gold/90 transition-colors">
-            Back to Home
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
-  if (!mall) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center ${
-        darkMode ? 'bg-gray-900' : 'bg-gray-50'
-      }`}>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold mx-auto mb-4"></div>
-          <p className={darkMode ? 'text-white' : 'text-gray-900'}>Loading store details...</p>
+          <h1 className="mtc-heading-lg mb-4">Store Not Found</h1>
+          <Link to="/stores" className="mtc-button-primary inline-block">Browse All Stores</Link>
         </div>
       </div>
     )
   }
 
   return (
-    <div className={`min-h-screen pb-20 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
-      {/* Hero Banner with Store Info */}
-      <div className="relative h-64 md:h-80 w-full overflow-hidden">
-        {/* Background Image */}
+    <div className="min-h-screen bg-mtc-bg text-white pb-24">
+      {/* Hero Gallery Section */}
+      <div className="relative h-[40vh] md:h-[50vh] w-full overflow-hidden">
         <img
-          src={store.heroImage || store.interiorImage || store.image}
+          src={store.image || 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=1920&h=800&fit=crop'}
           alt={store.name}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(37,40,54,1)] via-[rgba(37,40,54,0.4)] to-transparent" />
         
-        {/* Breadcrumb */}
-        <div className="absolute top-24 left-0 w-full px-4 lg:px-8 z-10">
-          <div className="max-w-7xl mx-auto text-white/80 text-sm flex items-center gap-2">
-            <Link to="/" className="hover:text-white transition-colors">
-              {t('nav.home') || 'Home'}
-            </Link>
-            <span>/</span>
-            <Link to={`/mall/${mallId}`} className="hover:text-white transition-colors">
-              {mall.name}
-            </Link>
-            <span>/</span>
-            <span className="text-white font-medium">{store.name}</span>
-          </div>
-        </div>
-
-        {/* Store Info Overlay */}
-        <div className="absolute bottom-0 left-0 w-full px-4 lg:px-8 pb-6 z-10">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-end gap-6">
-              {/* Store Logo */}
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-white/95 backdrop-blur-sm p-3 shadow-2xl flex-shrink-0 border-4 border-white/50">
-                <img 
-                  src={store.logo} 
-                  alt={store.name} 
-                  className="w-full h-full object-contain rounded-lg" 
-                />
-              </div>
-
-              {/* Store Details */}
-              <div className="flex-1 pb-2">
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">
-                  {store.name}
-                </h1>
-                <p className="text-white/90 text-sm md:text-base mb-2">
-                  {store.description}
-                </p>
-                <div className="flex items-center gap-4 text-white/80 text-sm">
-                  <span>📍 Floor {store.floor}</span>
-                  <span>🕒 {store.hours}</span>
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                    store.status === 'open'
-                      ? 'bg-green-500/90 text-white'
-                      : 'bg-red-500/90 text-white'
-                  }`}>
-                    {store.status === 'open' ? t('common.open') : t('common.closed')}
-                  </span>
+        <div className="absolute bottom-0 left-0 right-0 py-8">
+          <div className="mtc-container flex flex-col md:flex-row items-end gap-6">
+             {/* Store Logo */}
+             <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-mtc-bg p-3 border border-white/10 shadow-2xl relative z-20">
+                <div className="w-full h-full rounded-2xl bg-white/5 flex items-center justify-center overflow-hidden">
+                   <img 
+                    src={store.logo} 
+                    alt={store.name} 
+                    className="w-full h-full object-contain filter brightness-0 invert"
+                   />
                 </div>
-              </div>
-            </div>
+             </div>
+             
+             <div className="flex-grow mb-2">
+                <div className="mtc-badge mtc-badge-primary mb-3">{store.category}</div>
+                <h1 className="mtc-heading-lg mb-1">{store.name}</h1>
+                <div className="flex flex-wrap items-center gap-4 text-white/60">
+                   <div className="flex items-center gap-1">
+                      <Star size={16} fill="currentColor" className="text-yellow-400" />
+                      <span className="font-semibold text-white">{store.rating || '4.8'}</span>
+                      <span className="text-xs">({store.reviewCount || '120'} reviews)</span>
+                   </div>
+                   <div className="flex items-center gap-1">
+                      <MapPin size={16} className="text-blue-400" />
+                      <span className="text-sm">{mall?.name || 'MTC Mall'} • Floor {store.floor || '1'}</span>
+                   </div>
+                </div>
+             </div>
+             
+             <div className="flex gap-3 mb-2">
+                <button 
+                  onClick={() => setIsWishlisted(!isWishlisted)}
+                  className={`p-3 rounded-2xl border transition-all ${
+                    isWishlisted 
+                      ? 'bg-red-500/20 border-red-500 text-red-500' 
+                      : 'bg-white/5 border-white/10 hover:bg-white/10'
+                  }`}
+                >
+                   <Heart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
+                </button>
+                <button className="p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
+                   <Share2 size={20} />
+                </button>
+                <button className="mtc-button-primary px-8">Follow</button>
+             </div>
           </div>
         </div>
       </div>
-
-      {/* Sticky Store Header */}
-      <StoreHeader store={store} mall={mall} scrolled={scrolled} />
-      
-      {/* Store Share Button */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 mt-4">
-        <div className="flex justify-end">
-          <StoreShareButton storeId={storeId} storeName={store.name} />
-        </div>
-      </div>
-
-      {/* Store Information Section */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 bg-white dark:bg-gray-800 rounded-lg mx-4 lg:mx-8 mt-4 shadow-lg">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
-            <h2 className="text-2xl font-bold mb-4 dark:text-white">About {store.name}</h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              {store.about || store.description}
-            </p>
-            
-            {/* Contact Information */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <span className="text-xl">📞</span>
-                <div>
-                  <div className="font-medium dark:text-white">Phone</div>
-                  <div className="text-gray-600 dark:text-gray-300">{store.phone}</div>
-                </div>
-              </div>
-              
-              {store.email && (
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">✉️</span>
-                  <div>
-                    <div className="font-medium dark:text-white">Email</div>
-                    <div className="text-gray-600 dark:text-gray-300">{store.email}</div>
-                  </div>
-                </div>
-              )}
-              
-              <div className="flex items-center gap-3">
-                <span className="text-xl">📍</span>
-                <div>
-                  <div className="font-medium dark:text-white">Location</div>
-                  <div className="text-gray-600 dark:text-gray-300">{mall.name} - Floor {store.floor}</div>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-3">
-                <span className="text-xl">🕒</span>
-                <div>
-                  <div className="font-medium dark:text-white">Hours</div>
-                  <div className="text-gray-600 dark:text-gray-300">{store.hours}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Store Features */}
-          <div>
-            <h3 className="text-xl font-bold mb-4 dark:text-white">Store Features</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { icon: '🛍️', text: 'Latest Collections' },
-                { icon: '💳', text: 'Card Payments' },
-                { icon: '🚚', text: 'Delivery Available' },
-                { icon: '↩️', text: 'Easy Returns' },
-                { icon: '🎁', text: 'Gift Wrapping' },
-                { icon: '👥', text: 'Personal Shopping' },
-              ].map((feature, index) => (
-                <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <span className="text-lg">{feature.icon}</span>
-                  <span className="text-sm font-medium dark:text-white">{feature.text}</span>
-                </div>
-              ))}
-            </div>
-            
-            {/* Promotion Banner */}
-            {store.hasPromo && (
-              <div className="mt-6 p-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg text-white">
-                <h4 className="font-bold text-lg">{store.promoTitle}</h4>
-                <p className="text-sm opacity-90">{store.promoDescription}</p>
-                {store.promoDiscount && (
-                  <div className="mt-2 px-3 py-1 bg-white/20 rounded-full inline-block text-sm font-bold">
-                    {store.promoDiscount}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Store Subscribe Section (Top) */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 mt-6 mx-4 lg:mx-8">
-        <StoreSubscribeSection storeId={storeId} storeName={store.name} />
-      </div>
-
-      {/* Filter Bar */}
-      <ProductFilterBar
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-        sortOption={sortOption}
-        onSortChange={setSortOption}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        priceRange={priceRange}
-        onPriceRangeChange={setPriceRange}
-        totalProducts={products.length}
-      />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 md:py-12">
-        {/* Results Count */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className={`text-lg font-semibold ${
-            darkMode ? 'text-white' : 'text-gray-900'
-          }`}>
-            {filteredAndSortedProducts.length === products.length
-              ? `${t('products.showing') || 'Showing'} ${filteredAndSortedProducts.length} ${t('products.products') || 'products'}`
-              : `${filteredAndSortedProducts.length} ${t('products.of') || 'of'} ${products.length} ${t('products.products') || 'products'}`
-            }
-          </h2>
+      <div className="mtc-container mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+          {/* Sidebar Info */}
+          <div className="lg:col-span-1 space-y-8">
+            <section>
+              <h3 className="mtc-heading-sm mb-4">About Store</h3>
+              <p className="mtc-body-sm text-white/60 leading-relaxed">
+                {store.description}
+              </p>
+            </section>
+            
+            <section className="mtc-glass p-6 rounded-3xl space-y-4">
+              <div className="flex items-center gap-3">
+                 <Clock size={20} className="text-blue-400" />
+                 <div>
+                    <div className="text-xs text-white/40 uppercase tracking-wider">Working Hours</div>
+                    <div className="font-medium">{store.workingHours || '10:00 - 22:00'}</div>
+                 </div>
+              </div>
+              <div className="flex items-center gap-3">
+                 <Phone size={20} className="text-blue-400" />
+                 <div>
+                    <div className="text-xs text-white/40 uppercase tracking-wider">Phone Number</div>
+                    <div className="font-medium">{store.phone || '+998 90 123 45 67'}</div>
+                 </div>
+              </div>
+              <div className="flex items-center gap-3">
+                 <Navigation size={20} className="text-blue-400" />
+                 <div>
+                    <div className="text-xs text-white/40 uppercase tracking-wider">Location</div>
+                    <div className="font-medium">Area {store.location || 'A-12'}</div>
+                 </div>
+              </div>
+            </section>
+
+            <section className="mtc-glass p-6 rounded-3xl overflow-hidden relative group cursor-pointer">
+               <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+               <div className="flex items-center justify-between relative z-10">
+                  <div className="flex items-center gap-3">
+                     <Tag size={20} className="text-emerald-400" />
+                     <span className="font-medium">Current Deals</span>
+                  </div>
+                  <ChevronRight size={16} className="text-white/40 group-hover:translate-x-1 transition-transform" />
+               </div>
+            </section>
+          </div>
+
+          {/* Product Grid Area */}
+          <div className="lg:col-span-3">
+             <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                <h2 className="mtc-heading-md">Our Products</h2>
+                <div className="flex items-center gap-4">
+                   <div className="flex p-1 bg-white/5 rounded-xl border border-white/10">
+                      <button 
+                        onClick={() => setViewMode('grid')}
+                        className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white'}`}
+                      >
+                         <Grid size={20} />
+                      </button>
+                      <button 
+                        onClick={() => setViewMode('list')}
+                        className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white'}`}
+                      >
+                         <List size={20} />
+                      </button>
+                   </div>
+                   <select className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm outline-none">
+                      <option className="bg-mtc-bg">New Arrivals</option>
+                      <option className="bg-mtc-bg">Price: Low to High</option>
+                      <option className="bg-mtc-bg">Price: High to Low</option>
+                      <option className="bg-mtc-bg">Most Popular</option>
+                   </select>
+                </div>
+             </div>
+
+             {products.length > 0 ? (
+               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                 {products.map((product, index) => (
+                   <MTCProductCard key={product.id} product={product} delay={index * 0.05} />
+                 ))}
+               </div>
+             ) : (
+               <div className="text-center py-20 mtc-glass rounded-3xl">
+                  <ShoppingBag size={48} className="mx-auto mb-4 text-white/10" />
+                  <h3 className="text-xl font-medium mb-2">No Products Yet</h3>
+                  <p className="mtc-body-sm text-white/40">This store hasn't uploaded any products yet.</p>
+               </div>
+             )}
+             
+             {/* Promotions Carousel */}
+             <section className="mt-20">
+                <div className="flex justify-between items-end mb-8">
+                   <h2 className="mtc-heading-md">Promotions</h2>
+                   <button className="text-blue-400 text-sm font-medium hover:underline">View All Deals</button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                   <PromoCard 
+                    title="Spring Collection Sale" 
+                    discount="Up to 40% OFF" 
+                    image="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=300&fit=crop" 
+                   />
+                   <PromoCard 
+                    title="Student Discount" 
+                    discount="Flat 15% OFF" 
+                    image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=300&fit=crop" 
+                   />
+                </div>
+             </section>
+
+             {/* Recommended Carousel */}
+             <section className="mt-20">
+                <h2 className="mtc-heading-md mb-8">Recommended for you</h2>
+                <SmartRecommendations type="store" id={storeId} limit={4} />
+             </section>
+             
+             {/* Reviews */}
+             <section className="mt-20">
+                <ReviewsSection entityType="store" entityId={storeId} entityName={store.name} />
+             </section>
+          </div>
         </div>
-
-        {/* Product Grid - Fixed Scrolling */}
-        {filteredAndSortedProducts.length > 0 ? (
-          <div className="overflow-x-auto pb-4">
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 min-w-full">
-              {filteredAndSortedProducts.map((product) => (
-                <ModernProductCard
-                  key={product.id}
-                  product={product}
-                  onQuickView={handleQuickView}
-                />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className={`text-center py-20 rounded-2xl ${
-            darkMode ? 'bg-gray-800' : 'bg-white'
-          }`}>
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className={`text-xl font-semibold mb-2 ${
-              darkMode ? 'text-white' : 'text-gray-900'
-            }`}>
-              {t('products.noProducts') || 'No products found'}
-            </h3>
-            <p className="text-gray-500 mb-6">
-              {t('products.tryAdjusting') || 'Try adjusting your filters or search query'}
-            </p>
-            <button
-              onClick={() => {
-                setSelectedCategory('all')
-                setSearchQuery('')
-                setSortOption('featured')
-              }}
-              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-            >
-              {t('buttons.clearFilters') || 'Clear All Filters'}
-            </button>
-          </div>
-        )}
       </div>
+    </div>
+  )
+}
 
-      {/* Store Subscribe Section (Bottom) */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 mb-12">
-        <StoreSubscribeSection storeId={storeId} storeName={store.name} />
-      </div>
-
-      {/* Quick View Modal */}
-      {selectedProduct && (
-        <ProductQuickView
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-        />
-      )}
-
-      {/* Reviews Section */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 mb-12">
-        <ReviewsSection 
-          entityType="store" 
-          entityId={storeId} 
-          entityName={store.name} 
-        />
-      </div>
-
-      {/* Smart Recommendations */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 mb-12">
-        <SmartRecommendations 
-          type="store" 
-          id={storeId} 
-          category={store.category}
-          limit={4} 
-        />
-      </div>
+function PromoCard({ title, discount, image }) {
+  return (
+    <div className="relative aspect-[21/9] rounded-3xl overflow-hidden group cursor-pointer">
+       <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent flex flex-col justify-center p-8">
+          <div className="mtc-badge mtc-badge-danger w-fit mb-2">{discount}</div>
+          <h3 className="mtc-heading-sm mb-4">{title}</h3>
+          <button className="flex items-center gap-2 text-sm font-bold text-white group-hover:gap-3 transition-all">
+             Claim Offer <ChevronRight size={16} />
+          </button>
+       </div>
     </div>
   )
 }
