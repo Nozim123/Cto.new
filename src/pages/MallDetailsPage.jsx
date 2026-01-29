@@ -11,6 +11,10 @@ import ReviewsSection from '../components/ReviewsSection'
 import SmartRecommendations from '../components/SmartRecommendations'
 import TicketsEventsHub from '../components/TicketsEventsHub'
 import InstagramStories from '../components/InstagramStories'
+import LiveMallStatus from '../components/LiveMallStatus'
+import Interactive3DMallMap from '../components/Interactive3DMallMap'
+import SustainabilitySection from '../components/SustainabilitySection'
+import GiftCardsSection from '../components/GiftCardsSection'
 
 export default function MallDetailsPage() {
   const { mallId } = useParams()
@@ -245,6 +249,26 @@ export default function MallDetailsPage() {
       {/* Events Hub */}
       <section className="mtc-container mtc-section">
         <TicketsEventsHub mallId={mallId} mallName={mall.name} />
+      </section>
+
+      {/* Live Mall Status */}
+      <section className="mtc-container mtc-section">
+        <LiveMallStatus mallId={mallId} />
+      </section>
+
+      {/* Interactive 3D Map */}
+      <section className="mtc-container mtc-section">
+        <Interactive3DMallMap mallId={mallId} mallName={mall.name} />
+      </section>
+
+      {/* Sustainability Section */}
+      <section className="mtc-container mtc-section">
+        <SustainabilitySection />
+      </section>
+
+      {/* Gift Cards Section */}
+      <section className="mtc-container mtc-section">
+        <GiftCardsSection />
       </section>
 
       {/* Reviews & Social */}

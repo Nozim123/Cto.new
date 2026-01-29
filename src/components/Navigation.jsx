@@ -8,7 +8,7 @@ import LanguageSwitcher from './LanguageSwitcher'
 import UserProfile from './UserProfile'
 import GlobalSearch from './GlobalSearch'
 import AuthModal from './AuthModal'
-import { Menu, X, Home, ShoppingBag, Gift, Calendar, MapPin, User, Info, Mail } from 'lucide-react'
+import { Menu, X, Home, ShoppingBag, Gift, Calendar, MapPin, User, Info, Mail, Trophy, MessageCircle, Store } from 'lucide-react'
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -23,6 +23,9 @@ export default function Navigation() {
     { to: '/stores', label: t('stores.title'), icon: ShoppingBag },
     { to: '/promotions', label: t('nav.promotions') || t('home.promotions') || 'Promotions', icon: Gift },
     { to: '/events', label: t('home.events') || 'Events', icon: Calendar },
+    { to: '/gamification', label: 'Rewards', icon: Trophy },
+    { to: '/support', label: 'Support', icon: MessageCircle },
+    { to: '/partnership', label: 'Partnership', icon: Store },
     { to: '/map', label: t('map.title'), icon: MapPin },
     { href: '#about', label: t('nav.about'), icon: Info },
     { href: '#contact', label: t('nav.contact'), icon: Mail },

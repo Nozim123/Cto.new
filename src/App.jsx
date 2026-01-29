@@ -31,6 +31,10 @@ import CmsPage from './pages/CmsPage'
 import UserProfilePage from './pages/UserProfilePage'
 import BlogPage from './pages/BlogPage'
 import EventsPage from './pages/EventsPage'
+import InfluencerZonePage from './pages/InfluencerZonePage'
+import CustomerSupportPage from './pages/CustomerSupportPage'
+import BusinessPartnershipPage from './pages/BusinessPartnershipPage'
+import GamificationZonePage from './pages/GamificationZonePage'
 import CompareBar from './components/CompareBar'
 import NotFoundPage from './components/NotFoundPage'
 import NewYearAnimations from './components/NewYearAnimations'
@@ -129,6 +133,10 @@ function AppContent() {
                 <Route path="/profile" element={<UserProfilePage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:postId" element={<BlogPage />} />
+                <Route path="/influencer-zone" element={<InfluencerZonePage />} />
+                <Route path="/support" element={<CustomerSupportPage />} />
+                <Route path="/partnership" element={<BusinessPartnershipPage />} />
+                <Route path="/gamification" element={<GamificationZonePage />} />
                 <Route path="/mall/:mallId" element={<MallDetailsPage />} />
                 <Route path="/mall/:mallId/stores" element={<StoreDirectoryPage />} />
                 <Route path="/mall/:mallId/store/:storeId" element={<StoreDetailsPage />} />
