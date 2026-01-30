@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { ChevronRight, Sparkles, TrendingUp, Tag, Clock, MapPin, Calendar } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ChevronRight, Sparkles, TrendingUp, Tag, Clock, MapPin, Calendar, Trophy, Gift, MessageCircle, Leaf, Users, Store } from 'lucide-react'
 import MTCMallCard, { MTCMallCardSkeleton } from '../components/MTCMallCard'
 import MTCHeroSection from '../components/MTCHeroSection'
 import mallsData from '../data/malls.json'
@@ -326,6 +327,65 @@ export default function MTCHomePage() {
         </div>
       </section>
 
+      {/* Platform Features Section */}
+      <section className="mtc-container mtc-section">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-400/30 mb-4">
+            <Sparkles size={16} className="text-purple-400" />
+            <span className="text-sm font-medium text-purple-300">Complete Ecosystem</span>
+          </div>
+          <h2 className="mtc-heading-lg mb-4">Everything You Need</h2>
+          <p className="mtc-body text-white/60 max-w-2xl mx-auto">
+            More than just shopping - a complete digital commerce ecosystem with rewards, entertainment, and exclusive experiences.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <FeatureCard
+            icon={<Trophy size={32} className="text-yellow-400" />}
+            title="Gamification Zone"
+            description="Complete missions, play mini-games, and earn rewards while you shop"
+            link="/gamification"
+            color="yellow"
+          />
+          <FeatureCard
+            icon={<Gift size={32} className="text-pink-400" />}
+            title="Gift Cards & Vouchers"
+            description="Buy gift cards for friends or redeem your earned vouchers"
+            link="/profile"
+            color="pink"
+          />
+          <FeatureCard
+            icon={<Users size={32} className="text-emerald-400" />}
+            title="Influencer Zone"
+            description="Discover trending products from top bloggers and influencers"
+            link="/influencer-zone"
+            color="emerald"
+          />
+          <FeatureCard
+            icon={<MessageCircle size={32} className="text-blue-400" />}
+            title="24/7 Support"
+            description="Get help anytime through live chat, Telegram bot, or phone"
+            link="/support"
+            color="blue"
+          />
+          <FeatureCard
+            icon={<Leaf size={32} className="text-green-400" />}
+            title="Sustainability Hub"
+            description="Track eco points, find recycling stations, and shop green brands"
+            link="/profile"
+            color="green"
+          />
+          <FeatureCard
+            icon={<Store size={32} className="text-purple-400" />}
+            title="Business Partnership"
+            description="Open your store, franchise opportunities, and strategic partnerships"
+            link="/partnership"
+            color="purple"
+          />
+        </div>
+      </section>
+
       {/* Interactive Map Preview */}
       <section className="mtc-container mtc-section">
         <div className="relative rounded-3xl overflow-hidden mtc-card p-1">
@@ -391,5 +451,33 @@ function QuickActionButton({ icon, label, onClick }) {
       <div className="text-blue-400">{icon}</div>
       <span className="mtc-caption text-white/80">{label}</span>
     </button>
+  )
+}
+
+/**
+ * Feature Card Component
+ */
+function FeatureCard({ icon, title, description, link, color }) {
+  const colorClasses = {
+    yellow: 'hover:border-yellow-500/30 hover:bg-yellow-500/5',
+    pink: 'hover:border-pink-500/30 hover:bg-pink-500/5',
+    emerald: 'hover:border-emerald-500/30 hover:bg-emerald-500/5',
+    blue: 'hover:border-blue-500/30 hover:bg-blue-500/5',
+    green: 'hover:border-green-500/30 hover:bg-green-500/5',
+    purple: 'hover:border-purple-500/30 hover:bg-purple-500/5'
+  }
+
+  return (
+    <Link
+      to={link}
+      className={`mtc-glass p-6 rounded-3xl border border-white/10 transition-all mtc-hover-lift ${colorClasses[color] || ''}`}
+    >
+      <div className="mb-4">{icon}</div>
+      <h3 className="mtc-heading-sm mb-2">{title}</h3>
+      <p className="mtc-body-sm text-white/60 mb-4">{description}</p>
+      <div className="flex items-center gap-2 text-sm text-blue-400 font-medium group-hover:gap-3 transition-all">
+        Explore <ChevronRight size={16} />
+      </div>
+    </Link>
   )
 }

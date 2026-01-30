@@ -8,6 +8,7 @@ import Button3D from '../components/Button3D'
 import ModernProductCard from '../components/ModernProductCard'
 import StoreCard from '../components/StoreCard'
 import MallCard from '../components/MallCard'
+import GiftCardsSection from '../components/GiftCardsSection'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function UserProfilePage() {
@@ -103,6 +104,7 @@ export default function UserProfilePage() {
   const tabs = [
     { id: 'profile', label: '👤 Profile', icon: '👤' },
     { id: 'favorites', label: `❤️ Favorites (${(favSafe.stores || []).length + (favSafe.products || []).length + (favSafe.malls || []).length})`, icon: '❤️' },
+    { id: 'gift-cards', label: '🎫 Gift Cards', icon: '🎫' },
     { id: 'notifications', label: '🔔 Notifications', icon: '🔔' },
     { id: 'history', label: '📜 History', icon: '📜' },
     { id: 'loyalty', label: '🎁 Loyalty', icon: '🎁' }
@@ -486,6 +488,11 @@ export default function UserProfilePage() {
                   </div>
                 </div>
               </div>
+            )}
+
+            {/* Gift Cards Tab */}
+            {activeTab === 'gift-cards' && (
+              <GiftCardsSection />
             )}
 
             {/* Loyalty Tab */}
