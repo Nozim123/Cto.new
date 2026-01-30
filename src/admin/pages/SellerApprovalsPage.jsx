@@ -3,7 +3,7 @@ import AdminLayout from '../components/AdminLayout'
 import { useEcosystem } from '../../contexts/EcosystemContext'
 
 export default function SellerApprovalsPage() {
-  const { state, approveSeller, rejectSeller } = useEcosystem()
+  const { state, approveSeller, rejectSeller, cancelSellerRequest, revokeSellerAccess } = useEcosystem()
 
   const requests = useMemo(() => {
     return (state.seller.requests || []).slice().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
@@ -41,7 +41,7 @@ export default function SellerApprovalsPage() {
                         <button
                           type="button"
                           onClick={() => approveSeller(r.id)}
-                          disabled={r.status === 'approved'}
+                          disabled={r.status === 'approved' || r.status === 'cancelled'}
                           className="px-4 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 disabled:opacity-50"
                         >
                           Approve
@@ -49,10 +49,18 @@ export default function SellerApprovalsPage() {
                         <button
                           type="button"
                           onClick={() => rejectSeller(r.id)}
-                          disabled={r.status === 'rejected'}
+                          disabled={r.status === 'rejected' || r.status === 'cancelled'}
                           className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 disabled:opacity-50"
                         >
                           Reject
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => cancelSellerRequest(r.id)}
+                          disabled={r.status === 'approved' || r.status === 'rejected' || r.status === 'cancelled'}
+                          className="px-4 py-2 rounded-lg bg-gray-700 text-white font-semibold hover:bg-gray-800 disabled:opacity-50"
+                        >
+                          Cancel
                         </button>
                       </div>
                     </div>
@@ -70,8 +78,24 @@ export default function SellerApprovalsPage() {
               ) : (
                 Object.entries(approvals).map(([userId, data]) => (
                   <div key={userId} className="p-4 rounded-lg border border-gray-200">
-                    <p className="font-semibold text-gray-900">{userId}</p>
-                    <p className="text-xs text-gray-500 mt-1">Stores: {(data.storeIds || []).join(', ')}</p>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-gray-900">{userId}</p>
+                        <p className="text-xs text-gray-500 mt-1">Stores: {(data.storeIds || []).join(', ')}</p>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        {(data.storeIds || []).map((storeId) => (
+                          <button
+                            key={storeId}
+                            type="button"
+                            onClick={() => revokeSellerAccess({ userId, storeId })}
+                            className="px-3 py-2 rounded-lg bg-red-50 text-red-700 border border-red-200 text-xs font-semibold hover:bg-red-100"
+                          >
+                            Revoke {storeId}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 ))
               )}

@@ -7,6 +7,7 @@ import DarkModeToggle from './DarkModeToggle'
 import UserProfile from './UserProfile'
 import GlobalSearch from './GlobalSearch'
 import AuthModal from './AuthModal'
+import LanguageSwitcher from './LanguageSwitcher'
 import { Menu, X, Home, ShoppingBag, Gift, Calendar, MapPin, User, Info, Mail, Trophy, MessageCircle, Store } from 'lucide-react'
 
 export default function Navigation() {
@@ -68,6 +69,7 @@ export default function Navigation() {
 
             <div className="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-gray-700">
               <DarkModeToggle />
+              <LanguageSwitcher />
 
               {isAuthenticated && user ? (
                 <button
@@ -102,6 +104,7 @@ export default function Navigation() {
           {/* Mobile Menu Button & Controls */}
           <div className="md:hidden flex items-center gap-2">
             <DarkModeToggle />
+            <LanguageSwitcher />
             <button
               className={`text-purple-600 p-2.5 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all duration-300`}
               onClick={() => setMenuOpen(!menuOpen)}

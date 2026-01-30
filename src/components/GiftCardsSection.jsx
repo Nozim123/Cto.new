@@ -131,7 +131,7 @@ export default function GiftCardsSection() {
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {giftCards.map(card => (
-              <GiftCard key={card.id} card={card} onSelect={setSelectedCard} />
+              <GiftCard key={card.id} card={card} onSelect={setSelectedCard} selected={selectedCard?.id === card.id} />
             ))}
           </div>
           
@@ -228,12 +228,12 @@ export default function GiftCardsSection() {
   )
 }
 
-function GiftCard({ card, onSelect }) {
+function GiftCard({ card, onSelect, selected }) {
   return (
     <div 
       onClick={() => onSelect(card)}
       className={`relative rounded-2xl overflow-hidden cursor-pointer transition-all ${
-        onSelect ? 'ring-2 ring-blue-500' : 'hover:ring-2 ring-white/20'
+        selected ? 'ring-2 ring-blue-500' : 'hover:ring-2 ring-white/20'
       }`}
     >
       <img src={card.image} alt={card.title} className="w-full h-48 object-cover" />
