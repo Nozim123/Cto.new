@@ -147,7 +147,7 @@ export default function UserProfilePage() {
               <div className="text-white">
                 <h1 className="text-3xl font-bold mb-1">{user.name}</h1>
                 <p className="text-white/90">{user.email}</p>
-                <p className="text-white/80 text-sm mt-1">Member since {new Date(user.joinDate).toLocaleDateString()}</p>
+                <p className="text-white/80 text-sm mt-1">Member since {new Date(user.joinDate || user.createdAt || Date.now()).toLocaleDateString()}</p>
               </div>
             </div>
           </div>

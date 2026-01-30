@@ -57,6 +57,7 @@ import SettingsPage from './admin/pages/SettingsPage'
 import CmsPagesPage from './admin/pages/CmsPagesPage'
 import FeedbackAdminPage from './admin/pages/FeedbackAdminPage'
 import SellerApprovalsPage from './admin/pages/SellerApprovalsPage'
+import NotificationsPage from './admin/pages/NotificationsPage'
 import SeasonEnginePage from './admin/pages/SeasonEnginePage'
 import EventListPage from './admin/pages/EventListPage'
 import EventFormPage from './admin/pages/EventFormPage'
@@ -102,6 +103,7 @@ function AppContent() {
               <Route path="/admin/events/:id/edit" element={<EventFormPage />} />
               <Route path="/admin/bookings" element={<BookingListPage />} />
               <Route path="/admin/sellers" element={<SellerApprovalsPage />} />
+              <Route path="/admin/notifications" element={<NotificationsPage />} />
               <Route path="/admin/season" element={<SeasonEnginePage />} />
               <Route path="/admin/cms" element={<CmsPagesPage />} />
               <Route path="/admin/feedback" element={<FeedbackAdminPage />} />

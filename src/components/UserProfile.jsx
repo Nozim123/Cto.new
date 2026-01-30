@@ -6,7 +6,7 @@ import { useLanguage } from '../contexts/LanguageContext'
 export default function UserProfile({ isOpen, onClose }) {
   const { user, logout, updateProfile } = useUser()
   const { darkMode, colorPresets, accentColor, changeAccentColor } = useTheme()
-  const { t } = useLanguage()
+  const { t, language, setLanguage } = useLanguage()
   const [activeTab, setActiveTab] = useState('profile')
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
@@ -244,12 +244,35 @@ export default function UserProfile({ isOpen, onClose }) {
               {/* Language Settings */}
               <div>
                 <h3 className="text-lg font-semibold mb-4">{t('settings.languageSettings')}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                  {t('settings.language')}
-                </p>
-                <p className="text-sm bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 p-3 rounded-lg">
-                  🌐 Use the language switcher in the navigation to change your preferred language
-                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('settings.language')}</p>
+
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { code: 'uz', name: "O'zbek", flag: '🇺🇿' },
+                    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+                    { code: 'en', name: 'English', flag: '🇺🇸' },
+                    { code: 'tr', name: 'Türkçe', flag: '🇹🇷' }
+                  ].map((lang) => (
+                    <button
+                      key={lang.code}
+                      type="button"
+                      onClick={() => {
+                        setLanguage(lang.code)
+                        updateProfile({ language: lang.code })
+                      }}
+                      className={`flex items-center gap-2 px-3 py-3 rounded-xl border transition-all ${
+                        language === lang.code
+                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:border-purple-300'
+                      }`}
+                    >
+                      <span className="text-lg" aria-hidden="true">
+                        {lang.flag}
+                      </span>
+                      <span className="text-sm font-medium">{lang.name}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Notifications */}

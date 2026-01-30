@@ -25,7 +25,8 @@ export default function SellerDashboardPage() {
     upsertProductOverride,
     createCustomProduct,
     deleteCustomProduct,
-    updateReturn
+    updateReturn,
+    getProductById
   } = useEcosystem()
 
   const [selectedStoreId, setSelectedStoreId] = useState('')
@@ -50,6 +51,14 @@ export default function SellerDashboardPage() {
     if (!effectiveStoreId) return []
     return (state.returns.items || []).filter((r) => r.storeId === effectiveStoreId)
   }, [state.returns.items, effectiveStoreId])
+
+  const storeOrders = useMemo(() => {
+    if (!effectiveStoreId) return []
+    return (state.orders.items || [])
+      .filter((o) => o.storeId === effectiveStoreId)
+      .slice()
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+  }, [state.orders.items, effectiveStoreId])
 
   const canManage = effectiveStoreId && isSellerApprovedForStore(effectiveStoreId)
 
@@ -178,7 +187,7 @@ export default function SellerDashboardPage() {
                   </select>
 
                   <div className="flex items-center gap-2">
-                    {['products', 'returns'].map((key) => (
+                    {['products', 'orders', 'returns'].map((key) => (
                       <button
                         key={key}
                         type="button"
@@ -191,7 +200,7 @@ export default function SellerDashboardPage() {
                               : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
                         }`}
                       >
-                        {key === 'products' ? 'Products' : 'Returns'}
+                        {key === 'products' ? 'Products' : key === 'orders' ? `Orders (${storeOrders.length})` : 'Returns'}
                       </button>
                     ))}
                   </div>
@@ -347,6 +356,59 @@ export default function SellerDashboardPage() {
                     </button>
                   </form>
                 </div>
+              </div>
+            ) : tab === 'orders' ? (
+              <div className={`p-6 rounded-3xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}>
+                <h2 className="text-lg font-semibold mb-4">Live orders</h2>
+                {storeOrders.length === 0 ? (
+                  <p className={`${darkMode ? 'text-white/70' : 'text-gray-600'}`}>No orders for this store yet.</p>
+                ) : (
+                  <div className="grid gap-3">
+                    {storeOrders.map((o) => {
+                      const firstItem = o.items?.[0]
+                      const product = firstItem?.productId ? getProductById(firstItem.productId) : null
+
+                      return (
+                        <div
+                          key={o.id}
+                          className={`p-4 rounded-2xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-gray-50'}`}
+                        >
+                          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                            <div className="min-w-0">
+                              <p className="font-semibold truncate">Order: {o.id}</p>
+                              <p className={`${darkMode ? 'text-white/60' : 'text-gray-600'} text-xs mt-1`}>Status: {o.status}</p>
+                              <div className="mt-3 space-y-1">
+                                <p className={`${darkMode ? 'text-white/80' : 'text-gray-800'} text-sm font-semibold`}>
+                                  Buyer: {o.buyer?.name || 'Unknown'}
+                                </p>
+                                {o.buyer?.phone ? (
+                                  <p className={`${darkMode ? 'text-white/60' : 'text-gray-600'} text-sm`}>Phone: {o.buyer.phone}</p>
+                                ) : null}
+                                {o.buyer?.email ? (
+                                  <p className={`${darkMode ? 'text-white/60' : 'text-gray-600'} text-sm`}>Email: {o.buyer.email}</p>
+                                ) : null}
+                                <p className={`${darkMode ? 'text-white/60' : 'text-gray-600'} text-sm`}>
+                                  Product: {product?.name || o.productIds?.[0] || '—'}
+                                </p>
+                                <p className={`${darkMode ? 'text-white/60' : 'text-gray-600'} text-sm`}>
+                                  Qty: {firstItem?.quantity || 1} • Total: ${Number(o.total || 0).toFixed(2)}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex-shrink-0">
+                              <div className={`px-3 py-2 rounded-xl text-xs font-semibold ${
+                                o.status === 'picked_up' ? 'bg-green-500/20 text-green-300' : 'bg-yellow-500/20 text-yellow-300'
+                              }`}>
+                                {o.status}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
               </div>
             ) : (
               <div className={`p-6 rounded-3xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}>

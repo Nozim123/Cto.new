@@ -52,6 +52,9 @@ const getEmptyState = () => ({
     requests: [],
     approvalsByUserId: {}
   },
+  notifications: {
+    items: []
+  },
   catalog: {
     productOverridesById: {},
     customProducts: []
@@ -96,6 +99,10 @@ const mergeState = (value) => {
     seller: {
       ...base.seller,
       ...(value.seller || {})
+    },
+    notifications: {
+      ...base.notifications,
+      ...(value.notifications || {})
     },
     catalog: {
       ...base.catalog,
@@ -370,6 +377,65 @@ export function EcosystemProvider({ children }) {
     }))
   }
 
+  const cancelSellerRequest = (requestId) => {
+    if (!requestId) return
+
+    setState((prev) => ({
+      ...prev,
+      seller: {
+        ...prev.seller,
+        requests: (prev.seller.requests || []).map((req) =>
+          req.id === requestId ? { ...req, status: 'cancelled', updatedAt: Date.now() } : req
+        )
+      }
+    }))
+  }
+
+  const revokeSellerAccess = ({ userId: targetUserId, storeId }) => {
+    if (!targetUserId || !storeId) return
+
+    setState((prev) => {
+      const approvals = prev.seller.approvalsByUserId || {}
+      const existing = approvals[targetUserId]?.storeIds || []
+      const nextStoreIds = existing.filter((id) => id !== storeId)
+
+      const nextApprovals = { ...approvals }
+      if (nextStoreIds.length === 0) {
+        delete nextApprovals[targetUserId]
+      } else {
+        nextApprovals[targetUserId] = {
+          ...(nextApprovals[targetUserId] || {}),
+          storeIds: nextStoreIds,
+          updatedAt: Date.now()
+        }
+      }
+
+      return {
+        ...prev,
+        seller: {
+          ...prev.seller,
+          approvalsByUserId: nextApprovals
+        },
+        notifications: {
+          ...prev.notifications,
+          items: [
+            {
+              id: generateId('notif'),
+              type: 'seller_access_revoked',
+              audience: 'admin',
+              title: 'Seller access revoked',
+              message: `Revoked ${targetUserId} access for store ${storeId}`,
+              payload: { userId: targetUserId, storeId },
+              createdAt: Date.now(),
+              readByUserIds: []
+            },
+            ...(prev.notifications.items || [])
+          ]
+        }
+      }
+    })
+  }
+
   const approveSeller = (requestId) => {
     const req = (state.seller.requests || []).find((r) => r.id === requestId)
     if (!req) return
@@ -378,6 +444,22 @@ export function EcosystemProvider({ children }) {
       const approvals = prev.seller.approvalsByUserId || {}
       const existing = approvals[req.userId]?.storeIds || []
       const nextStoreIds = Array.from(new Set([req.storeId, ...existing]))
+
+      const notification = {
+        id: generateId('notif'),
+        type: 'seller_approved',
+        audience: 'admin',
+        title: 'Seller approved',
+        message: `Approved ${req.userId} for store ${req.storeName}`,
+        payload: {
+          requestId: req.id,
+          userId: req.userId,
+          storeId: req.storeId,
+          storeName: req.storeName
+        },
+        createdAt: Date.now(),
+        readByUserIds: []
+      }
 
       return {
         ...prev,
@@ -393,13 +475,46 @@ export function EcosystemProvider({ children }) {
           requests: (prev.seller.requests || []).map((r) =>
             r.id === requestId ? { ...r, status: 'approved', updatedAt: Date.now() } : r
           )
+        },
+        notifications: {
+          ...prev.notifications,
+          items: [notification, ...(prev.notifications.items || [])]
         }
       }
     })
   }
 
   const rejectSeller = (requestId) => {
+    const req = (state.seller.requests || []).find((r) => r.id === requestId)
+
     updateSellerRequestStatus(requestId, 'rejected')
+
+    if (!req) return
+
+    setState((prev) => ({
+      ...prev,
+      notifications: {
+        ...prev.notifications,
+        items: [
+          {
+            id: generateId('notif'),
+            type: 'seller_rejected',
+            audience: 'admin',
+            title: 'Seller rejected',
+            message: `Rejected ${req.userId} for store ${req.storeName}`,
+            payload: {
+              requestId: req.id,
+              userId: req.userId,
+              storeId: req.storeId,
+              storeName: req.storeName
+            },
+            createdAt: Date.now(),
+            readByUserIds: []
+          },
+          ...(prev.notifications.items || [])
+        ]
+      }
+    }))
   }
 
   const isSellerApprovedForStore = (storeId) => {
@@ -436,15 +551,67 @@ export function EcosystemProvider({ children }) {
     const product = getProductById(productId)
     if (!product) return null
 
+    const store = getStoreById(product.storeId)
+
+    const buyerProfile = {
+      userId,
+      name: user?.name || 'Guest',
+      email: user?.email || null,
+      phone: user?.phone || null
+    }
+
     const order = {
       id: generateId('order'),
       userId,
       storeId: product.storeId,
       productIds: [product.id],
-      total: product.price,
+      items: [
+        {
+          productId: product.id,
+          quantity: 1,
+          price: Number(product.price || 0)
+        }
+      ],
+      total: Number(product.price || 0),
       status: 'ready_for_pickup',
       pickupCode: generateId('pickup').slice(-10).toUpperCase(),
+      buyer: buyerProfile,
       createdAt: Date.now()
+    }
+
+    const notificationForSeller = {
+      id: generateId('notif'),
+      type: 'order_created',
+      audience: 'seller',
+      storeId: product.storeId,
+      sellerUserId: null,
+      title: 'New order received',
+      message: `${buyerProfile.name} placed an order for ${product.name}${store?.name ? ` • ${store.name}` : ''}`,
+      payload: {
+        orderId: order.id,
+        storeId: order.storeId,
+        buyer: buyerProfile,
+        product: {
+          id: product.id,
+          name: product.name,
+          price: Number(product.price || 0)
+        }
+      },
+      createdAt: Date.now(),
+      readByUserIds: []
+    }
+
+    const notificationForAdmin = {
+      ...notificationForSeller,
+      id: generateId('notif'),
+      audience: 'admin'
+    }
+
+    const notificationForBuyer = {
+      ...notificationForSeller,
+      id: generateId('notif'),
+      audience: 'user',
+      userId
     }
 
     setState((prev) => ({
@@ -452,6 +619,15 @@ export function EcosystemProvider({ children }) {
       orders: {
         ...prev.orders,
         items: [order, ...(prev.orders.items || [])]
+      },
+      notifications: {
+        ...prev.notifications,
+        items: [
+          notificationForSeller,
+          notificationForAdmin,
+          notificationForBuyer,
+          ...(prev.notifications.items || [])
+        ]
       }
     }))
 
@@ -461,15 +637,50 @@ export function EcosystemProvider({ children }) {
   const confirmPickup = (orderId) => {
     if (!orderId) return
 
-    setState((prev) => ({
-      ...prev,
-      orders: {
-        ...prev.orders,
-        items: (prev.orders.items || []).map((o) =>
-          o.id === orderId ? { ...o, status: 'picked_up', pickedUpAt: Date.now() } : o
-        )
+    setState((prev) => {
+      const order = (prev.orders.items || []).find((o) => o.id === orderId)
+      const store = order ? getStoreById(order.storeId) : null
+
+      const nextOrders = (prev.orders.items || []).map((o) =>
+        o.id === orderId ? { ...o, status: 'picked_up', pickedUpAt: Date.now() } : o
+      )
+
+      const notification = order
+        ? {
+            id: generateId('notif'),
+            type: 'order_picked_up',
+            audience: 'seller',
+            storeId: order.storeId,
+            sellerUserId: null,
+            title: 'Order picked up',
+            message: `${order.buyer?.name || 'Buyer'} confirmed pickup${store?.name ? ` • ${store.name}` : ''}`,
+            payload: {
+              orderId: order.id,
+              storeId: order.storeId
+            },
+            createdAt: Date.now(),
+            readByUserIds: []
+          }
+        : null
+
+      const notificationAdmin = notification ? { ...notification, id: generateId('notif'), audience: 'admin' } : null
+      const notificationBuyer = notification ? { ...notification, id: generateId('notif'), audience: 'user', userId } : null
+
+      return {
+        ...prev,
+        orders: {
+          ...prev.orders,
+          items: nextOrders
+        },
+        notifications: {
+          ...prev.notifications,
+          items: [
+            ...(notification ? [notification, notificationAdmin, notificationBuyer].filter(Boolean) : []),
+            ...(prev.notifications.items || [])
+          ]
+        }
       }
-    }))
+    })
   }
 
   const submitReturnRequest = ({ orderId, reason = '' }) => {
@@ -540,6 +751,8 @@ export function EcosystemProvider({ children }) {
       requestSellerAccess,
       approveSeller,
       rejectSeller,
+      cancelSellerRequest,
+      revokeSellerAccess,
       isSellerApprovedForStore,
       getCmsPage,
       upsertCmsPage,
