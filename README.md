@@ -502,7 +502,6 @@ Contributions are welcome! Please follow these steps:
 
 For questions or support:
 - Email: info: roziyevnozin@gmail.com
-- Phone: +998 (99) 689-24-80
 
 ---
 
