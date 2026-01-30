@@ -12,9 +12,9 @@ import GiftCardsSection from '../components/GiftCardsSection'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function UserProfilePage() {
-  const { user, logout, isAuthenticated, favorites, toggleFavorite } = useUser()
+  const { user, logout, isAuthenticated, favorites, updateProfile } = useUser()
   const { darkMode } = useTheme()
-  const { t } = useLanguage()
+  const { t, setLanguage, language } = useLanguage()
   const { stores, malls, products } = useEcosystem()
   const navigate = useNavigate()
   
@@ -28,7 +28,7 @@ export default function UserProfilePage() {
     name: user?.name || '',
     email: user?.email || '',
     phone: user?.phone || '',
-    language: user?.language || 'uz',
+    language: user?.language || language || 'uz',
     // expanded default notification keys used in UI
     notifications: {
       mallUpdates: true,
@@ -56,7 +56,7 @@ export default function UserProfilePage() {
         name: user.name || '',
         email: user.email || '',
         phone: user.phone || '',
-        language: user.language || prev.language || 'uz',
+        language: user.language || language || prev.language || 'uz',
         notifications: {
           ...prev.notifications,
           // merge existing defaults with any user-provided notification settings
@@ -64,7 +64,7 @@ export default function UserProfilePage() {
         }
       }))
     }
-  }, [user, isEditing])
+  }, [user, isEditing, language])
 
   if (!isAuthenticated || !user) {
     return (
@@ -88,7 +88,27 @@ export default function UserProfilePage() {
   const handleSaveProfile = () => {
     // In a real app, this would be an API call
     console.log('Saving profile:', profileData)
+    updateProfile({
+      name: profileData.name,
+      phone: profileData.phone,
+      language: profileData.language,
+      notifications: profileData.notifications
+    })
+    setLanguage(profileData.language)
     setIsEditing(false)
+  }
+
+  const languageOptions = [
+    { code: 'uz', name: "O'zbek", flag: '🇺🇿' },
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'tr', name: 'Türkçe', flag: '🇹🇷' }
+  ]
+
+  const handleLanguageChange = (code) => {
+    setProfileData(prev => ({ ...prev, language: code }))
+    updateProfile({ language: code })
+    setLanguage(code)
   }
 
   const toggleNotificationSetting = (key) => {
@@ -102,10 +122,11 @@ export default function UserProfilePage() {
   }
 
   const tabs = [
-    { id: 'profile', label: '👤 Profile', icon: '👤' },
-    { id: 'favorites', label: `❤️ Favorites (${(favSafe.stores || []).length + (favSafe.products || []).length + (favSafe.malls || []).length})`, icon: '❤️' },
+    { id: 'profile', label: `👤 ${t('profile.title') || 'Profile'}`, icon: '👤' },
+    { id: 'settings', label: `⚙️ ${t('settings.title') || 'Settings'}`, icon: '⚙️' },
+    { id: 'favorites', label: `❤️ ${t('account.favorites') || 'Favorites'} (${(favSafe.stores || []).length + (favSafe.products || []).length + (favSafe.malls || []).length})`, icon: '❤️' },
     { id: 'gift-cards', label: '🎫 Gift Cards', icon: '🎫' },
-    { id: 'notifications', label: '🔔 Notifications', icon: '🔔' },
+    { id: 'notifications', label: `🔔 ${t('settings.notifications') || 'Notifications'}`, icon: '🔔' },
     { id: 'history', label: '📜 History', icon: '📜' },
     { id: 'loyalty', label: '🎁 Loyalty', icon: '🎁' }
   ]
@@ -246,29 +267,6 @@ export default function UserProfilePage() {
                       )}
                     </div>
 
-                    <div>
-                      <label className={`block text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
-                        Preferred Language
-                      </label>
-                      {isEditing ? (
-                        <select
-                          value={profileData.language}
-                          onChange={(e) => setProfileData({...profileData, language: e.target.value})}
-                          className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-purple-500 ${
-                            darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-300'
-                          }`}
-                        >
-                          <option value="uz">🇺🇿 Uzbek</option>
-                          <option value="ru">🇷🇺 Russian</option>
-                          <option value="en">🇬🇧 English</option>
-                          <option value="tr">🇹🇷 Turkish</option>
-                        </select>
-                      ) : (
-                        <p className={`px-4 py-3 rounded-lg ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-50'}`}>
-                          {profileData.language.toUpperCase()}
-                        </p>
-                      )}
-                    </div>
                   </div>
 
                   {isEditing && (
@@ -307,6 +305,75 @@ export default function UserProfilePage() {
                         className="rounded"
                       />
                     </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Settings Tab */}
+            {activeTab === 'settings' && (
+              <div className={`p-6 rounded-2xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}>
+                <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-6`}>
+                  {t('settings.title') || 'Settings'}
+                </h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className={`p-5 rounded-xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-100 bg-gray-50'}`}>
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{t('settings.languageSettings') || 'Language Settings'}</p>
+                        <p className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                          {(languageOptions.find(option => option.code === profileData.language) || languageOptions[0]).flag}{' '}
+                          {(languageOptions.find(option => option.code === profileData.language) || languageOptions[0]).name}
+                        </p>
+                      </div>
+                      <span className={`text-xs px-2 py-1 rounded-full ${darkMode ? 'bg-white/10 text-white/70' : 'bg-white text-gray-600'}`}>
+                        {t('settings.language') || 'Language'}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {languageOptions.map((option) => {
+                        const isActive = option.code === profileData.language
+                        return (
+                          <button
+                            key={option.code}
+                            type="button"
+                            onClick={() => handleLanguageChange(option.code)}
+                            className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all ${
+                              isActive
+                                ? 'border-purple-500/60 bg-purple-500/20 text-white'
+                                : darkMode
+                                  ? 'border-white/10 bg-white/5 text-gray-200 hover:bg-white/10'
+                                  : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-100'
+                            }`}
+                          >
+                            <span className="text-lg" aria-hidden="true">{option.flag}</span>
+                            <span>{option.name}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  <div className={`p-5 rounded-xl border ${darkMode ? 'border-white/10 bg-white/5' : 'border-gray-100 bg-gray-50'}`}>
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{t('settings.themeSettings') || 'Theme Settings'}</p>
+                        <p className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                          {darkMode ? '🌙 Dark Mode' : '☀️ Light Mode'}
+                        </p>
+                      </div>
+                      <span className={`text-xs px-2 py-1 rounded-full ${darkMode ? 'bg-white/10 text-white/70' : 'bg-white text-gray-600'}`}>
+                        {t('settings.theme') || 'Theme'}
+                      </span>
+                    </div>
+                    <div className={`rounded-lg p-4 ${darkMode ? 'bg-white/5' : 'bg-white'}`}>
+                      <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                        {t('settings.darkMode') || 'Dark Mode'} {darkMode ? t('common.open') || 'On' : t('common.closed') || 'Off'}
+                      </p>
+                      <p className={`text-xs mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                        {t('settings.themeSettings') || 'Theme Settings'} {t('common.open') || 'On'}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

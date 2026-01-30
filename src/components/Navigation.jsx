@@ -4,7 +4,6 @@ import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
 import DarkModeToggle from './DarkModeToggle'
-import LanguageSwitcher from './LanguageSwitcher'
 import UserProfile from './UserProfile'
 import GlobalSearch from './GlobalSearch'
 import AuthModal from './AuthModal'
@@ -68,7 +67,6 @@ export default function Navigation() {
             ))}
 
             <div className="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-gray-700">
-              <LanguageSwitcher />
               <DarkModeToggle />
 
               {isAuthenticated && user ? (
@@ -103,7 +101,6 @@ export default function Navigation() {
 
           {/* Mobile Menu Button & Controls */}
           <div className="md:hidden flex items-center gap-2">
-            <LanguageSwitcher />
             <DarkModeToggle />
             <button
               className={`text-purple-600 p-2.5 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all duration-300`}
